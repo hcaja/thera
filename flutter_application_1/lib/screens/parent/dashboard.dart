@@ -93,7 +93,7 @@ class Dashboard extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                // Handle profile action here
+                Navigator.of(context).pushNamed('/parentprofile');
               },
             ),
             ListTile(

@@ -8,6 +8,7 @@ import 'package:flutter_application_1/screens/auth/parent_login.dart';
 import 'package:flutter_application_1/screens/auth/therapist_login.dart';
 import 'package:flutter_application_1/screens/clinic/clinic_gallery.dart';
 import 'package:flutter_application_1/screens/clinic/clinic_profile.dart';
+import 'package:flutter_application_1/screens/parent/parent_profile.dart';
 import 'package:flutter_application_1/screens/parent/ther_dash.dart';
 import 'package:flutter_application_1/screens/registration/clinic_reg.dart';
 import 'package:flutter_application_1/screens/clinic/clinic_review.dart';
@@ -57,8 +58,9 @@ class MyApp extends StatelessWidget {
         '/therapiststab': (context) => const TherapistsDashboard(),
         '/patientlist': (context) => const PatientList(),
         '/messagescreen': (context) => const MessageScreen(),
-        '/chatscreen': (context) =>
-            const ChatScreen(), // Set RegistrationPage as a secondary route
+        '/chatscreen': (context) => const ChatScreen(),
+        '/parentprofile': (context) =>
+            const ParentProfile(), // Set RegistrationPage as a secondary route
       },
     );
   }

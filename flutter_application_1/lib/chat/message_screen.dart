@@ -103,6 +103,7 @@ class MessageScreen extends StatelessWidget {
                 ),
               ),
               onTap: () {
+                Navigator.of(context).pushNamed('/parentprofile');
                 // Handle profile action here
               },
             ),
