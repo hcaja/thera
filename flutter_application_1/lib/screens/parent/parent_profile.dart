@@ -65,28 +65,32 @@ class ParentProfile extends StatelessWidget {
             ),
 
             // Add your other side bar items
+            Column(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.home),
+                  iconColor: const Color(0xFF006A5B),
+                  title: const Text(
+                    'Dashboard',
+                    style: TextStyle(
+                      color: Color(0xFF006A5B),
+                      fontFamily: 'Poppins',
+                      fontSize: 15,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/parentprofile');
+                    // Handle profile action here
+                  },
+                ),
+              ],
+            ),
             ListTile(
               leading: const Icon(Icons.person),
               iconColor: const Color(0xFF006A5B),
               title: const Text(
                 'Profile',
-                style: TextStyle(
-                  color: Color(0xFF006A5B),
-                  fontFamily: 'Poppins',
-                  fontSize: 15,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-              onTap: () {
-                Navigator.of(context).pushNamed('/parentprofile');
-                // Handle profile action here
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.edit_calendar_rounded),
-              iconColor: const Color(0xFF006A5B),
-              title: const Text(
-                'Booking',
                 style: TextStyle(
                   color: Color(0xFF006A5B),
                   fontFamily: 'Poppins',
@@ -115,10 +119,10 @@ class ParentProfile extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.edit_note_rounded),
+              leading: const Icon(Icons.edit_calendar_rounded),
               iconColor: const Color(0xFF006A5B),
               title: const Text(
-                'Patient List',
+                'Schedule',
                 style: TextStyle(
                   color: Color(0xFF006A5B),
                   fontFamily: 'Poppins',
@@ -133,10 +137,10 @@ class ParentProfile extends StatelessWidget {
             ),
 
             ListTile(
-              leading: const Icon(Icons.groups_2),
+              leading: const Icon(Icons.note_alt),
               iconColor: const Color(0xFF006A5B),
               title: const Text(
-                'Clinic Staff',
+                'Journal',
                 style: TextStyle(
                   color: Color(0xFF006A5B),
                   fontFamily: 'Poppins',
@@ -168,7 +172,7 @@ class ParentProfile extends StatelessWidget {
             // Add more items as needed
 
             // Add a divider for visual separation for logout
-            const Divider(),
+            // const Divider(),
             ListTile(
               leading: const Icon(Icons.logout), // Icon for logout
               title: const Text('Logout'), // Text for logout
