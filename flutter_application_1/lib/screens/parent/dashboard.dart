@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/auth/connection.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
+import 'package:flutter_application_1/screens/map/map_page.dart';
 import 'package:flutter_application_1/screens/parent/dashboard_tabbar.dart';
 
 class Dashboard extends StatelessWidget {
@@ -261,13 +262,14 @@ class Dashboard extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: SizedBox(
-                      height: 200,
+                      height: 250,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Image.asset(
-                          'asset/images/map.png',
-                          fit: BoxFit.cover,
-                        ),
+                        child: MapPage(),
+                        // Image.asset(
+                        //   'asset/images/map.png',
+                        //   fit: BoxFit.cover,
+                        // ),
                       ),
                     ),
                   ),
