@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/chat/chat_screen.dart';
 import 'package:flutter_application_1/chat/message_screen.dart';
+import 'package:flutter_application_1/screens/clinic/home_clinic.dart';
 import 'package:flutter_application_1/screens/clinic/patient_list.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
 import 'package:flutter_application_1/screens/auth/parent_login.dart';
 import 'package:flutter_application_1/screens/auth/therapist_login.dart';
 import 'package:flutter_application_1/screens/clinic/clinic_gallery.dart';
-import 'package:flutter_application_1/screens/clinic/clinic_profile.dart';
 import 'package:flutter_application_1/screens/parent/home_dashboard.dart';
 import 'package:flutter_application_1/screens/parent/parent_profile.dart';
 import 'package:flutter_application_1/screens/parent/ther_dash.dart';
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
         '/parentregistration': (context) => const ParentRegister(),
         '/therapistregister': (context) => const TherapistRegister(),
         '/clinicregister': (context) => const ClinicRegister(),
-        '/clinicprofile': (context) => const ClinicProfile(),
+        '/homeclinic': (context) => const HomeClinic(),
         '/clinicgallery': (context) => const ClinicGallery(),
         '/clinicreview': (context) => const ClinicReview(),
         '/therprofile': (context) => const TherapistProfile(),

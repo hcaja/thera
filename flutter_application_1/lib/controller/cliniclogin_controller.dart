@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/auth/connection.dart';
-import 'package:flutter_application_1/screens/clinic/clinic_profile.dart';
+import 'package:flutter_application_1/screens/clinic/home_clinic.dart';
 import 'package:flutter_application_1/screens/parent/home_dashboard.dart';
 import 'package:flutter_application_1/screens/therapist/ther_profile.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -19,7 +19,7 @@ class LoginClinic {
 
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const ClinicProfile(),
+            builder: (context) => HomeClinic(),
           ),
         );
         print('Login Successful!');
