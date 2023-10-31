@@ -5,7 +5,6 @@ import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter_application_1/controller/httplogin_controller.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
 import 'package:flutter_application_1/screens/auth/login_profiles.dart';
-import 'package:flutter_application_1/screens/parent/dashboard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:flutter_application_1/screens/auth/login_page.dart';
 
@@ -71,11 +70,13 @@ class _SplashScreenState extends State<SplashScreen> {
   void checkLogin() async {
     prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('clinicToken');
-    validator.validateToken(token!).then((value) {
-      setState(() {
-        loggedin = value;
+    if (token != null) {
+      validator.validateToken(token).then((value) {
+        setState(() {
+          loggedin = value;
+        });
       });
-    });
+    }
   }
 
   @override
