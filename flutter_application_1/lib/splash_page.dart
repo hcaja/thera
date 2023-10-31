@@ -2,7 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:delayed_display/delayed_display.dart';
+import 'package:flutter_application_1/controller/httplogin_controller.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
+import 'package:flutter_application_1/screens/auth/login_profiles.dart';
+import 'package:flutter_application_1/screens/parent/dashboard.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:flutter_application_1/screens/auth/login_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -14,12 +18,15 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late Size mq;
+  late SharedPreferences prefs;
+  bool loggedin = false;
   bool _logoVisible = false;
   bool _textVisible = false;
 
   @override
   void initState() {
     super.initState();
+    checkLogin();
     // Delay for 3 seconds before animating the logo
     Timer(const Duration(seconds: 3), () {
       setState(() {
@@ -42,12 +49,32 @@ class _SplashScreenState extends State<SplashScreen> {
       ));
 
       // Navigate to the login page directly
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const LoginAs(),
-        ),
-      );
+      if (!loggedin) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const LoginAs(),
+          ),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const LoginProfile(),
+          ),
+        );
+      }
+    });
+  }
+
+  Validator validator = Validator();
+  void checkLogin() async {
+    prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('clinicToken');
+    validator.validateToken(token!).then((value) {
+      setState(() {
+        loggedin = value;
+      });
     });
   }
 
@@ -56,13 +83,6 @@ class _SplashScreenState extends State<SplashScreen> {
     mq = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Welcome to TherapEase',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: const Color(0xFF006A5B),
-      ),
       body: Stack(
         children: [
           // Logo Animation
