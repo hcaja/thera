@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/chat/chat_screen.dart';
 import 'package:flutter_application_1/chat/message_screen.dart';
 import 'package:flutter_application_1/screens/clinic/patient_list.dart';
+import 'package:flutter_application_1/screens/map/map_page.dart';
 import 'package:flutter_application_1/screens/parent/dashboard.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
 import 'package:flutter_application_1/screens/auth/parent_login.dart';
@@ -20,6 +21,7 @@ import 'package:flutter_application_1/splash_page.dart';
 import 'package:flutter_application_1/screens/therapist/ther_gallery.dart';
 import 'package:flutter_application_1/screens/therapist/ther_profile.dart';
 import 'package:flutter_application_1/screens/therapist/ther_review.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,8 +35,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'TherapEase',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 39, 58, 224)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF006A5B)),
         useMaterial3: true,
       ),
       home: const SplashScreen(), // Set LoginAs as the home route
