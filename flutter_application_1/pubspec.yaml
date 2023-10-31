@@ -29,6 +29,9 @@ dependencies:
   custom_clippers: ^2.0.0
   delayed_display: ^2.0.0
   file_picker: ^5.5.0
+  http: ^1.1.0
+  shared_preferences:
+  jwt_decoder:
 
 dev_dependencies:
   flutter_lints: ^2.0.0
