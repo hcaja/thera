@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/auth/connection.dart';
 import 'package:flutter_application_1/screens/clinic/clinic_profile.dart';
-import 'package:flutter_application_1/screens/parent/dashboard.dart';
+import 'package:flutter_application_1/screens/parent/home_dashboard.dart';
 import 'package:flutter_application_1/screens/therapist/ther_profile.dart';
 import 'package:pocketbase/pocketbase.dart';
 
@@ -24,7 +24,7 @@ class LoginClinic {
         );
         print('Login Successful!');
       } else {
-        print('This account is not a parent account');
+        print('This account is not a clinic account');
         Connection.pb.authStore.clear();
       }
     } catch (error) {
@@ -52,7 +52,7 @@ class LoginParent {
 
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const Dashboard(),
+            builder: (context) => const HomeDashboard(),
           ),
         );
         print('Login Successful!');
@@ -90,7 +90,7 @@ class LoginTherapist {
         );
         print('Login Successful!');
       } else {
-        print('This account is not a parent account');
+        print('This account is not a therapist account');
         Connection.pb.authStore.clear();
       }
     } catch (error) {

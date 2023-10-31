@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/chat/chat_screen.dart';
 import 'package:flutter_application_1/chat/message_screen.dart';
 import 'package:flutter_application_1/screens/clinic/patient_list.dart';
-import 'package:flutter_application_1/screens/parent/dashboard.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
 import 'package:flutter_application_1/screens/auth/parent_login.dart';
 import 'package:flutter_application_1/screens/auth/therapist_login.dart';
 import 'package:flutter_application_1/screens/clinic/clinic_gallery.dart';
 import 'package:flutter_application_1/screens/clinic/clinic_profile.dart';
+import 'package:flutter_application_1/screens/parent/home_dashboard.dart';
 import 'package:flutter_application_1/screens/parent/parent_profile.dart';
 import 'package:flutter_application_1/screens/parent/ther_dash.dart';
 import 'package:flutter_application_1/screens/registration/clinic_reg.dart';
@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
         '/therprofile': (context) => const TherapistProfile(),
         '/thergallery': (context) => const TherapistGallery(),
         '/therreview': (context) => const TherapistReview(),
-        '/dashboard': (context) => const Dashboard(),
+        '/homedashboard': (context) => const HomeDashboard(),
         '/therapiststab': (context) => const TherapistsDashboard(),
         '/patientlist': (context) => const PatientList(),
         '/messagescreen': (context) => const MessageScreen(),
