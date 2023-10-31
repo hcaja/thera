@@ -86,7 +86,7 @@ class TherapistsDashboard extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10.0),
                     child: SizedBox(
-                      height: 250,
+                      height: 220,
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.0),
                         child: MapPage(),
@@ -145,7 +145,7 @@ class TherapistsDashboard extends StatelessWidget {
                     maxCrossAxisExtent: 200.0,
                     mainAxisSpacing: 12.0,
                     crossAxisSpacing: 12.0,
-                    childAspectRatio: 0.45,
+                    childAspectRatio: 0.50,
                   ),
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {

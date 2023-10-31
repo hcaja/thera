@@ -6,7 +6,7 @@ import 'package:flutter_application_1/controller/httplogin_controller.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
 import 'package:flutter_application_1/screens/auth/login_profiles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:flutter_application_1/screens/auth/login_page.dart';
+import 'package:flutter_application_1/screens/auth/login_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);

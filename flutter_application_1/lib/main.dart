@@ -21,7 +21,6 @@ import 'package:flutter_application_1/splash_page.dart';
 import 'package:flutter_application_1/screens/therapist/ther_gallery.dart';
 import 'package:flutter_application_1/screens/therapist/ther_profile.dart';
 import 'package:flutter_application_1/screens/therapist/ther_review.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -60,6 +59,7 @@ class MyApp extends StatelessWidget {
         '/patientlist': (context) => const PatientList(),
         '/messagescreen': (context) => const MessageScreen(),
         '/chatscreen': (context) => const ChatScreen(),
+        '/mappage': (context) => const MapPage(),
         '/parentprofile': (context) =>
             const ParentProfile(), // Set RegistrationPage as a secondary route
       },

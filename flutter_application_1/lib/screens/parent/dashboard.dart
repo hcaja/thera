@@ -11,27 +11,6 @@ class Dashboard extends StatelessWidget {
     final Size mq = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Dashboard',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: const Color(0xFF006A5B),
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: const Icon(Icons.menu),
-              color: Colors.white,
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            );
-          },
-        ),
-      ),
-
-      // drawer or sidebar of hamburger menu
-      drawer: const AppDrawer(),
       // body
       body: Stack(
         children: [
@@ -167,7 +146,7 @@ class Dashboard extends StatelessWidget {
                     maxCrossAxisExtent: 200.0,
                     mainAxisSpacing: 12.0,
                     crossAxisSpacing: 12.0,
-                    childAspectRatio: 0.45,
+                    childAspectRatio: 0.55, //size of the containers
                   ),
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
