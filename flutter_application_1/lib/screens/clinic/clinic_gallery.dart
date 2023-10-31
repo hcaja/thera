@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/clinic/custom_tabbar.dart';
 
 class ClinicGallery extends StatefulWidget {
   const ClinicGallery({Key? key}) : super(key: key);
@@ -14,13 +13,6 @@ class _ClinicGalleryState extends State<ClinicGallery> {
     final Size mq = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'The Tiny House Gallery',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: const Color(0xFF006A5B),
-      ),
       body: Stack(
         children: [
           // Bottom Background Image
@@ -31,7 +23,7 @@ class _ClinicGalleryState extends State<ClinicGallery> {
             child: ConstrainedBox(
               constraints: BoxConstraints.expand(height: mq.height * 0.3),
               child: Image.asset(
-                'asset/images/Ellipse 2.png', // bottom background
+                'asset/images/Ellipse 2.png',
                 fit: BoxFit.cover,
               ),
             ),
@@ -42,30 +34,21 @@ class _ClinicGalleryState extends State<ClinicGallery> {
             left: 0,
             right: 0,
             child: ConstrainedBox(
-              constraints: BoxConstraints.expand(height: mq.height * 0.30),
+              constraints: BoxConstraints.expand(height: 100),
               child: Image.asset(
-                'asset/images/Ellipse 1.png', // top background
+                'asset/images/Ellipse 1.png',
                 fit: BoxFit.cover,
               ),
             ),
           ),
 
-          // Custom Tab bar (Centered on the top background)
-          const Positioned(
-            top: 50, // Adjust the position as needed
-            left: 0,
-            right: 0,
-            child: Center(
-              child: CustomTabBar(),
-            ),
-          ),
           // Content Below CustomTabBar
           Positioned(
             top: mq.height * 0.30,
             left: 0,
             right: 0,
-            bottom: mq.height * 0.3, // Adjust the bottom position
-            child: const SingleChildScrollView(
+            bottom: 0, // Allow the content to expand
+            child: SingleChildScrollView(
               child: Column(
                 children: [
                   // Add your content here

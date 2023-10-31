@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/auth/connection.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
-import 'package:flutter_application_1/screens/clinic/custom_tabbar.dart';
 
 class ClinicProfile extends StatelessWidget {
   const ClinicProfile({Key? key}) : super(key: key);
@@ -11,25 +10,6 @@ class ClinicProfile extends StatelessWidget {
     final Size mq = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'The Tiny House',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: const Color(0xFF006A5B),
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: const Icon(Icons.menu),
-              color: Colors.white,
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            );
-          },
-        ),
-      ),
-
       // drawer or sidebar of hamburger menu
       drawer: Drawer(
         child: ListView(
@@ -187,14 +167,14 @@ class ClinicProfile extends StatelessWidget {
         builder: (context) => Stack(
           children: [
             Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: ConstrainedBox(
-                constraints: BoxConstraints.expand(height: mq.height * 0.30),
-                child: Image.asset(
-                  'asset/images/Ellipse 1.png', // top background
-                  fit: BoxFit.cover,
+              child: SizedBox(
+                height: 100,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints.expand(height: mq.height * 0.30),
+                  child: Image.asset(
+                    'asset/images/Ellipse 1.png',
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
@@ -222,13 +202,6 @@ class ClinicProfile extends StatelessWidget {
             Positioned(
               child: ListView(
                 children: <Widget>[
-                  const SizedBox(height: 30),
-
-                  // - Custom Tab bar -
-                  const Center(
-                    child: CustomTabBar(),
-                  ),
-
                   // Padding added before the CustomTabBar to avoid overlap
                   const SizedBox(height: 60),
                   Column(

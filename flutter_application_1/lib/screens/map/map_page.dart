@@ -138,7 +138,7 @@ class _MapPageState extends State<MapPage> {
   }
 
   void generatePolylineFromPoints(List<LatLng> polylineCoordinates) async {
-    PolylineId id = PolylineId("poly");
+    PolylineId id = const PolylineId("poly");
     Polyline polyline = Polyline(
         polylineId: id,
         color: Colors.black,

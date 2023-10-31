@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/auth/connection.dart';
-import 'package:flutter_application_1/screens/auth/login_as.dart';
 import 'package:flutter_application_1/screens/map/map_page.dart';
 import 'package:flutter_application_1/screens/parent/dashboard_tabbar.dart';
 import 'package:flutter_application_1/screens/widgets/app_drawer.dart';
+// import 'package:flutter_application_1/screens/parent/dashboard_tabbar.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -39,14 +38,14 @@ class Dashboard extends StatelessWidget {
         children: [
           // top background
           Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: ConstrainedBox(
-              constraints: BoxConstraints.expand(height: mq.height * 0.30),
-              child: Image.asset(
-                'asset/images/Ellipse 1.png',
-                fit: BoxFit.cover,
+            child: SizedBox(
+              height: 100,
+              child: ConstrainedBox(
+                constraints: BoxConstraints.expand(height: mq.height * 0.30),
+                child: Image.asset(
+                  'asset/images/Ellipse 1.png',
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
@@ -73,15 +72,9 @@ class Dashboard extends StatelessWidget {
                   automaticallyImplyLeading: false,
                   pinned:
                       true, // Set to true if you want it pinned, false for floating
-                  expandedHeight: 70.0,
-                  toolbarHeight: 70.0, // Set the toolbar height
-                  backgroundColor:
-                      Color(0xFF006A5B), // Make the background transparent
-                  flexibleSpace: FlexibleSpaceBar(
-                    title:
-                        DashTab(), // Make DashTab the content of the flexibleSpace
-                    centerTitle: true, // Center the title
-                  ),
+                  expandedHeight: 0.0,
+                  toolbarHeight: 0.0, // Set the toolbar height
+                  backgroundColor: Colors.transparent,
                 ),
 
                 // top height of the therapy clinic finder and/or spacing of therapy clinic finder and custom tab bar
@@ -112,18 +105,14 @@ class Dashboard extends StatelessWidget {
                 ),
 
                 // code for map
-                SliverToBoxAdapter(
+                const SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    padding: EdgeInsets.symmetric(horizontal: 10.0),
                     child: SizedBox(
-                      height: 250,
+                      height: 220,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
                         child: MapPage(),
-                        // Image.asset(
-                        //   'asset/images/map.png',
-                        //   fit: BoxFit.cover,
-                        // ),
                       ),
                     ),
                   ),
