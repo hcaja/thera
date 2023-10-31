@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/auth/connection.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
-import 'package:flutter_application_1/screens/clinic/dash_tab_clinic.dart';
 
 class PatientList extends StatelessWidget {
   const PatientList({Key? key}) : super(key: key);
