@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:delayed_display/delayed_display.dart';
@@ -113,7 +112,7 @@ class _SplashScreenState extends State<SplashScreen> {
       validator.validateToken(parentToken).then((value) {
         setState(() {
           login = LoginType.parent;
-          print('Parent');
+          //print('Parent');
         });
       });
     } else {

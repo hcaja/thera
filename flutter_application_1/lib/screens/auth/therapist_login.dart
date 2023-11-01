@@ -1,9 +1,4 @@
-// import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/controller/cliniclogin_controller.dart';
-import 'package:flutter_application_1/controller/httplogin_controller.dart';
-// import 'package:flutter_application_1/screens/clinic/clinic_profile.dart';
-// import 'package:flutter_application_1/vid_conf.dart';
 
 class TherapistLogin extends StatefulWidget {
   const TherapistLogin({Key? key}) : super(key: key);
@@ -15,8 +10,6 @@ class TherapistLogin extends StatefulWidget {
 class _TherapistLoginState extends State<TherapistLogin> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  ClinicLogin controller = ClinicLogin();
 
   @override
   void dispose() {
@@ -142,10 +135,7 @@ class _TherapistLoginState extends State<TherapistLogin> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    onPressed: () {
-                      controller.clinicLogin(context, emailController.text,
-                          passwordController.text);
-                    },
+                    onPressed: () {},
                     child: const Text(
                       'Login',
                     ),

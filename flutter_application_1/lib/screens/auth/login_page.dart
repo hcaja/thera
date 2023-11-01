@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/controller/cliniclogin_controller.dart';
+import '../../controller/httplogin_controller.dart';
+import 'login_profiles.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  LoginClinic controller = LoginClinic();
+  ClinicLogin controller = ClinicLogin();
 
   @override
   void dispose() {
@@ -139,8 +140,13 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     onPressed: () {
-                      controller.login(context, emailController.text,
-                          passwordController.text);
+                      controller.clinicLogin(
+                          emailController.text, passwordController.text);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const LoginProfile(),
+                        ),
+                      );
                     },
                     child: const Text(
                       'Login',

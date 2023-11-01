@@ -9,7 +9,7 @@ class parentGovID {
 
       return pickedImageGallery;
     } catch (e) {
-      print("Error picking an image from the gallery: $e");
+      //print("Error picking an image from the gallery: $e");
       return null;
     }
   }
@@ -22,7 +22,7 @@ class parentGovID {
 
       return pickedImageCamera;
     } catch (e) {
-      print("Error picking an image from the camera: $e");
+      //  print("Error picking an image from the camera: $e");
       return null;
     }
   }
@@ -37,7 +37,7 @@ class therapistProID {
 
       return pickedImageGallery;
     } catch (e) {
-      print("Error picking an image from the gallery: $e");
+      //print("Error picking an image from the gallery: $e");
       return null;
     }
   }
@@ -50,7 +50,7 @@ class therapistProID {
 
       return pickedImageCamera;
     } catch (e) {
-      print("Error picking an image from the camera: $e");
+      //print("Error picking an image from the camera: $e");
       return null;
     }
   }
@@ -65,7 +65,7 @@ class clinicGovFiles {
 
       return pickedImageGallery;
     } catch (e) {
-      print("Error picking an image from the gallery: $e");
+      //("Error picking an image from the gallery: $e");
       return null;
     }
   }
@@ -78,7 +78,7 @@ class clinicGovFiles {
 
       return pickedImageCamera;
     } catch (e) {
-      print("Error picking an image from the camera: $e");
+      // print("Error picking an image from the camera: $e");
       return null;
     }
   }

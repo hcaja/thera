@@ -30,7 +30,7 @@ class ClinicReview extends StatelessWidget {
             left: 0,
             right: 0,
             child: ConstrainedBox(
-              constraints: BoxConstraints.expand(height: 100),
+              constraints: const BoxConstraints.expand(height: 100),
               child: Image.asset(
                 'asset/images/Ellipse 1.png', // top background
                 fit: BoxFit.cover,
@@ -49,7 +49,7 @@ class ClinicReview extends StatelessWidget {
                   // Custom Tab bar (You can add the tab bar here if needed)
 
                   // Add spacing between the tab bar and the reviews
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   // Review 1
                   ReviewWidget(
@@ -80,7 +80,7 @@ class ClinicReview extends StatelessWidget {
                   ),
 
                   // Add spacing between reviews
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   // Review 2
                   ReviewWidget(

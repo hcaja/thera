@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/controller/cliniclogin_controller.dart';
+import 'package:flutter_application_1/controller/httplogin_controller.dart';
+
+import '../parent/dashboard.dart';
 
 class ParentLogin extends StatefulWidget {
   const ParentLogin({Key? key}) : super(key: key);
@@ -11,7 +13,6 @@ class ParentLogin extends StatefulWidget {
 class _ParentLoginState extends State<ParentLogin> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  LoginParent controller = LoginParent();
 
   @override
   void dispose() {
@@ -22,6 +23,7 @@ class _ParentLoginState extends State<ParentLogin> {
 
   @override
   Widget build(BuildContext context) {
+    ParentLoginController controller = ParentLoginController();
     final size = MediaQuery.sizeOf(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -138,8 +140,14 @@ class _ParentLoginState extends State<ParentLogin> {
                       ),
                     ),
                     onPressed: () {
-                      controller.login(context, emailController.text,
+                      controller.parentLogin(context, emailController.text,
                           passwordController.text);
+
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const Dashboard(),
+                        ),
+                      );
                     },
                     child: const Text(
                       'Login',

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/auth/connection.dart';
-import 'package:flutter_application_1/screens/auth/login_as.dart';
 import 'package:flutter_application_1/screens/parent/check_list.dart';
 import 'package:flutter_application_1/screens/parent/tab_bar.dart';
 import 'package:flutter_application_1/screens/widgets/app_drawer.dart';

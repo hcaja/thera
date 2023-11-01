@@ -1,9 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/clinic_profiles.dart';
-import 'package:flutter_application_1/screens/auth/login_profiles.dart';
-import 'package:flutter_application_1/screens/parent/dashboard.dart';
-import 'package:flutter_application_1/screens/therapist/ther_profile.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,7 +8,7 @@ import 'package:flutter_application_1/config/config.dart';
 
 class ClinicLogin {
   late SharedPreferences prefs;
-  Future<void> clinicLogin(BuildContext context, username, password) async {
+  Future<void> clinicLogin(username, password) async {
     prefs = await SharedPreferences.getInstance();
     var reqBody = {"email": username, "password": password};
     var response = await http.post(Uri.parse(baseUrl + clinicLoginUrl),
@@ -21,14 +18,8 @@ class ClinicLogin {
     if (jsonResponse['access'] != null) {
       var myToken = jsonResponse['access'];
       prefs.setString('clinicToken', myToken);
-
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const LoginProfile(),
-        ),
-      );
     } else {
-      print('login failed');
+      // print('login failed');
     }
   }
 
@@ -77,17 +68,11 @@ class EmployeeLogin {
       if (jsonResponse['access'] != null) {
         var myToken = jsonResponse['access'];
         prefs.setString('employeeToken', myToken);
-
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const TherapistProfile(),
-          ),
-        );
       } else {
-        print(response.statusCode);
+        // print(response.statusCode);
       }
     } else {
-      print(response.statusCode);
+      // print(response.statusCode);
     }
   }
 }
@@ -104,14 +89,8 @@ class ParentLoginController {
     if (jsonResponse['access'] != null) {
       var myToken = jsonResponse['access'];
       prefs.setString('parentToken', myToken);
-
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const Dashboard(),
-        ),
-      );
     } else {
-      print('login failed');
+      //  print('login failed');
     }
   }
 

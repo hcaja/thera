@@ -34,7 +34,7 @@ class _ClinicGalleryState extends State<ClinicGallery> {
             left: 0,
             right: 0,
             child: ConstrainedBox(
-              constraints: BoxConstraints.expand(height: 100),
+              constraints: const BoxConstraints.expand(height: 100),
               child: Image.asset(
                 'asset/images/Ellipse 1.png',
                 fit: BoxFit.cover,
@@ -48,7 +48,7 @@ class _ClinicGalleryState extends State<ClinicGallery> {
             left: 0,
             right: 0,
             bottom: 0, // Allow the content to expand
-            child: SingleChildScrollView(
+            child: const SingleChildScrollView(
               child: Column(
                 children: [
                   // Add your content here

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/controller/cliniclogin_controller.dart';
 import 'package:flutter_application_1/controller/httplogin_controller.dart';
+import 'package:flutter_application_1/controller/httplogout_controller.dart';
 import 'package:flutter_application_1/models/clinic_profiles.dart';
-import 'package:flutter_application_1/screens/clinic/clinic_profile.dart';
+import 'package:flutter_application_1/screens/auth/login_as.dart';
+
+import '../therapist/ther_profile.dart';
 
 class LoginProfile extends StatefulWidget {
   const LoginProfile({super.key});
@@ -112,6 +114,11 @@ class _LoginProfileState extends State<LoginProfile> {
                         onSubmitted: (value) {
                           employeeLogin.employeeLogin(
                               context, profile.email, passwordController.text);
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const TherapistProfile(),
+                            ),
+                          );
                         },
                         decoration: const InputDecoration(
                           labelText: 'Enter Password',
@@ -135,6 +142,7 @@ class _LoginProfileState extends State<LoginProfile> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
+    Logout logout = Logout();
     return Scaffold(
       appBar: null,
       body: Stack(
@@ -225,6 +233,52 @@ class _LoginProfileState extends State<LoginProfile> {
                                     ],
                                   ),
                                 ),
+                            GestureDetector(
+                              onTap: () {
+                                logout.clinicLogout();
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const LoginAs(),
+                                    ));
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  SizedBox(
+                                    height: size.height * 0.02,
+                                  ),
+                                  SizedBox(
+                                      child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 72,
+                                        height: 72,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: const Icon(
+                                            Icons.logout,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      const Text(
+                                        'Logout',
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 17),
+                                      )
+                                    ],
+                                  )),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       )
