@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/widgets/loading_button.dart';
 import '../../controller/httplogin_controller.dart';
 import 'login_profiles.dart';
 
@@ -12,7 +13,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
+  bool isLoading = false;
   ClinicLogin controller = ClinicLogin();
 
   @override
@@ -127,31 +128,43 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 30.0),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF006A5B),
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 20.0,
-                        // horizontal: 140.0,
-                      ),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    onPressed: () {
-                      controller.clinicLogin(
-                          emailController.text, passwordController.text);
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const LoginProfile(),
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      'Login',
-                    ),
-                  ),
+                  !isLoading
+                      ? ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF006A5B),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 20.0,
+                            ),
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            controller
+                                .clinicLogin(emailController.text,
+                                    passwordController.text)
+                                .then((value) {
+                              if (value) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginProfile(),
+                                  ),
+                                );
+                              }
+                              setState(() {
+                                isLoading = false;
+                              });
+                            });
+                          },
+                          child: const Text(
+                            'Login',
+                          ),
+                        )
+                      : const CircularLoadingButton(),
                   TextButton(
                     onPressed: () {},
                     child: const Text('Forgot Password?'),

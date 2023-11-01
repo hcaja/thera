@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/httplogin_controller.dart';
+import 'package:flutter_application_1/screens/widgets/loading_button.dart';
 
 import '../parent/dashboard.dart';
 
@@ -13,6 +14,7 @@ class ParentLogin extends StatefulWidget {
 class _ParentLoginState extends State<ParentLogin> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool isLoggedin = false;
 
   @override
   void dispose() {
@@ -127,32 +129,44 @@ class _ParentLoginState extends State<ParentLogin> {
                     ),
                   ),
                   const SizedBox(height: 30.0),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF006A5B),
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 20.0,
-                        // horizontal: 140.0,
-                      ),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    onPressed: () {
-                      controller.parentLogin(context, emailController.text,
-                          passwordController.text);
-
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const Dashboard(),
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      'Login',
-                    ),
-                  ),
+                  !isLoggedin
+                      ? ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF006A5B),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 20.0,
+                              // horizontal: 140.0,
+                            ),
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              isLoggedin = true;
+                            });
+                            controller
+                                .parentLogin(context, emailController.text,
+                                    passwordController.text)
+                                .then((value) {
+                              if (value) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const Dashboard(),
+                                  ),
+                                );
+                              }
+                              setState(() {
+                                isLoggedin = false;
+                              });
+                            });
+                          },
+                          child: const Text(
+                            'Login',
+                          ),
+                        )
+                      : const CircularLoadingButton(),
                   TextButton(
                     onPressed: () {
                       Navigator.pushNamed(context, '/clinicreview');

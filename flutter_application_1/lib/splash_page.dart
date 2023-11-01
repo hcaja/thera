@@ -95,6 +95,7 @@ class _SplashScreenState extends State<SplashScreen> {
     String? clinicToken = prefs.getString('clinicToken');
     String? employeeToken = prefs.getString('employeeToken');
     String? parentToken = prefs.getString('parentToken');
+   // await prefs.remove('clinicToken');
     if (clinicToken != null) {
       validator.validateToken(clinicToken).then((value) {
         setState(() {

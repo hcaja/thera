@@ -112,13 +112,19 @@ class _LoginProfileState extends State<LoginProfile> {
                         obscureText: true,
                         textInputAction: TextInputAction.done,
                         onSubmitted: (value) {
-                          employeeLogin.employeeLogin(
-                              context, profile.email, passwordController.text);
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const TherapistProfile(),
-                            ),
-                          );
+                          employeeLogin
+                              .employeeLogin(context, profile.email,
+                                  passwordController.text)
+                              .then((value) {
+                            if (value) {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const TherapistProfile(),
+                                ),
+                              );
+                            }
+                          });
                         },
                         decoration: const InputDecoration(
                           labelText: 'Enter Password',
