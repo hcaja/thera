@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/httpregister_controller.dart';
 import 'package:flutter_application_1/controller/pick_image.dart';
 import 'package:flutter_application_1/controller/register_controller.dart';
+import 'package:flutter_application_1/screens/auth/login_as.dart';
+import 'package:flutter_application_1/screens/registration/widgets/custom_textfield.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ClinicRegister extends StatefulWidget {
@@ -20,7 +24,7 @@ class _ClinicRegisterState extends State<ClinicRegister> {
   final TextEditingController confirmPasswordController =
       TextEditingController();
   clinicGovFiles therapistId = clinicGovFiles();
-  RegisterClinicUser controller = RegisterClinicUser();
+  ClinicRegisterApi controller = ClinicRegisterApi();
   XFile? _attachFile;
 
   @override
@@ -51,7 +55,6 @@ class _ClinicRegisterState extends State<ClinicRegister> {
               ),
             ),
           ),
-
           // bottom background
           Positioned(
             bottom: 0,
@@ -65,269 +68,137 @@ class _ClinicRegisterState extends State<ClinicRegister> {
               ),
             ),
           ),
-
           // Text fields for the needed details
           Padding(
             padding: const EdgeInsets.all(45.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 255, 255, 255),
-                    ),
-                    color: Colors.white, // White color
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 4,
-                        offset: Offset(0, 4),
-                        spreadRadius: 0,
-                      ),
-                    ],
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  CustomTextField(
+                    textEditingController: clinicNameController,
+                    label: 'Clinic Name',
+                    password: false,
                   ),
-                  child: TextField(
-                    controller: clinicNameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Clinic Name',
-                      border: InputBorder.none,
-                    ),
+                  const SizedBox(height: 16.0),
+                  CustomTextField(
+                    textEditingController: userNameController,
+                    label: 'User name',
+                    password: false,
                   ),
-                ),
-                const SizedBox(height: 16.0),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 245, 250, 255),
-                    ),
-                    color: Colors.white, // White color
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 4,
-                        offset: Offset(0, 4),
-                        spreadRadius: 0,
-                      ),
-                    ],
+                  const SizedBox(height: 16.0),
+                  CustomTextField(
+                    textEditingController: emailController,
+                    label: 'Email',
+                    password: false,
                   ),
-                  child: TextField(
-                    controller: userNameController,
-                    decoration: const InputDecoration(
-                      labelText: 'User Name',
-                      border: InputBorder.none,
-                    ),
+                  const SizedBox(height: 16.0),
+                  CustomTextField(
+                    textEditingController: contactNumberController,
+                    label: 'Contact Number',
+                    password: false,
                   ),
-                ),
-                const SizedBox(height: 16.0),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 245, 255, 255),
-                    ),
-                    color: Colors.white, // White color
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 4,
-                        offset: Offset(0, 4),
-                        spreadRadius: 0,
-                      ),
-                    ],
+                  const SizedBox(height: 16.0),
+                  CustomTextField(
+                    textEditingController: addressController,
+                    label: 'Address',
+                    password: false,
                   ),
-                  child: TextField(
-                    controller: emailController,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      border: InputBorder.none,
-                    ),
+                  const SizedBox(height: 16.0),
+                  CustomTextField(
+                    textEditingController: passwordController,
+                    label: 'Password',
+                    password: true,
                   ),
-                ),
-                const SizedBox(height: 16.0),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 245, 255, 255),
-                    ),
-                    color: Colors.white, // White color
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 4,
-                        offset: Offset(0, 4),
-                        spreadRadius: 0,
-                      ),
-                    ],
+                  const SizedBox(height: 14.0),
+                  CustomTextField(
+                    textEditingController: confirmPasswordController,
+                    label: 'Confirm Password',
+                    password: true,
                   ),
-                  child: TextField(
-                    controller: contactNumberController,
-                    decoration: const InputDecoration(
-                      labelText: 'Contact Number',
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16.0),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 245, 250, 255),
-                    ),
-                    color: Colors.white, // White color
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 4,
-                        offset: Offset(0, 4),
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                  child: TextField(
-                    controller: addressController,
-                    decoration: const InputDecoration(
-                      labelText: 'Address',
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16.0),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 255, 255, 255),
-                    ),
-                    color: Colors.white, // White color
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 4,
-                        offset: Offset(0, 4),
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                  child: TextField(
-                    controller: passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Password',
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 14.0),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 255, 255, 255),
-                    ),
-                    color: Colors.white, // White color
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 4,
-                        offset: Offset(0, 4),
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                  child: TextField(
-                    controller: confirmPasswordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Confirm Password',
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-
-                // For attaching files
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Upload Government files: Registration, Permit, etc.",
-                      style: TextStyle(
-                        height: 1.5,
-                        fontSize: 13.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(
-                      // provides some spacing between the label and the button
-                      height: 0.0,
-                    ),
-                    _attachFile == null
-                        ? ElevatedButton.icon(
-                            icon: const Icon(Icons.attach_file),
-                            label: const Text('Attach File'),
-                            onPressed: () async {
-                              _attachFile =
-                                  await therapistId.pickImageFromGallery();
-                              setState(() {});
-                            },
-                          )
-                        : Chip(
-                            label: Text(_attachFile?.name ?? 'Attached'),
-                            deleteIcon: const Icon(Icons.delete),
-                            onDeleted: () {
-                              setState(() {
-                                _attachFile = null;
-                              });
-                            },
-                          ),
-
-                    // Register button
-                    const SizedBox(height: 8.0),
-                    Center(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF006A5B),
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 20.0,
-                            horizontal: 115.0,
-                          ),
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                        ),
-                        onPressed: () {
-                          controller.registerClinicUser(
-                            context,
-                            clinicNameController.text,
-                            userNameController.text,
-                            emailController.text,
-                            contactNumberController.text,
-                            addressController.text,
-                            passwordController.text,
-                            confirmPasswordController.text,
-                          );
-                        },
-                        child: const Text(
-                          'Register',
+                  const SizedBox(height: 16.0),
+                  // For attaching files
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Upload Government files: Registration, Permit, etc.",
+                        style: TextStyle(
+                          height: 1.5,
+                          fontSize: 13.0,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      const SizedBox(
+                        // provides some spacing between the label and the button
+                        height: 0.0,
+                      ),
+                      _attachFile == null
+                          ? ElevatedButton.icon(
+                              icon: const Icon(Icons.attach_file),
+                              label: const Text('Attach File'),
+                              onPressed: () async {
+                                _attachFile =
+                                    await therapistId.pickImageFromGallery();
+                                setState(() {});
+                              },
+                            )
+                          : Chip(
+                              label: Text(_attachFile?.name ?? 'Attached'),
+                              deleteIcon: const Icon(Icons.delete),
+                              onDeleted: () {
+                                setState(() {
+                                  _attachFile = null;
+                                });
+                              },
+                            ),
+
+                      // Register button
+                      const SizedBox(height: 8.0),
+                      Center(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF006A5B),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 20.0,
+                              horizontal: 115.0,
+                            ),
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                          onPressed: () {
+                            controller
+                                .clinicRegister(
+                              clinicNameController.text,
+                              userNameController.text,
+                              emailController.text,
+                              contactNumberController.text,
+                              addressController.text,
+                              passwordController.text,
+                              confirmPasswordController.text,
+                            )
+                                .then((value) {
+                              if (value) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginAs(),
+                                  ),
+                                );
+                              }
+                            });
+                          },
+                          child: const Text(
+                            'Register',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],

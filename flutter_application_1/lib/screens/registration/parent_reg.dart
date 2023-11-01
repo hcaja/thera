@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/pick_image.dart';
 import 'package:flutter_application_1/controller/register_controller.dart';
+import 'package:flutter_application_1/screens/registration/widgets/custom_textfield.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 
@@ -79,7 +80,6 @@ class _ParentRegisterState extends State<ParentRegister> {
                 ),
               ),
             ),
-
             // Text fields for the needed details
             SingleChildScrollView(
               child: Padding(
@@ -88,191 +88,47 @@ class _ParentRegisterState extends State<ParentRegister> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        border: Border.all(
-                          color: const Color.fromARGB(255, 255, 255, 255),
-                        ),
-                        color: Colors.white, // White color
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0x3F000000),
-                            blurRadius: 4,
-                            offset: Offset(0, 4),
-                            spreadRadius: 0,
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        controller: fullNameController,
-                        decoration: const InputDecoration(
-                          labelText: 'Full Name',
-                          border: InputBorder.none,
-                        ),
-                      ),
+                    CustomTextField(
+                      textEditingController: fullNameController,
+                      label: 'Full Name',
+                      password: false,
                     ),
                     const SizedBox(height: 14.0),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        border: Border.all(
-                          color: const Color.fromARGB(255, 245, 250, 255),
-                        ),
-                        color: Colors.white, // White color
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0x3F000000),
-                            blurRadius: 4,
-                            offset: Offset(0, 4),
-                            spreadRadius: 0,
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        controller: userNameController,
-                        decoration: const InputDecoration(
-                          labelText: 'User Name',
-                          border: InputBorder.none,
-                        ),
-                      ),
+                    CustomTextField(
+                      textEditingController: userNameController,
+                      label: 'User Name',
+                      password: false,
                     ),
                     const SizedBox(height: 14.0),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        border: Border.all(
-                          color: const Color.fromARGB(255, 255, 255, 255),
-                        ),
-                        color: Colors.white, // White color
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0x3F000000),
-                            blurRadius: 4,
-                            offset: Offset(0, 4),
-                            spreadRadius: 0,
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        controller: emailController,
-                        decoration: const InputDecoration(
-                          labelText: 'Email',
-                          border: InputBorder.none,
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                      ),
+                    CustomTextField(
+                      textEditingController: emailController,
+                      label: 'Email',
+                      password: false,
                     ),
                     const SizedBox(height: 14.0),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        border: Border.all(
-                          color: const Color.fromARGB(255, 255, 255, 255),
-                        ),
-                        color: Colors.white, // White color
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0x3F000000),
-                            blurRadius: 4,
-                            offset: Offset(0, 4),
-                            spreadRadius: 0,
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        controller: contactNumberController,
-                        decoration: const InputDecoration(
-                          labelText: 'Contact Number',
-                          border: InputBorder.none,
-                        ),
-                      ),
+                    CustomTextField(
+                      textEditingController: contactNumberController,
+                      label: 'Contact Number',
+                      password: false,
                     ),
                     const SizedBox(height: 14.0),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        border: Border.all(
-                          color: const Color.fromARGB(255, 245, 250, 255),
-                        ),
-                        color: Colors.white, // White color
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0x3F000000),
-                            blurRadius: 4,
-                            offset: Offset(0, 4),
-                            spreadRadius: 0,
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        controller: addressController,
-                        decoration: const InputDecoration(
-                          labelText: 'Address',
-                          border: InputBorder.none,
-                        ),
-                      ),
+                    CustomTextField(
+                      textEditingController: addressController,
+                      label: 'Address',
+                      password: false,
                     ),
                     const SizedBox(height: 14.0),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        border: Border.all(
-                          color: const Color.fromARGB(255, 255, 255, 255),
-                        ),
-                        color: Colors.white, // White color
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0x3F000000),
-                            blurRadius: 4,
-                            offset: Offset(0, 4),
-                            spreadRadius: 0,
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        controller: passwordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Password',
-                          border: InputBorder.none,
-                        ),
-                      ),
+                    CustomTextField(
+                      textEditingController: passwordController,
+                      label: 'Password',
+                      password: true,
                     ),
                     const SizedBox(height: 14.0),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        border: Border.all(
-                          color: const Color.fromARGB(255, 255, 255, 255),
-                        ),
-                        color: Colors.white, // White color
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0x3F000000),
-                            blurRadius: 4,
-                            offset: Offset(0, 4),
-                            spreadRadius: 0,
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        controller: confirmPasswordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Confirm Password',
-                          border: InputBorder.none,
-                        ),
-                      ),
+                    CustomTextField(
+                      textEditingController: confirmPasswordController,
+                      label: 'Confirm Password',
+                      password: true,
                     ),
-
                     // For attaching files
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
