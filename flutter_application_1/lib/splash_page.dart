@@ -1,12 +1,21 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter_application_1/controller/httplogin_controller.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
 import 'package:flutter_application_1/screens/auth/login_profiles.dart';
+import 'package:flutter_application_1/screens/parent/dashboard.dart';
+import 'package:flutter_application_1/screens/therapist/ther_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_application_1/screens/auth/login_page.dart';
+
+enum LoginType {
+  parent,
+  therapist,
+  clinic,
+  notLoggedIn,
+}
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -18,7 +27,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   late Size mq;
   late SharedPreferences prefs;
-  bool loggedin = false;
+  LoginType login = LoginType.notLoggedIn;
   bool _logoVisible = false;
   bool _textVisible = false;
 
@@ -48,18 +57,33 @@ class _SplashScreenState extends State<SplashScreen> {
       ));
 
       // Navigate to the login page directly
-      if (!loggedin) {
+
+      if (login == LoginType.notLoggedIn) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (_) => const LoginAs(),
           ),
         );
-      } else {
+      } else if (login == LoginType.clinic) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (_) => const LoginProfile(),
+          ),
+        );
+      } else if (login == LoginType.therapist) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const TherapistProfile(),
+          ),
+        );
+      } else if (login == LoginType.parent) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const Dashboard(),
           ),
         );
       }
@@ -69,12 +93,32 @@ class _SplashScreenState extends State<SplashScreen> {
   Validator validator = Validator();
   void checkLogin() async {
     prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('clinicToken');
-    if (token != null) {
-      validator.validateToken(token).then((value) {
+    String? clinicToken = prefs.getString('clinicToken');
+    String? employeeToken = prefs.getString('employeeToken');
+    String? parentToken = prefs.getString('parentToken');
+    if (clinicToken != null) {
+      validator.validateToken(clinicToken).then((value) {
         setState(() {
-          loggedin = value;
+          login = LoginType.clinic;
         });
+      });
+      if (employeeToken != null) {
+        validator.validateToken(employeeToken).then((value) {
+          setState(() {
+            login = LoginType.therapist;
+          });
+        });
+      }
+    } else if (parentToken != null) {
+      validator.validateToken(parentToken).then((value) {
+        setState(() {
+          login = LoginType.parent;
+          print('Parent');
+        });
+      });
+    } else {
+      setState(() {
+        login = LoginType.notLoggedIn;
       });
     }
   }
