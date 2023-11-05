@@ -95,25 +95,37 @@ class _SplashScreenState extends State<SplashScreen> {
     String? clinicToken = prefs.getString('clinicToken');
     String? employeeToken = prefs.getString('employeeToken');
     String? parentToken = prefs.getString('parentToken');
-   // await prefs.remove('clinicToken');
+    // await prefs.remove('clinicToken');
+    // await prefs.remove('parentToken');
     if (clinicToken != null) {
       validator.validateToken(clinicToken).then((value) {
         setState(() {
-          login = LoginType.clinic;
+          if (value) {
+            login = LoginType.clinic;
+          } else {
+            login = LoginType.notLoggedIn;
+          }
         });
       });
       if (employeeToken != null) {
         validator.validateToken(employeeToken).then((value) {
           setState(() {
-            login = LoginType.therapist;
+            if (value) {
+              login = LoginType.therapist;
+            } else {
+              login = LoginType.notLoggedIn;
+            }
           });
         });
       }
     } else if (parentToken != null) {
       validator.validateToken(parentToken).then((value) {
         setState(() {
-          login = LoginType.parent;
-          //print('Parent');
+          if (value) {
+            login = LoginType.parent;
+          } else {
+            login = LoginType.notLoggedIn;
+          }
         });
       });
     } else {
