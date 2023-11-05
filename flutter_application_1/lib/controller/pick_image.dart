@@ -1,6 +1,6 @@
 import 'package:image_picker/image_picker.dart';
 
-class parentGovID {
+class ParentGovID {
   Future<XFile?> pickImageFromGallery() async {
     try {
       final imagePicker = ImagePicker();
@@ -28,7 +28,7 @@ class parentGovID {
   }
 }
 
-class therapistProID {
+class TherapistProID {
   Future<XFile?> pickImageFromGallery() async {
     try {
       final imagePicker = ImagePicker();
@@ -56,7 +56,7 @@ class therapistProID {
   }
 }
 
-class clinicGovFiles {
+class ClinicGovFiles {
   Future<XFile?> pickImageFromGallery() async {
     try {
       final imagePicker = ImagePicker();

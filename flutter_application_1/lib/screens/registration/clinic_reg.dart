@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/httpregister_controller.dart';
 import 'package:flutter_application_1/controller/pick_image.dart';
-import 'package:flutter_application_1/controller/register_controller.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
 import 'package:flutter_application_1/screens/registration/widgets/custom_textfield.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ClinicRegister extends StatefulWidget {
@@ -23,7 +21,7 @@ class _ClinicRegisterState extends State<ClinicRegister> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
-  clinicGovFiles therapistId = clinicGovFiles();
+  ClinicGovFiles therapistId = ClinicGovFiles();
   ClinicRegisterApi controller = ClinicRegisterApi();
   XFile? _attachFile;
 

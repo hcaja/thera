@@ -10,10 +10,10 @@ class HomeClinic extends StatefulWidget {
   const HomeClinic({super.key});
 
   @override
-  _HomeClinicState createState() => _HomeClinicState();
+  HomeClinicState createState() => HomeClinicState();
 }
 
-class _HomeClinicState extends State<HomeClinic> {
+class HomeClinicState extends State<HomeClinic> {
   int _currentIndex = 0;
 
   // Function to handle tab changes

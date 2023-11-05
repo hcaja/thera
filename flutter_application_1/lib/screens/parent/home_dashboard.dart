@@ -10,10 +10,10 @@ class HomeDashboard extends StatefulWidget {
   const HomeDashboard({super.key});
 
   @override
-  _HomeDashboardState createState() => _HomeDashboardState();
+  HomeDashboardState createState() => HomeDashboardState();
 }
 
-class _HomeDashboardState extends State<HomeDashboard> {
+class HomeDashboardState extends State<HomeDashboard> {
   int _currentIndex = 0;
 
   // Function to handle tab changes

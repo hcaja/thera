@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/pick_image.dart';
-import 'package:flutter_application_1/controller/register_controller.dart';
 import 'package:flutter_application_1/screens/registration/widgets/custom_textfield.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
@@ -23,8 +22,7 @@ class _ParentRegisterState extends State<ParentRegister> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
-  parentGovID parentId = parentGovID();
-  RegisterParentUser controller = RegisterParentUser();
+  ParentGovID parentId = ParentGovID();
   XFile? _attachFile;
 
   @override
@@ -180,18 +178,7 @@ class _ParentRegisterState extends State<ParentRegister> {
                                 borderRadius: BorderRadius.circular(25),
                               ),
                             ),
-                            onPressed: () {
-                              controller.registerParentUser(
-                                context,
-                                fullNameController.text,
-                                userNameController.text,
-                                emailController.text,
-                                contactNumberController.text,
-                                addressController.text,
-                                passwordController.text,
-                                confirmPasswordController.text,
-                              );
-                            },
+                            onPressed: () {},
                             child: const Text(
                               'Register',
                             ),

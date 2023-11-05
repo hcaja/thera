@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/pick_image.dart';
-import 'package:flutter_application_1/controller/register_controller.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 
@@ -24,8 +23,7 @@ class _TherapistRegisterState extends State<TherapistRegister> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
-  therapistProID therapistId = therapistProID();
-  RegisterTherapistUser controller = RegisterTherapistUser();
+  TherapistProID therapistId = TherapistProID();
   XFile? _attachFile;
 
   @override
@@ -170,18 +168,7 @@ class _TherapistRegisterState extends State<TherapistRegister> {
                               borderRadius: BorderRadius.circular(25),
                             ),
                           ),
-                          onPressed: () {
-                            controller.registerTherapistUser(
-                              context,
-                              fullNameController.text,
-                              userNameController.text,
-                              emailController.text,
-                              contactNumberController.text,
-                              addressController.text,
-                              passwordController.text,
-                              confirmPasswordController.text,
-                            );
-                          },
+                          onPressed: () {},
                           child: const Text(
                             'Register',
                           ),
