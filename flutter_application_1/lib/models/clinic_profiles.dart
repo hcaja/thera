@@ -11,6 +11,7 @@ class Employee {
   String age;
   String sex;
   String profilePicture;
+  String about;
 
   Employee({
     required this.id,
@@ -25,5 +26,6 @@ class Employee {
     required this.age,
     required this.sex,
     required this.profilePicture,
+    required this.about,
   });
 }
