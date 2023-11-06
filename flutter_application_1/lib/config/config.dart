@@ -1,6 +1,4 @@
-import 'dart:io';
-
-const baseUrl = 'http://192.168.137.35:5500';
+const baseUrl = 'https://therapeasebackend-production.up.railway.app';
 const clinicLoginUrl = '/clinic/login';
 const clinicRegisterUrl = '/clinic/register';
 const employeeLoginUrl = '/employees/login';
