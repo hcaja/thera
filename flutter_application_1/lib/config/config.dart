@@ -1,10 +1,4 @@
-<<<<<<< HEAD
 const baseUrl = 'https://therapeasebackend-production.up.railway.app';
-=======
-import 'dart:io';
-
-const baseUrl = 'http://192.168.137.35:5500';
->>>>>>> bbce4795c1a207148478345ac63db41b481da911
 const clinicLoginUrl = '/clinic/login';
 const clinicRegisterUrl = '/clinic/register';
 const employeeLoginUrl = '/employees/login';
