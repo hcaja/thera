@@ -20,7 +20,6 @@ class _DashboardState extends State<Dashboard> {
     controller.getClinics().then((value) {
       setState(() {
         clinics = value;
-        print(clinics);
       });
     });
     super.initState();
