@@ -1,9 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/map/map_page.dart';
+
+import '../../controller/httpclinic_controller.dart';
+import '../../models/clinic_profiles.dart';
 // import 'package:flutter_application_1/screens/parent/dashboard_tabbar.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
+
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  ClinicController controller = ClinicController();
+  List<Clinics> clinics = [];
+  @override
+  void initState() {
+    controller.getClinics().then((value) {
+      setState(() {
+        clinics = value;
+        print(clinics);
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +110,7 @@ class Dashboard extends StatelessWidget {
                       height: 220,
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.0),
-                        child: MapPage(),
+                        //child: MapPage(),
                       ),
                     ),
                   ),
@@ -166,22 +187,38 @@ class Dashboard extends StatelessWidget {
                           ),
                           child: Column(
                             children: [
-                              Image.asset(
-                                'asset/images/tiny.png',
-                                height: 150,
-                                // fit: BoxFit.contain,
+                              ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10)),
+                                child: SizedBox(
+                                  height: mq.height * 0.13,
+                                  width: mq.width * 0.5,
+                                  child: Image.network(
+                                    clinics[index].picture,
+                                    height: 150,
+                                    fit: BoxFit.fill,
+                                    // fit: BoxFit.contain,
+                                  ),
+                                ),
                               ),
                               const SizedBox(height: 10.0),
-                              const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('The Tiny House Clinic',
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  top: mq.height * 0.001,
+                                  left: 10,
+                                  right: 10,
+                                ),
+                                child: Text(clinics[index].name,
                                     // textAlign: TextAlign.left,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 16.0,
-                                        fontWeight: FontWeight.bold)),
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF006A5B))),
                               ),
                               Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: EdgeInsets.only(
+                                    top: mq.height * 0.001, left: 5),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: List.generate(5, (starIndex) {
@@ -197,16 +234,18 @@ class Dashboard extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 5.0),
-                              const Text(
-                                  'A center with all your needed services',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 12.0)),
+                              Text(
+                                clinics[index].bio,
+                                maxLines: (mq.height * 0.007).round(),
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(fontSize: 11.0),
+                              ),
                             ],
                           ),
                         ),
                       );
                     },
-                    childCount: 8,
+                    childCount: clinics.length,
                   ),
                 ),
               ],
