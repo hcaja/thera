@@ -8,9 +8,9 @@ import 'package:flutter_application_1/screens/auth/login_as.dart';
 import 'package:flutter_application_1/screens/auth/parent_login.dart';
 import 'package:flutter_application_1/screens/auth/therapist_login.dart';
 import 'package:flutter_application_1/screens/clinic/clinic_gallery.dart';
-import 'package:flutter_application_1/screens/parent/home_dashboard.dart';
-import 'package:flutter_application_1/screens/parent/parent_profile.dart';
-import 'package:flutter_application_1/screens/parent/ther_dash.dart';
+import 'package:flutter_application_1/screens/parent/screens/home_dashboard.dart';
+import 'package:flutter_application_1/screens/parent/screens/home_parent_profile.dart';
+import 'package:flutter_application_1/screens/parent/widgets/ther_dash.dart';
 import 'package:flutter_application_1/screens/registration/clinic_reg.dart';
 import 'package:flutter_application_1/screens/clinic/clinic_review.dart';
 import 'package:flutter_application_1/screens/auth/login_page.dart';
@@ -29,7 +29,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -63,7 +62,7 @@ class MyApp extends StatelessWidget {
         '/chatscreen': (context) => const ChatScreen(),
         '/mappage': (context) => const MapPage(),
         '/parentprofile': (context) =>
-            const ParentProfile(), // Set RegistrationPage as a secondary route
+            const HomeParentDashboard(), // Set RegistrationPage as a secondary route
       },
     );
   }

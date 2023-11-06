@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/auth/connection.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
-import 'package:flutter_application_1/screens/parent/custom_dash.dart';
-import 'package:flutter_application_1/screens/parent/dashboard.dart';
-import 'package:flutter_application_1/screens/parent/material_dash.dart';
-import 'package:flutter_application_1/screens/parent/ther_dash.dart';
+import 'package:flutter_application_1/screens/parent/parent_journals.dart';
+import 'package:flutter_application_1/screens/parent/parent_materials.dart';
 
-class HomeDashboard extends StatefulWidget {
-  const HomeDashboard({super.key});
+import '../parent_profile.dart';
+import '../profile_parent_tabbar.dart';
+
+class HomeParentDashboard extends StatefulWidget {
+  const HomeParentDashboard({super.key});
 
   @override
-  HomeDashboardState createState() => HomeDashboardState();
+  HomeParentDashboardState createState() => HomeParentDashboardState();
 }
 
-class HomeDashboardState extends State<HomeDashboard> {
+class HomeParentDashboardState extends State<HomeParentDashboard> {
   int _currentIndex = 0;
 
   // Function to handle tab changes
@@ -30,7 +31,7 @@ class HomeDashboardState extends State<HomeDashboard> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Dashboard',
+          'Profile',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF006A5B),
@@ -93,6 +94,7 @@ class HomeDashboardState extends State<HomeDashboard> {
               ),
               onTap: () {
                 // Handle dashboard action here
+                Navigator.of(context).pushNamed('/homedashboard');
               },
             ),
             ListTile(
@@ -226,7 +228,7 @@ class HomeDashboardState extends State<HomeDashboard> {
               const SizedBox(height: 30),
 
               /// Custom Tab bar
-              DashTab(
+              ProfileDashTab(
                 selectedIndex: _currentIndex,
                 onTabSelected: _onTabSelected,
               ),
@@ -236,9 +238,9 @@ class HomeDashboardState extends State<HomeDashboard> {
                 child: IndexedStack(
                   index: _currentIndex,
                   children: const [
-                    Dashboard(),
-                    TherapistsDashboard(),
-                    MaterialsTab(),
+                    ParentProfile(),
+                    ParentMaterials(),
+                    ParentJournals(),
                   ],
                 ),
               )

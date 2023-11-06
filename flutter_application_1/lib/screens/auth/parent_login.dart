@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/httplogin_controller.dart';
-import 'package:flutter_application_1/screens/parent/home_dashboard.dart';
+import 'package:flutter_application_1/screens/parent/screens/home_dashboard.dart';
 import 'package:flutter_application_1/screens/widgets/loading_button.dart';
-
-import '../parent/dashboard.dart';
 
 class ParentLogin extends StatefulWidget {
   const ParentLogin({Key? key}) : super(key: key);
