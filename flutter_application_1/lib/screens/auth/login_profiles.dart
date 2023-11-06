@@ -222,9 +222,7 @@ class _LoginProfileState extends State<LoginProfile> {
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                               child: Image.network(
-                                                profiles![i].profilePicture,
-                                                fit: BoxFit.cover,
-                                              ),
+                                                  profiles![i].profilePicture),
                                             ),
                                           ),
                                           const SizedBox(
