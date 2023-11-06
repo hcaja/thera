@@ -20,7 +20,6 @@ class _DashboardState extends State<Dashboard> {
     controller.getClinics().then((value) {
       setState(() {
         clinics = value;
-        print(clinics);
       });
     });
     super.initState();
@@ -110,7 +109,7 @@ class _DashboardState extends State<Dashboard> {
                       height: 220,
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.0),
-                        //child: MapPage(),
+                        child: MapPage(),
                       ),
                     ),
                   ),
