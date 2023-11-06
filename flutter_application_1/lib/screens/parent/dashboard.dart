@@ -205,7 +205,10 @@ class _DashboardState extends State<Dashboard> {
                               const SizedBox(height: 10.0),
                               Padding(
                                 padding: EdgeInsets.only(
-                                    top: mq.height * 0.001, left: 1),
+                                  top: mq.height * 0.001,
+                                  left: 10,
+                                  right: 10,
+                                ),
                                 child: Text(clinics[index].name,
                                     // textAlign: TextAlign.left,
                                     style: const TextStyle(
