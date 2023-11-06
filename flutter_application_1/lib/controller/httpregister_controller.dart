@@ -22,7 +22,6 @@ class ClinicRegisterApi {
       "username": userName,
       "email": email,
       "password": password,
-      "profile": 1
     };
     var response = await http.post(Uri.parse(baseUrl + clinicRegisterUrl),
         headers: {"Content-Type": "application/json"},

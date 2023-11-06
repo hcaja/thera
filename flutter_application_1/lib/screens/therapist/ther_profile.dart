@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/httptherapist_controller.dart';
 import 'package:flutter_application_1/models/clinic_profiles.dart';
 import 'package:flutter_application_1/screens/therapist/ther_tab.dart';
-import 'package:flutter_application_1/screens/widgets/app_drawer.dart';
+import 'package:flutter_application_1/screens/widgets/app_drawer_therapist.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import '../../models/services_offered.dart';
@@ -214,7 +214,7 @@ class _TherapistProfileState extends State<TherapistProfile> {
       ),
 
       // drawer or sidebar of hamburger menu
-      drawer: const AppDrawer(),
+      drawer: const AppDrawerTherapist(),
 
       // body
       body: !isLoading

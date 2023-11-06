@@ -29,3 +29,42 @@ class Employee {
     required this.about,
   });
 }
+
+class Clinics {
+  int id;
+  String email;
+  String username;
+  String password;
+  String bio;
+  String picture;
+  String name;
+  Clinics({
+    required this.id,
+    required this.email,
+    required this.username,
+    required this.password,
+    required this.bio,
+    required this.picture,
+    required this.name,
+  });
+
+  factory Clinics.fromJson(Map<String, dynamic> json) => Clinics(
+        id: json["ID"],
+        email: json["EMAIL"],
+        username: json["USERNAME"],
+        password: json["PASSWORD"],
+        bio: json["BIO"],
+        picture: json["PICTURE"],
+        name: json["NAME"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "ID": id,
+        "EMAIL": email,
+        "USERNAME": username,
+        "PASSWORD": password,
+        "BIO": bio,
+        "PICTURE": picture,
+        "NAME": name,
+      };
+}
