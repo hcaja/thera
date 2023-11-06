@@ -109,7 +109,7 @@ class _DashboardState extends State<Dashboard> {
                       height: 220,
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.0),
-                        //child: MapPage(),
+                        child: MapPage(),
                       ),
                     ),
                   ),

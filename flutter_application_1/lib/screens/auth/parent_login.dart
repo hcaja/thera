@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/httplogin_controller.dart';
+import 'package:flutter_application_1/screens/parent/home_dashboard.dart';
 import 'package:flutter_application_1/screens/widgets/loading_button.dart';
 
 import '../parent/dashboard.dart';
@@ -153,7 +154,7 @@ class _ParentLoginState extends State<ParentLogin> {
                               if (value) {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => const Dashboard(),
+                                    builder: (context) => const HomeDashboard(),
                                   ),
                                 );
                               }
