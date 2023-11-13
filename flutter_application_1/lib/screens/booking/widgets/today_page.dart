@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/http_bookingcontroller.dart';
-import 'package:flutter_application_1/screens/booking/widgets/events_calendar.dart';
+import 'package:flutter_application_1/screens/booking/screens/events_calendar.dart';
 import 'package:flutter_application_1/screens/booking/widgets/schedule_item.dart';
 
 class TodayPage extends StatefulWidget {

@@ -54,8 +54,8 @@ class TimeData {
 
   factory TimeData.fromJson(Map<String, dynamic> json) {
     return TimeData(
-      id: json['id'],
-      clinic: json['clinic'],
+      id: json['ID'],
+      clinic: json['CLINIC'],
       date: DateTime.parse(json['DATE']),
       startTime: _parseTimeOfDay(json['START_TIME']),
       endTime: _parseTimeOfDay(json['END_TIME']),

@@ -12,7 +12,7 @@ import '../config/config.dart';
 class BookingController {
   late SharedPreferences prefs;
 
-  Future<bool> saveTimeData(TimeData timeData) async {
+  Future<TimeData> saveTimeData(TimeData timeData) async {
     prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('clinicToken');
     Map<String, dynamic> payload = JwtDecoder.decode(token!);
@@ -32,8 +32,9 @@ class BookingController {
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
+      final Map<String, dynamic> data = json.decode(response.body);
 
-      return true;
+      return TimeData.fromJson(data);
     } else {
       Fluttertoast.showToast(
           msg: response.body,
@@ -43,8 +44,16 @@ class BookingController {
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
-      return false;
+      return TimeData.empty();
     }
+  }
+
+  Future<void> removeTimeData(TimeData timeData) async {
+    var response = await http.delete(
+        Uri.parse('$baseUrl$removeTimeUrl${timeData.id}'),
+        headers: {"Content-Type": "application/json"});
+
+    print(response.reasonPhrase);
   }
 
   Future<Map<DateTime, List<TimeData>>> getTimeData() async {

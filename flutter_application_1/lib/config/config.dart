@@ -14,4 +14,5 @@ const saveServicesUrl = '/employees/save-services/';
 const saveAboutUrl = '/employees/save-about/';
 const getClinicsUrl = '/clinic/get-clinics/';
 const addTimeUrl = '/booking/add-timeslot';
+const removeTimeUrl = '/booking/remove-timeslot/';
 const getTimeDataUrl = '/booking/get-timeslots/';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/http_bookingcontroller.dart';
 import 'package:flutter_application_1/models/booking.dart';
-import 'package:flutter_application_1/screens/booking/widgets/add_booking.dart';
+import 'package:flutter_application_1/screens/booking/screens/add_booking.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class TableEventsExample extends StatefulWidget {
@@ -215,6 +215,7 @@ class TableEventsExampleState extends State<TableEventsExample> {
                           return Dismissible(
                             onDismissed: (direction) {
                               setState(() {
+                                bookingController.removeTimeData(value[index]);
                                 value.removeAt(index);
                               });
                             },

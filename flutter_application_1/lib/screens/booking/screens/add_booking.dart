@@ -166,7 +166,8 @@ class _AddBookingState extends State<AddBooking> {
                           if (td.endTime != null && td.startTime != null) {
                             isloading = true;
                             bookingController.saveTimeData(td).then((value) {
-                              if (value) {
+                              if (value.id != null) {
+                                td.id = value.id;
                                 widget.onResult(td);
                                 Navigator.pop(context);
                                 isloading = false;
