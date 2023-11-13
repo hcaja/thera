@@ -34,6 +34,8 @@ dependencies:
   jwt_decoder:
   fluttertoast: ^8.2.2
   multi_select_flutter: ^4.1.3
+  table_calendar: ^3.0.9
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_lints: ^2.0.0

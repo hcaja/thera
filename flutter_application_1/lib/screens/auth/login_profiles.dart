@@ -71,7 +71,8 @@ class _LoginProfileState extends State<LoginProfile> {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: Image.network(profile.profilePicture),
+                            child: Image.network(profile.profilePicture,
+                                fit: BoxFit.cover),
                           ),
                         ),
                         const SizedBox(
