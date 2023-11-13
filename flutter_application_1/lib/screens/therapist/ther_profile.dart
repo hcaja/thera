@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/httptherapist_controller.dart';
 import 'package:flutter_application_1/models/clinic_profiles.dart';
+import 'package:flutter_application_1/screens/booking/screens/booking.dart';
 import 'package:flutter_application_1/screens/therapist/ther_tab.dart';
 import 'package:flutter_application_1/screens/widgets/app_drawer_therapist.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
@@ -218,7 +219,7 @@ class _TherapistProfileState extends State<TherapistProfile> {
 
       // body
       body: !isLoading
-          ? const Center(child: CircularProgressIndicator.adaptive())
+          ? const Center(child: CircularProgressIndicator())
           : Builder(
               builder: (context) => Stack(
                 children: [
@@ -530,7 +531,14 @@ class _TherapistProfileState extends State<TherapistProfile> {
                         color:
                             const Color(0xFF006A5B), // Set the background color
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const BookingScreen(),
+                              ),
+                            );
+                          },
                           child: SizedBox(
                             width: 60, // Adjust the size of the circular FAB
                             height: 60, // Adjust the size of the circular FAB
