@@ -11,7 +11,6 @@ class ClinicController {
         headers: {"Content-Type": "application/json"});
 
     final List<dynamic> jsonData = json.decode(response.body);
-    print(response.body);
     List<Clinics> objects = jsonData
         .map((json) => Clinics(
               id: json["ID"],
