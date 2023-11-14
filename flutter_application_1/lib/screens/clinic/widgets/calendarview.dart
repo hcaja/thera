@@ -151,113 +151,118 @@ class ClientCalendarState extends State<ClientCalendar> {
             // - Services offered
             // - Prices
 
-            Positioned(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: mq.height * 0.07,
-                  child: Center(
-                      child: Text(
-                    widget.clinic!.name,
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      fontSize: 20,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w900,
-                    ),
-                  )),
-                ),
-                SizedBox(
-                  height: mq.height * 0.02,
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Text(
-                    'Booking Process',
-                    style: TextStyle(
-                      color: Color(0xFF006A5B),
-                      fontSize: 20,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w500,
-                    ),
+            isLoading
+                ? Positioned(
+                    child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: mq.height * 0.07,
+                        child: Center(
+                            child: Text(
+                          widget.clinic!.name,
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            fontSize: 20,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w900,
+                          ),
+                        )),
+                      ),
+                      SizedBox(
+                        height: mq.height * 0.02,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Text(
+                          'Booking Process',
+                          style: TextStyle(
+                            color: Color(0xFF006A5B),
+                            fontSize: 20,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      TableCalendar<TimeData>(
+                        firstDay: kFirstDay,
+                        lastDay: kLastDay,
+                        focusedDay: _focusedDay,
+                        selectedDayPredicate: (day) =>
+                            isSameDay(_selectedDay, day),
+                        rangeStartDay: _rangeStart,
+                        rangeEndDay: _rangeEnd,
+                        calendarFormat: _calendarFormat,
+                        rangeSelectionMode: _rangeSelectionMode,
+                        eventLoader: (day) {
+                          return _getEventsForDay(day);
+                        },
+                        startingDayOfWeek: StartingDayOfWeek.sunday,
+                        calendarStyle: CalendarStyle(
+                          todayDecoration: BoxDecoration(
+                              color: const Color(0xFF006A5B).withOpacity(0.5),
+                              shape: BoxShape.circle),
+                          selectedDecoration: const BoxDecoration(
+                              color: Color(0xFF006A5B), shape: BoxShape.circle),
+                          outsideDaysVisible: false,
+                        ),
+                        onDaySelected: _onDaySelected,
+                        onRangeSelected: _onRangeSelected,
+                        onFormatChanged: (format) {
+                          if (_calendarFormat != format) {
+                            setState(() {
+                              _calendarFormat = format;
+                            });
+                          }
+                        },
+                        onPageChanged: (focusedDay) {
+                          _focusedDay = focusedDay;
+                        },
+                      ),
+                      const SizedBox(height: 8.0),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 15, bottom: 10),
+                        child: Text('Available Timeslot:'),
+                      ),
+                      Container(
+                        height: mq.height * 0.06,
+                        child: ValueListenableBuilder<List<TimeData>>(
+                          valueListenable: _selectedEvents,
+                          builder: (context, value, _) {
+                            return ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: value.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 12.0,
+                                      vertical: 4.0,
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 10),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFF006A5B),
+                                      borderRadius: BorderRadius.circular(12.0),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        ' ${value[index].startTime!.format(context)} - ${value[index].endTime!.format(context)}',
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  );
+                                });
+                          },
+                        ),
+                      ),
+                    ],
+                  ))
+                : const Center(
+                    child: CircularProgressIndicator(),
                   ),
-                ),
-                TableCalendar<TimeData>(
-                  firstDay: kFirstDay,
-                  lastDay: kLastDay,
-                  focusedDay: _focusedDay,
-                  selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                  rangeStartDay: _rangeStart,
-                  rangeEndDay: _rangeEnd,
-                  calendarFormat: _calendarFormat,
-                  rangeSelectionMode: _rangeSelectionMode,
-                  eventLoader: (day) {
-                    return _getEventsForDay(day);
-                  },
-                  startingDayOfWeek: StartingDayOfWeek.sunday,
-                  calendarStyle: CalendarStyle(
-                    todayDecoration: BoxDecoration(
-                        color: const Color(0xFF006A5B).withOpacity(0.5),
-                        shape: BoxShape.circle),
-                    selectedDecoration: const BoxDecoration(
-                        color: Color(0xFF006A5B), shape: BoxShape.circle),
-                    outsideDaysVisible: false,
-                  ),
-                  onDaySelected: _onDaySelected,
-                  onRangeSelected: _onRangeSelected,
-                  onFormatChanged: (format) {
-                    if (_calendarFormat != format) {
-                      setState(() {
-                        _calendarFormat = format;
-                      });
-                    }
-                  },
-                  onPageChanged: (focusedDay) {
-                    _focusedDay = focusedDay;
-                  },
-                ),
-                const SizedBox(height: 8.0),
-                const Padding(
-                  padding: EdgeInsets.only(left: 15, bottom: 10),
-                  child: Text('Available Timeslot:'),
-                ),
-                Container(
-                  height: mq.height * 0.06,
-                  child: ValueListenableBuilder<List<TimeData>>(
-                    valueListenable: _selectedEvents,
-                    builder: (context, value, _) {
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: value.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 12.0,
-                                vertical: 4.0,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 10),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF006A5B),
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  ' ${value[index].startTime!.format(context)} - ${value[index].endTime!.format(context)}',
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                            );
-                          });
-                    },
-                  ),
-                ),
-              ],
-            )),
           ],
         ),
       ),
