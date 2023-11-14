@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/clinic/screens/home_clinic.dart';
 import 'package:flutter_application_1/screens/map/map_page.dart';
 
 import '../../../controller/httpclinic_controller.dart';
@@ -169,77 +170,90 @@ class _DashboardState extends State<Dashboard> {
                   ),
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 2,
-                                blurRadius: 5,
-                                offset: const Offset(0, 3),
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => HomeClinic(
+                                clinics: clinics[index],
+                                isEditable: false,
                               ),
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              ClipRRect(
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    topRight: Radius.circular(10)),
-                                child: SizedBox(
-                                  height: mq.height * 0.13,
-                                  width: mq.width * 0.5,
-                                  child: Image.network(
-                                    clinics[index].picture,
-                                    height: 150,
-                                    fit: BoxFit.fill,
-                                    // fit: BoxFit.contain,
+                            ),
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10)),
+                                  child: SizedBox(
+                                    height: mq.height * 0.13,
+                                    width: mq.width * 0.5,
+                                    child: Image.network(
+                                      clinics[index].picture,
+                                      height: 150,
+                                      fit: BoxFit.fill,
+                                      // fit: BoxFit.contain,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 10.0),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  top: mq.height * 0.001,
-                                  left: 10,
-                                  right: 10,
+                                const SizedBox(height: 10.0),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    top: mq.height * 0.001,
+                                    left: 10,
+                                    right: 10,
+                                  ),
+                                  child: Text(clinics[index].name,
+                                      // textAlign: TextAlign.left,
+                                      style: const TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF006A5B))),
                                 ),
-                                child: Text(clinics[index].name,
-                                    // textAlign: TextAlign.left,
-                                    style: const TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF006A5B))),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    top: mq.height * 0.001, left: 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: List.generate(5, (starIndex) {
-                                    return Icon(
-                                      Icons.star,
-                                      color: starIndex < 5
-                                          ? Colors.yellow
-                                          : Colors.grey,
-                                      // Adjust star color based on the rating
-                                      size: 15,
-                                    );
-                                  }),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      top: mq.height * 0.001, left: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: List.generate(5, (starIndex) {
+                                      return Icon(
+                                        Icons.star,
+                                        color: starIndex < 5
+                                            ? Colors.yellow
+                                            : Colors.grey,
+                                        // Adjust star color based on the rating
+                                        size: 15,
+                                      );
+                                    }),
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 5.0),
-                              Text(
-                                clinics[index].bio,
-                                maxLines: (mq.height * 0.007).round(),
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(fontSize: 11.0),
-                              ),
-                            ],
+                                const SizedBox(height: 5.0),
+                                Text(
+                                  clinics[index].bio,
+                                  maxLines: (mq.height * 0.007).round(),
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(fontSize: 11.0),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );
