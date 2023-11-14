@@ -160,7 +160,6 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ),
 
-          // MADE IN DAVAO WITH ❣️ Animation
           Positioned(
             bottom: mq.height *
                 (_textVisible ? 0.09 : 0.5), // Adjust this value as needed

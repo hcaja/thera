@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_application_1/models/booking.dart';
 import 'package:flutter_application_1/models/clinic_profiles.dart';
 import 'package:flutter_application_1/models/services_offered.dart';
 import 'package:http/http.dart' as http;
@@ -109,5 +110,40 @@ class ClinicController {
     } else {
       return false;
     }
+  }
+
+  Future<Map<DateTime, List<TimeData>>> getTimeData(int id) async {
+    var response = await http.get(Uri.parse("$baseUrl$getTimeDataUrl$id"),
+        headers: {"Content-Type": "application/json"});
+
+    final List<dynamic> responseData = json.decode(response.body);
+
+    List<DailyTimeSlot> dailyTimeSlots = [];
+
+    for (var data in responseData) {
+      final DateTime date = DateTime.parse(data['DATE']);
+
+      final List<TimeData> timeslot = List<TimeData>.from(
+        data['TIMESLOT'].map((slot) => TimeData.fromJson(slot)),
+      );
+
+      dailyTimeSlots.add(DailyTimeSlot(date: date, timeslot: timeslot));
+    }
+
+    Map<DateTime, List<TimeData>> combinedMap = {};
+
+    for (var dailyTimeSlot in dailyTimeSlots) {
+      Map<DateTime, List<TimeData>> timeSlotMap = dailyTimeSlot.toMap();
+
+      // Merge the current timeSlotMap into the combinedMap
+      timeSlotMap.forEach((date, timeslot) {
+        if (combinedMap.containsKey(date)) {
+          combinedMap[date]!.addAll(timeslot);
+        } else {
+          combinedMap[date] = List.from(timeslot);
+        }
+      });
+    }
+    return combinedMap;
   }
 }
