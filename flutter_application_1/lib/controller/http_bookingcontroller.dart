@@ -49,11 +49,8 @@ class BookingController {
   }
 
   Future<void> removeTimeData(TimeData timeData) async {
-    var response = await http.delete(
-        Uri.parse('$baseUrl$removeTimeUrl${timeData.id}'),
+    await http.delete(Uri.parse('$baseUrl$removeTimeUrl${timeData.id}'),
         headers: {"Content-Type": "application/json"});
-
-    print(response.reasonPhrase);
   }
 
   Future<Map<DateTime, List<TimeData>>> getTimeData() async {
@@ -96,4 +93,5 @@ class BookingController {
     }
     return combinedMap;
   }
+  
 }

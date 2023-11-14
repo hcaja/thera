@@ -1,9 +1,192 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/httpclinic_controller.dart';
+import 'package:flutter_application_1/models/clinic_profiles.dart';
+import 'package:flutter_application_1/models/services_offered.dart';
 import 'package:flutter_application_1/screens/auth/connection.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
+import 'package:flutter_application_1/screens/booking/screens/events_calendar.dart';
+import 'package:flutter_application_1/screens/clinic/screens/parent_booking.dart';
+import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
+import 'package:multi_select_flutter/util/multi_select_item.dart';
 
-class ClinicProfile extends StatelessWidget {
-  const ClinicProfile({Key? key}) : super(key: key);
+class ClinicProfile extends StatefulWidget {
+  const ClinicProfile(
+      {Key? key, required this.clinics, required this.isEditable})
+      : super(key: key);
+  final Clinics? clinics;
+  final bool isEditable;
+
+  @override
+  State<ClinicProfile> createState() => _ClinicProfileState();
+}
+
+class _ClinicProfileState extends State<ClinicProfile> {
+  late Clinics? clinic;
+  ClinicController controller = ClinicController();
+  TextEditingController aboutController = TextEditingController();
+  List<Services> servicesOffered = [];
+  List<Services> selectedServicesOffered = [];
+  bool isLoading = false;
+
+  void _openAnimatedDialog(BuildContext context, String title, String label) {
+    showGeneralDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierLabel: '',
+        transitionDuration: const Duration(milliseconds: 200),
+        pageBuilder: (context, animation1, animation2) {
+          return Container();
+        },
+        transitionBuilder: (context, a1, a2, widget) {
+          return ScaleTransition(
+            scale: Tween<double>(begin: 0.5, end: 1.0).animate(a1),
+            child: FadeTransition(
+              opacity: Tween<double>(begin: 0.5, end: 1.0).animate(a1),
+              child: AlertDialog(
+                title: SizedBox(
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                          fontSize: 13, fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                )),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      height: 50,
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          color: const Color.fromARGB(255, 245, 250, 255),
+                        ),
+                        color: Colors.white, // White color
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0x3F000000),
+                            blurRadius: 4,
+                            offset: Offset(0, 4),
+                            spreadRadius: 0,
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        controller: aboutController,
+                        obscureText: false,
+                        textInputAction: TextInputAction.done,
+                        onSubmitted: (value) {
+                          controller.saveabout(
+                              clinic!.id, aboutController.text);
+                          setState(() {
+                            clinic!.bio = aboutController.text;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          hintText: label,
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                backgroundColor: Colors.white,
+                shape: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+  void _openAnimatedDialogService(
+      BuildContext context, List<Services> list, List<Services> selectedList) {
+    showGeneralDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierLabel: '',
+        transitionDuration: const Duration(milliseconds: 200),
+        pageBuilder: (context, animation1, animation2) {
+          return Container();
+        },
+        transitionBuilder: (context, a1, a2, widget) {
+          return ScaleTransition(
+            scale: Tween<double>(begin: 0.5, end: 1.0).animate(a1),
+            child: FadeTransition(
+              opacity: Tween<double>(begin: 0.5, end: 1.0).animate(a1),
+              child: AlertDialog(
+                title: const SizedBox(
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Select Services Offered',
+                      style:
+                          TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                )),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    MultiSelectDialogField(
+                      items:
+                          list.map((e) => MultiSelectItem(e, e.desc)).toList(),
+                      initialValue: selectedList,
+                      onConfirm: (newSelected) {
+                        setState(() {
+                          selectedServicesOffered = newSelected;
+                          controller.saveServices(clinic!.id, newSelected);
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                backgroundColor: Colors.white,
+                shape: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+  @override
+  void initState() {
+    clinic = widget.clinics;
+    controller.getServices().then((value) {
+      setState(() {
+        servicesOffered = value;
+        controller.getSelectedServices(clinic!.id).then((value) {
+          setState(() {
+            for (var selected in value) {
+              for (var lookup in servicesOffered) {
+                if (lookup.id == selected.id) {
+                  selectedServicesOffered.add(lookup);
+                }
+              }
+            }
+            isLoading = true;
+          });
+        });
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -202,8 +385,8 @@ class ClinicProfile extends StatelessWidget {
             Positioned(
               child: ListView(
                 children: <Widget>[
-                  // Padding added before the CustomTabBar to avoid overlap
                   const SizedBox(height: 60),
+
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -217,20 +400,19 @@ class ClinicProfile extends StatelessWidget {
                           ),
                           shape: BoxShape.circle,
                         ),
-                        child: const CircleAvatar(
+                        child: CircleAvatar(
                           radius: 70,
-                          backgroundImage:
-                              AssetImage('asset/images/profile.jpg'),
+                          backgroundImage: NetworkImage(clinic!.picture),
                         ),
                       ),
 
                       // Spacing between profile picture and clinic name
                       const SizedBox(height: 5),
 
-                      // Clinic Name
-                      const Text(
-                        'The Tiny House',
-                        style: TextStyle(
+                      // Therapist Name
+                      Text(
+                        clinic!.name,
+                        style: const TextStyle(
                           color: Color(0xFF67AFA5),
                           fontSize: 20,
                           fontFamily: 'Poppins',
@@ -242,23 +424,45 @@ class ClinicProfile extends StatelessWidget {
                       const SizedBox(height: 10),
 
                       // About Us
-                      const Text(
-                        'ABOUT US',
-                        style: TextStyle(
-                          color: Color(0xFF999999),
-                          fontSize: 16,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w900,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'ABOUT',
+                            style: TextStyle(
+                              color: Color(0xFF999999),
+                              fontSize: 16,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          widget.isEditable
+                              ? GestureDetector(
+                                  onTap: () {
+                                    _openAnimatedDialog(
+                                      context,
+                                      'Edit About',
+                                      '...',
+                                    );
+                                  },
+                                  child: const Icon(
+                                    Icons.edit,
+                                    size: 16,
+                                    color: Color(0xFF999999),
+                                  ),
+                                )
+                              : const SizedBox(),
+                        ],
                       ),
 
                       // Spacing between 'About Us' and its content
                       const SizedBox(height: 5),
 
                       // About Us content
-                      const Text(
-                        'A center with all your needed services, The Tiny House Therapy and Learning Center',
-                        style: TextStyle(
+
+                      Text(
+                        clinic!.bio,
+                        style: const TextStyle(
                           height: 1.3,
                           fontSize: 15.0,
                           fontWeight: FontWeight.bold,
@@ -272,92 +476,87 @@ class ClinicProfile extends StatelessWidget {
                   const SizedBox(height: 15),
 
                   // Services Offered
-                  const Column(
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        'SERVICES OFFERED',
-                        style: TextStyle(
-                          color: Color(0xFF999999),
-                          fontSize: 16,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w900,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'SERVICES OFFERED',
+                            style: TextStyle(
+                              color: Color(0xFF999999),
+                              fontSize: 16,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          widget.isEditable
+                              ? GestureDetector(
+                                  onTap: () {
+                                    _openAnimatedDialogService(
+                                        context,
+                                        servicesOffered,
+                                        selectedServicesOffered);
+                                  },
+                                  child: const Icon(
+                                    Icons.edit,
+                                    size: 16,
+                                    color: Color(0xFF999999),
+                                  ),
+                                )
+                              : const SizedBox(),
+                        ],
                       ),
                     ],
                   ),
 
                   // Spacing between "Services Offered" and its content
                   const SizedBox(height: 5),
-                  const SizedBox(
+
+                  SizedBox(
                     // I've removed the height constraint so the SizedBox will take as much space as its child needs.
                     child: Center(
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 30,
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           // Center the items in the row
                           children: [
                             Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment
                                   .start, // Adjusted the spacing for the column
                               children: [
-                                Text('• Occupational Therapy',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 13.0)),
-                                SizedBox(
-                                    height: 5), // For spacing between items
-                                Text('• Physical Therapy',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 13.0)),
-                                SizedBox(
-                                    height: 5), // For spacing between items
-                                Text('• Cognitive Therapy',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 13.0)),
-                                SizedBox(
-                                    height: 5), // For spacing between items
-                                Text('• Speech Therapy',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.0)),
+                                for (int i = 0;
+                                    i < selectedServicesOffered.length;
+                                    i++)
+                                  if (i.isEven)
+                                    Text('• ${selectedServicesOffered[i].desc}',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12.0)),
+                                const SizedBox(height: 5),
                               ],
                             ),
-                            SizedBox(
-                                width:
-                                    20), // Optional: Added this for spacing between two columns
                             Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment
                                   .start, // Adjusted the spacing for the column
                               children: [
-                                Text('• Developmental Delays',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 13.0)),
-                                SizedBox(
-                                    height: 5), // For spacing between items
-                                Text('• ADHD',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 13.0)),
-                                SizedBox(
-                                    height: 5), // For spacing between items
-                                Text('• Learning Disability',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 13.0)),
-                                SizedBox(
-                                    height: 5), // For spacing between items
-                                Text('• Oral Motor Issues',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 13.0)),
+                                for (int i = 0;
+                                    i < selectedServicesOffered.length;
+                                    i++)
+                                  if (i.isOdd)
+                                    Text('• ${selectedServicesOffered[i].desc}',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12.0)),
+                                const SizedBox(height: 5),
                               ],
                             ),
                           ],
@@ -370,18 +569,30 @@ class ClinicProfile extends StatelessWidget {
                   const SizedBox(height: 20),
 
                   // Prices
-                  const Column(
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        'PRICES',
-                        style: TextStyle(
-                          color: Color(0xFF999999),
-                          fontSize: 16,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w900,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'PRICES',
+                            style: TextStyle(
+                              color: Color(0xFF999999),
+                              fontSize: 16,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          widget.isEditable
+                              ? const Icon(
+                                  Icons.edit,
+                                  size: 16,
+                                  color: Color(0xFF999999),
+                                )
+                              : const SizedBox(),
+                        ],
                       ),
                     ],
                   ),
@@ -423,7 +634,7 @@ class ClinicProfile extends StatelessWidget {
                       ),
                       // Add other widgets to the Column if needed
                     ],
-                  ),
+                  )
                 ],
               ),
             ),
@@ -436,7 +647,16 @@ class ClinicProfile extends StatelessWidget {
                 child: Material(
                   color: const Color(0xFF006A5B), // Set the background color
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ParentBooking(
+                            clinics: clinic,
+                          ),
+                        ),
+                      );
+                    },
                     child: SizedBox(
                       width: 60, // Adjust the size of the circular FAB
                       height: 60, // Adjust the size of the circular FAB

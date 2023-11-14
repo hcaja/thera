@@ -1,28 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/auth/connection.dart';
-import 'package:flutter_application_1/screens/auth/login_as.dart';
-import 'package:flutter_application_1/screens/clinic/clinic_gallery.dart';
-import 'package:flutter_application_1/screens/clinic/clinic_profile.dart';
-import 'package:flutter_application_1/screens/clinic/clinic_review.dart';
-import 'package:flutter_application_1/screens/clinic/dash_tab_clinic.dart';
+import 'package:flutter_application_1/models/clinic_profiles.dart';
+import 'package:flutter_application_1/screens/clinic/widgets/calendarview.dart';
 
-class HomeClinic extends StatefulWidget {
-  const HomeClinic({super.key});
-
+class ParentBooking extends StatefulWidget {
+  const ParentBooking({super.key, required this.clinics});
+  final Clinics? clinics;
   @override
-  HomeClinicState createState() => HomeClinicState();
+  State<ParentBooking> createState() => _ParentBookingState();
 }
 
-class HomeClinicState extends State<HomeClinic> {
-  int _currentIndex = 0;
-
-  // Function to handle tab changes
-  void _onTabSelected(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
-
+class _ParentBookingState extends State<ParentBooking> {
   @override
   Widget build(BuildContext context) {
     final Size mq = MediaQuery.of(context).size;
@@ -30,7 +17,7 @@ class HomeClinicState extends State<HomeClinic> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Dashboard',
+          'Booking',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF006A5B),
@@ -183,12 +170,7 @@ class HomeClinicState extends State<HomeClinic> {
             ListTile(
               leading: const Icon(Icons.logout), // Icon for logout
               title: const Text('Logout'), // Text for logout
-              onTap: () {
-                Connection.pb.authStore.clear();
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const LoginAs()));
-                // Handle logout action here
-              },
+              onTap: () {},
             ),
           ],
         ),
@@ -224,22 +206,9 @@ class HomeClinicState extends State<HomeClinic> {
           Column(
             children: [
               const SizedBox(height: 30),
-
-              /// Custom Tab bar
-              DashTabClinic(
-                selectedIndex: _currentIndex,
-                onTabSelected: _onTabSelected,
-              ),
-
-              /// E expand kay need para makuha tanan availalble na screen
               Expanded(
-                child: IndexedStack(
-                  index: _currentIndex,
-                  children: const [
-                    ClinicProfile(),
-                    ClinicGallery(),
-                    ClinicReview(),
-                  ],
+                child: ClientCalendar(
+                  clinic: widget.clinics,
                 ),
               )
             ],

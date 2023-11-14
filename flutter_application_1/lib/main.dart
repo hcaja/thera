@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/chat/chat_screen.dart';
 import 'package:flutter_application_1/chat/message_screen.dart';
-import 'package:flutter_application_1/screens/clinic/home_clinic.dart';
-import 'package:flutter_application_1/screens/clinic/patient_list.dart';
+import 'package:flutter_application_1/screens/clinic/screens/home_clinic.dart';
+import 'package:flutter_application_1/screens/clinic/widgets/patient_list.dart';
 import 'package:flutter_application_1/screens/map/map_page.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
 import 'package:flutter_application_1/screens/auth/parent_login.dart';
 import 'package:flutter_application_1/screens/auth/therapist_login.dart';
-import 'package:flutter_application_1/screens/clinic/clinic_gallery.dart';
+import 'package:flutter_application_1/screens/clinic/widgets/clinic_gallery.dart';
 import 'package:flutter_application_1/screens/parent/screens/home_dashboard.dart';
 import 'package:flutter_application_1/screens/parent/screens/home_parent_profile.dart';
 import 'package:flutter_application_1/screens/parent/widgets/ther_dash.dart';
 import 'package:flutter_application_1/screens/registration/clinic_reg.dart';
-import 'package:flutter_application_1/screens/clinic/clinic_review.dart';
+import 'package:flutter_application_1/screens/clinic/widgets/clinic_review.dart';
 import 'package:flutter_application_1/screens/auth/login_page.dart';
 import 'package:flutter_application_1/screens/registration/parent_reg.dart';
 import 'package:flutter_application_1/screens/registration/select_reg.dart';
@@ -49,7 +49,10 @@ class MyApp extends StatelessWidget {
         '/parentregistration': (context) => const ParentRegister(),
         '/therapistregister': (context) => const TherapistRegister(),
         '/clinicregister': (context) => const ClinicRegister(),
-        '/homeclinic': (context) => const HomeClinic(),
+        '/homeclinic': (context) => const HomeClinic(
+              clinics: null,
+              isEditable: false,
+            ),
         '/clinicgallery': (context) => const ClinicGallery(),
         '/clinicreview': (context) => const ClinicReview(),
         '/therprofile': (context) => const TherapistProfile(),
