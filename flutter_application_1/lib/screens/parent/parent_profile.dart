@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/parent/check_list.dart';
-
+// import 'package:flutter_application_1/screens/parent/profile_parent_tabbar.dart';
+// import 'package:flutter_application_1/screens/widgets/app_drawer.dart';
 
 class ParentProfile extends StatelessWidget {
   const ParentProfile({Key? key}) : super(key: key);
