@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:flutter_application_1/models/clinic_profiles.dart';
 import 'package:flutter_application_1/models/services_offered.dart';
 import 'package:http/http.dart' as http;
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../config/config.dart';
 
