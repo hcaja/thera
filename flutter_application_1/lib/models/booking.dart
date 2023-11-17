@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/clinic_profiles.dart';
 import 'package:intl/intl.dart';
 
 class DailyTimeSlot {
@@ -88,4 +89,83 @@ class TimeData {
     required this.startTime,
     required this.endTime,
   });
+}
+
+class Parent {
+  int? id;
+  String? email;
+  String? username;
+  String? contactNumber;
+  String? note;
+  String? address;
+  String? fullname;
+
+  Parent({
+    required this.id,
+    required this.email,
+    required this.username,
+    required this.contactNumber,
+    required this.note,
+    required this.address,
+    required this.fullname,
+  });
+
+  factory Parent.fromJson(Map<String, dynamic> json) => Parent(
+        id: json["ID"],
+        email: json["EMAIL"],
+        username: json["USERNAME"],
+        contactNumber: json["CONTACT_NUMBER"],
+        note: json["NOTE"],
+        address: json["ADDRESS"],
+        fullname: json["FULLNAME"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "ID": id,
+        "EMAIL": email,
+        "USERNAME": username,
+        "CONTACT_NUMBER": contactNumber,
+        "NOTE": note,
+        "ADDRESS": address,
+        "FULLNAME": fullname,
+      };
+}
+
+class Appointment {
+  int? id;
+  Parent? parent;
+  DateTime? datebooked;
+  TimeData? timeslot;
+  Clinics? clinic;
+  Employee? therapist;
+  int? status;
+
+  Appointment({
+    required this.id,
+    required this.parent,
+    required this.datebooked,
+    required this.timeslot,
+    required this.clinic,
+    required this.therapist,
+    required this.status,
+  });
+
+  factory Appointment.fromJson(Map<String, dynamic> json) => Appointment(
+        id: json["ID"],
+        parent: Parent.fromJson(json["PARENT"]),
+        datebooked: DateTime.parse(json["DATEBOOKED"]),
+        timeslot: TimeData.fromJson(json["TIMESLOT"]),
+        clinic: Clinics.fromJson(json["CLINIC"]),
+        therapist: Employee.fromJson(json["THERAPIST"]),
+        status: json["STATUS"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "ID": id,
+        "PARENT": parent!.id,
+        "TIMESLOT": timeslot!.id,
+        "CLINIC": clinic!.id,
+        "THERAPIST": therapist!.id,
+        "STATUS": status,
+      };
 }
