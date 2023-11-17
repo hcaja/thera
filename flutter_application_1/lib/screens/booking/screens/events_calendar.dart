@@ -146,62 +146,64 @@ class TableEventsExampleState extends State<TableEventsExample> {
                 },
               ),
               const SizedBox(height: 8.0),
-              Container(
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 12.0,
-                  vertical: 4.0,
-                ),
-                child: ListTile(
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      builder: (BuildContext context) {
-                        return SizedBox(
-                            width: double.infinity,
-                            child: AddBooking(
-                              datePicked: _selectedDay,
-                              onResult: (value) {
-                                setState(() {
-                                  if (events[DateTime(
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 12.0,
+                    vertical: 4.0,
+                  ),
+                  child: ListTile(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (BuildContext context) {
+                          return SizedBox(
+                              width: double.infinity,
+                              child: AddBooking(
+                                datePicked: _selectedDay,
+                                onResult: (value) {
+                                  setState(() {
+                                    if (events[DateTime(
+                                          _selectedDay!.year,
+                                          _selectedDay!.month,
+                                          _selectedDay!.day,
+                                        )] !=
+                                        null) {
+                                      events[DateTime(
                                         _selectedDay!.year,
                                         _selectedDay!.month,
                                         _selectedDay!.day,
-                                      )] !=
-                                      null) {
-                                    events[DateTime(
-                                      _selectedDay!.year,
-                                      _selectedDay!.month,
-                                      _selectedDay!.day,
-                                    )]!
-                                        .add(value);
-                                  } else {
-                                    events[DateTime(
-                                      _selectedDay!.year,
-                                      _selectedDay!.month,
-                                      _selectedDay!.day,
-                                    )] = [value];
-                                  }
-                                });
-                              },
-                            ));
-                      },
-                    );
-                  },
-                  title: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.add,
-                        color: Color(0xFF006A5B),
-                      ),
-                      Text(
-                        'Add TimeSlot',
-                        style: TextStyle(
+                                      )]!
+                                          .add(value);
+                                    } else {
+                                      events[DateTime(
+                                        _selectedDay!.year,
+                                        _selectedDay!.month,
+                                        _selectedDay!.day,
+                                      )] = [value];
+                                    }
+                                  });
+                                },
+                              ));
+                        },
+                      );
+                    },
+                    title: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.add,
                           color: Color(0xFF006A5B),
                         ),
-                      )
-                    ],
+                        Text(
+                          'Add TimeSlot',
+                          style: TextStyle(
+                            color: Color(0xFF006A5B),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

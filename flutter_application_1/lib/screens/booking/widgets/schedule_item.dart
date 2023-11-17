@@ -19,6 +19,7 @@ class ScheduleItem extends StatelessWidget {
     return SizedBox(
         child: Container(
             height: mq.height * 0.08,
+            width: mq.width * 0.9,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(10),
@@ -44,16 +45,16 @@ class ScheduleItem extends StatelessWidget {
                     color: Color(0xFF006A5B),
                   ),
                 ),
-                const SizedBox(
-                  width: 10,
+                SizedBox(
+                  width: mq.width * 0.03,
                 ),
                 Text(
                   parentName,
                   style: const TextStyle(
                       fontWeight: FontWeight.w600, fontSize: 20),
                 ),
-                const SizedBox(
-                  width: 25,
+                SizedBox(
+                  width: mq.width * 0.02,
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
@@ -65,8 +66,8 @@ class ScheduleItem extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  width: 10,
+                SizedBox(
+                  width: mq.width * 0.02,
                 ),
                 SizedBox(
                   child: Row(
@@ -82,8 +83,8 @@ class ScheduleItem extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  width: 10,
+                SizedBox(
+                  width: mq.width * 0.02,
                 ),
                 SizedBox(
                   child: Row(
