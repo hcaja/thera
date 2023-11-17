@@ -93,5 +93,79 @@ class BookingController {
     }
     return combinedMap;
   }
-  
+
+  Future<bool> saveBooking(
+    int timeslot,
+    int clinic,
+    int parent,
+    String note,
+  ) async {
+    var reqBody = {
+      "timeslot": timeslot,
+      "clinic": clinic,
+      "parent": parent,
+      "therapist": 0,
+      "status": 1,
+      "note": note,
+    };
+
+    var response = await http.post(Uri.parse(baseUrl + saveBookingUrl),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(reqBody));
+
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(
+          msg: "Saved",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+
+      return true;
+    } else {
+      Fluttertoast.showToast(
+          msg: response.body,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      return false;
+    }
+  }
+
+  Future<Parent> getParent(int id) async {
+    var response = await http.get(Uri.parse("$baseUrl$getParentUrl$id"),
+        headers: {"Content-Type": "application/json"});
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = json.decode(response.body);
+      List<Parent> objects = jsonData
+          .map((json) => Parent(
+                id: json["ID"],
+                email: json["EMAIL"],
+                username: json["USERNAME"],
+                contactNumber: json["CONTACT_NUMBER"],
+                note: json["NOTE"],
+                address: json["ADDRESS"],
+                fullname: json["FULLNAME"],
+              ))
+          .toList();
+
+      return objects[0];
+    } else {
+      return Parent(
+        id: null,
+        email: null,
+        username: null,
+        contactNumber: null,
+        note: null,
+        address: null,
+        fullname: null,
+      );
+    }
+  }
 }

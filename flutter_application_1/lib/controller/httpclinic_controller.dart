@@ -135,7 +135,6 @@ class ClinicController {
     for (var dailyTimeSlot in dailyTimeSlots) {
       Map<DateTime, List<TimeData>> timeSlotMap = dailyTimeSlot.toMap();
 
-      // Merge the current timeSlotMap into the combinedMap
       timeSlotMap.forEach((date, timeslot) {
         if (combinedMap.containsKey(date)) {
           combinedMap[date]!.addAll(timeslot);
