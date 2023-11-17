@@ -4,7 +4,6 @@ import 'package:flutter_application_1/models/clinic_profiles.dart';
 import 'package:flutter_application_1/models/services_offered.dart';
 import 'package:flutter_application_1/screens/auth/connection.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
-import 'package:flutter_application_1/screens/booking/screens/events_calendar.dart';
 import 'package:flutter_application_1/screens/clinic/screens/parent_booking.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
