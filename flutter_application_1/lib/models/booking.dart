@@ -156,7 +156,7 @@ class Appointment {
         datebooked: DateTime.parse(json["DATEBOOKED"]),
         timeslot: TimeData.fromJson(json["TIMESLOT"]),
         clinic: Clinics.fromJson(json["CLINIC"]),
-        therapist: Employee.fromJson(json["THERAPIST"]),
+        therapist: Employee.fromJson(json['THERAPIST']),
         status: json["STATUS"],
       );
 

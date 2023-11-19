@@ -168,4 +168,17 @@ class BookingController {
       );
     }
   }
+
+  Future<List<Appointment>> getAppointments(int id, int status) async {
+    var response = await http.get(
+        Uri.parse("$baseUrl$getAppointmentsUrl$id/$status"),
+        headers: {"Content-Type": "application/json"});
+
+    final List<dynamic> responseData = json.decode(response.body);
+
+    List<Appointment> res = responseData
+        .map((jsonObject) => Appointment.fromJson(jsonObject))
+        .toList();
+    return res;
+  }
 }

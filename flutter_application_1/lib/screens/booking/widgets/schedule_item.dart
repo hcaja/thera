@@ -1,25 +1,35 @@
 import 'package:flutter/material.dart';
 
-class ScheduleItem extends StatelessWidget {
+class ScheduleItem extends StatefulWidget {
   const ScheduleItem(
       {required this.mq,
       Key? key,
       required this.parentName,
       required this.time,
-      required this.therapist})
+      required this.therapist,
+      required this.request})
       : super(key: key);
 
   final Size mq;
   final String parentName;
   final String time;
   final String therapist;
+  final bool request;
+
+  @override
+  State<ScheduleItem> createState() => _ScheduleItemState();
+}
+
+class _ScheduleItemState extends State<ScheduleItem> {
+  bool selected = false;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
         child: Container(
-            height: mq.height * 0.08,
-            width: mq.width * 0.9,
+            height:
+                selected ? widget.mq.height * 0.08 : widget.mq.height * 0.08,
+            width: widget.mq.width * 0.9,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(10),
@@ -46,15 +56,17 @@ class ScheduleItem extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: mq.width * 0.03,
+                  width: widget.mq.width * 0.03,
                 ),
                 Text(
-                  parentName,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w600, fontSize: 20),
+                  widget.parentName,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize:
+                          20.0 - (widget.parentName.length * 0.2).toInt()),
                 ),
                 SizedBox(
-                  width: mq.width * 0.02,
+                  width: widget.mq.width * 0.02,
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
@@ -67,7 +79,7 @@ class ScheduleItem extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: mq.width * 0.02,
+                  width: widget.mq.width * 0.02,
                 ),
                 SizedBox(
                   child: Row(
@@ -77,29 +89,46 @@ class ScheduleItem extends StatelessWidget {
                         size: 12,
                       ),
                       Text(
-                        time,
+                        widget.time,
                         style: const TextStyle(fontSize: 12),
                       )
                     ],
                   ),
                 ),
-                SizedBox(
-                  width: mq.width * 0.02,
-                ),
-                SizedBox(
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.person,
-                        size: 12,
+                !widget.request
+                    ? SizedBox(
+                        width: widget.mq.width * 0.02,
+                      )
+                    : SizedBox(
+                        width: widget.mq.width * 0.15,
                       ),
-                      Text(
-                        therapist,
-                        style: const TextStyle(fontSize: 12),
+                !widget.request
+                    ? SizedBox(
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.person,
+                              size: 12,
+                            ),
+                            Text(
+                              widget.therapist,
+                              style: const TextStyle(fontSize: 12),
+                            )
+                          ],
+                        ),
                       )
-                    ],
-                  ),
-                )
+                    : const SizedBox(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Icon(
+                              Icons.navigate_next,
+                              size: 25,
+                              color: Colors.blue,
+                            ),
+                          ],
+                        ),
+                      )
               ],
             )));
   }

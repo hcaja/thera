@@ -19,5 +19,6 @@ const getClinicsUrl = '/clinic/get-clinics/';
 const addTimeUrl = '/booking/add-timeslot';
 const removeTimeUrl = '/booking/remove-timeslot/';
 const getTimeDataUrl = '/booking/get-timeslots/';
+const getAppointmentsUrl = '/booking/get-appointment/';
 const saveBookingUrl = '/booking/book-appointment';
 const getParentUrl = '/parent/get-user/';
