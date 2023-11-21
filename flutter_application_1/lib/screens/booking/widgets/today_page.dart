@@ -107,14 +107,7 @@ class _TodayPageState extends State<TodayPage> {
                                       children: [
                                         ScheduleItem(
                                           mq: mq,
-                                          parentName: appointments[index]
-                                              .parent!
-                                              .fullname!,
-                                          time:
-                                              '${appointments[index].timeslot!.startTime!.format(context)} - ${appointments[index].timeslot!.endTime!.format(context)} ',
-                                          therapist: appointments[index]
-                                              .therapist!
-                                              .name,
+                                          appointment: appointments[index],
                                           request: false,
                                         ),
                                         SizedBox(

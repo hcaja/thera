@@ -25,7 +25,7 @@ class _SchedulePage extends State<SchedulePage> {
       isloading = true;
     });
     _getUserdata().then((id) {
-      bookingController.getAppointments(id,2).then((value) {
+      bookingController.getAppointments(id, 2).then((value) {
         setState(() {
           appointments = value;
           isloading = false;
@@ -106,15 +106,10 @@ class _SchedulePage extends State<SchedulePage> {
                                     return Column(
                                       children: [
                                         ScheduleItem(
-                                            mq: mq,
-                                            parentName: appointments[index]
-                                                .parent!
-                                                .fullname!,
-                                            time:
-                                                '${appointments[index].timeslot!.startTime!.format(context)} - ${appointments[index].timeslot!.endTime!.format(context)} ',
-                                            therapist: appointments[index]
-                                                .therapist!
-                                                .name, request: false,),
+                                          mq: mq,
+                                          appointment: appointments[index],
+                                          request: false,
+                                        ),
                                         SizedBox(
                                           height: mq.height * 0.02,
                                         ),

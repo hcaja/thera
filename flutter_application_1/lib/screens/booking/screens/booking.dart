@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/httptherapist_controller.dart';
 import 'package:flutter_application_1/screens/booking/widgets/booking_tab.dart';
@@ -5,7 +6,20 @@ import 'package:flutter_application_1/screens/booking/widgets/request_page.dart'
 import 'package:flutter_application_1/screens/booking/widgets/schedule_page.dart';
 import 'package:flutter_application_1/screens/booking/widgets/today_page.dart';
 import 'package:flutter_application_1/screens/widgets/app_drawer_therapist.dart';
+import 'package:zego_express_engine/zego_express_engine.dart';
 
+import '../../../controller/key_center.dart';
+
+Future<void> createEngine() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Get your AppID and AppSign from ZEGOCLOUD Console
+  //[My Projects -> AppID] : https://console.zegocloud.com/project
+  await ZegoExpressEngine.createEngineWithProfile(ZegoEngineProfile(
+    appID,
+    ZegoScenario.Default,
+    appSign: kIsWeb ? null : appSign,
+  ));
+}
 
 class BookingScreen extends StatefulWidget {
   const BookingScreen({Key? key}) : super(key: key);
@@ -19,6 +33,12 @@ class _BookingScreen extends State<BookingScreen> {
   TextEditingController aboutController = TextEditingController();
   bool isLoading = true;
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    intializeCall();
+    super.initState();
+  }
 
   // Function to handle tab changes
   void _onTabSelected(int index) {
@@ -114,5 +134,9 @@ class _BookingScreen extends State<BookingScreen> {
               ),
             ),
     );
+  }
+
+  void intializeCall() async {
+    await createEngine();
   }
 }

@@ -107,14 +107,7 @@ class _RequestPage extends State<RequestPage> {
                                       children: [
                                         ScheduleItem(
                                           mq: mq,
-                                          parentName: appointments[index]
-                                              .parent!
-                                              .fullname!,
-                                          time:
-                                              '${appointments[index].timeslot!.startTime!.format(context)} - ${appointments[index].timeslot!.endTime!.format(context)} ',
-                                          therapist: appointments[index]
-                                              .therapist!
-                                              .name,
+                                          appointment: appointments[index],
                                           request: true,
                                         ),
                                         SizedBox(

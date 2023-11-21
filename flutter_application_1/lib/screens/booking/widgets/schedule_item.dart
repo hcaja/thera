@@ -1,19 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/booking.dart';
+import 'package:flutter_application_1/screens/video_call/screens/vidcall.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+void jumpToCallPage(BuildContext context,
+    {required String roomID,
+    required String localUserID,
+    required String localUserName}) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => CallPage(
+        localUserID: localUserID,
+        localUserName: localUserName,
+        roomID: roomID,
+      ),
+    ),
+  );
+}
 
 class ScheduleItem extends StatefulWidget {
   const ScheduleItem(
       {required this.mq,
       Key? key,
-      required this.parentName,
-      required this.time,
-      required this.therapist,
+      required this.appointment,
       required this.request})
       : super(key: key);
 
   final Size mq;
-  final String parentName;
-  final String time;
-  final String therapist;
+  final Appointment appointment;
   final bool request;
 
   @override
@@ -21,115 +37,189 @@ class ScheduleItem extends StatefulWidget {
 }
 
 class _ScheduleItemState extends State<ScheduleItem> {
-  bool selected = false;
+  @override
+  void initState() {
+    _getUserdata();
+    super.initState();
+  }
+
+  void _getUserdata() async {
+    await SharedPreferences.getInstance().then((value) {
+      String? token = value.getString('parentToken');
+      Map<String, dynamic> payload = JwtDecoder.decode(token!);
+      id = payload['ID'];
+    });
+  }
+
+  int? id;
+  bool selected = true;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            selected = !selected;
+          });
+        },
         child: Container(
-            height:
-                selected ? widget.mq.height * 0.08 : widget.mq.height * 0.08,
-            width: widget.mq.width * 0.9,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(10),
-                bottomRight: Radius.circular(10),
-              ),
-
-              color: Colors.white, // White color
-              boxShadow: [
-                BoxShadow(
-                  color: Color(0x3F000000),
-                  blurRadius: 4,
-                  offset: Offset(0, 4),
-                  spreadRadius: 0,
-                ),
-              ],
+          height: !selected ? widget.mq.height * 0.4 : widget.mq.height * 0.1,
+          width: widget.mq.width * 0.9,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(10),
+              bottomRight: Radius.circular(10),
             ),
-            child: Row(
-              children: [
-                const SizedBox(
-                  width: 4,
-                  height: double.infinity,
-                  child: ColoredBox(
-                    color: Color(0xFF006A5B),
-                  ),
+            color: Colors.white, // White color
+            boxShadow: [
+              BoxShadow(
+                color: Color(0x3F000000),
+                blurRadius: 4,
+                offset: Offset(0, 4),
+                spreadRadius: 0,
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              const SizedBox(
+                width: 4,
+                height: double.infinity,
+                child: ColoredBox(
+                  color: Color(0xFF006A5B),
                 ),
-                SizedBox(
-                  width: widget.mq.width * 0.03,
-                ),
-                Text(
-                  widget.parentName,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize:
-                          20.0 - (widget.parentName.length * 0.2).toInt()),
-                ),
-                SizedBox(
-                  width: widget.mq.width * 0.02,
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: SizedBox(
-                    width: 1,
-                    height: double.infinity,
-                    child: ColoredBox(
-                      color: Color.fromRGBO(0, 0, 0, 0.5),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: widget.mq.height * 0.1,
+                    width: widget.mq.width * 0.88,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: SizedBox(
+                                  child: Text(
+                                    widget.appointment.parent!.fullname!,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 20.0 -
+                                          (widget.appointment.parent!.fullname!
+                                                      .length *
+                                                  0.3)
+                                              .toInt(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              !selected
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        jumpToCallPage(context,
+                                            roomID: widget.appointment.id
+                                                .toString(),
+                                            localUserID: id.toString(),
+                                            localUserName: widget.appointment
+                                                .therapist!.username);
+                                      },
+                                      child: Container(
+                                        margin: const EdgeInsets.only(left: 10),
+                                        child: const Icon(
+                                          Icons.videocam_sharp,
+                                          color: Color(0xFF006A5B),
+                                        ),
+                                      ),
+                                    )
+                                  : const SizedBox(),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              const SizedBox(
+                                width: 1,
+                                height: double.infinity,
+                                child: ColoredBox(
+                                  color: Color.fromRGBO(0, 0, 0, 0.5),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                Icons.access_time,
+                                size: 12,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  '${widget.appointment.timeslot!.startTime!.format(context)} - ${widget.appointment.timeslot!.endTime!.format(context)} ',
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: !widget.request
+                              ? Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(
+                                      Icons.person,
+                                      size: 12,
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        widget.appointment.therapist!.name,
+                                        style: const TextStyle(fontSize: 12),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    )
+                                  ],
+                                )
+                              : const Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Icon(
+                                      Icons.navigate_next,
+                                      size: 25,
+                                      color: Colors.blue,
+                                    ),
+                                  ],
+                                ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: widget.mq.width * 0.02,
-                ),
-                SizedBox(
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.access_time,
-                        size: 12,
-                      ),
-                      Text(
-                        widget.time,
-                        style: const TextStyle(fontSize: 12),
-                      )
-                    ],
-                  ),
-                ),
-                !widget.request
-                    ? SizedBox(
-                        width: widget.mq.width * 0.02,
-                      )
-                    : SizedBox(
-                        width: widget.mq.width * 0.15,
-                      ),
-                !widget.request
-                    ? SizedBox(
-                        child: Row(
+                  !selected
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(
-                              Icons.person,
-                              size: 12,
-                            ),
-                            Text(
-                              widget.therapist,
-                              style: const TextStyle(fontSize: 12),
-                            )
+                            const Text('Note:'),
+                            Text(widget.appointment.note!),
                           ],
-                        ),
-                      )
-                    : const SizedBox(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Icon(
-                              Icons.navigate_next,
-                              size: 25,
-                              color: Colors.blue,
-                            ),
-                          ],
-                        ),
-                      )
-              ],
-            )));
+                        )
+                      : const SizedBox()
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
