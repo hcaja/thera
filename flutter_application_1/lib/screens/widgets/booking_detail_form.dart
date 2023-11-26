@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class BookingDetail extends StatelessWidget {
+class BookingDetail extends StatefulWidget {
   const BookingDetail(
       {super.key,
       required this.title,
@@ -13,6 +13,20 @@ class BookingDetail extends StatelessWidget {
   final String data;
   final IconData icon;
   final TextEditingController? textEditingController;
+
+  @override
+  State<BookingDetail> createState() => _BookingDetailState();
+}
+
+class _BookingDetailState extends State<BookingDetail> {
+  @override
+  void initState() {
+    if (widget.note) {
+      //widget.textEditingController!.text = widget.data;
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size mq = MediaQuery.of(context).size;
@@ -23,12 +37,12 @@ class BookingDetail extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 10),
-            child: Text(title),
+            child: Text(widget.title),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
-                height: !note ? mq.height * 0.07 : mq.height * 0.15,
+                height: !widget.note ? mq.height * 0.07 : mq.height * 0.15,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                   color: Colors.white,
@@ -47,20 +61,20 @@ class BookingDetail extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Icon(
-                        icon,
+                        widget.icon,
                         color: const Color(0xFF006A5B),
                       ),
                       const SizedBox(
                         width: 10,
                       ),
-                      !note
+                      !widget.note
                           ? Text(
-                              data,
+                              widget.data,
                               style: const TextStyle(color: Colors.black54),
                             )
                           : Flexible(
                               child: TextField(
-                                controller: textEditingController,
+                                controller: widget.textEditingController,
                                 maxLines: 3,
                                 style: const TextStyle(
                                   color: Colors.black54,
