@@ -93,7 +93,6 @@ class _RequestPage extends State<RequestPage> {
                             SizedBox(
                               height: mq.height * 0.07,
                             ),
-                            const Text('September, 19, 2023'),
                             SizedBox(
                               height: mq.height * 0.01,
                             ),

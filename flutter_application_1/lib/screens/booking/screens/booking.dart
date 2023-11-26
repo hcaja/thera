@@ -12,8 +12,6 @@ import '../../../controller/key_center.dart';
 
 Future<void> createEngine() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Get your AppID and AppSign from ZEGOCLOUD Console
-  //[My Projects -> AppID] : https://console.zegocloud.com/project
   await ZegoExpressEngine.createEngineWithProfile(ZegoEngineProfile(
     appID,
     ZegoScenario.Default,

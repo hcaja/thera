@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/booking.dart';
+import 'package:flutter_application_1/screens/booking/screens/confirm_booking.dart';
 import 'package:flutter_application_1/screens/video_call/screens/vidcall.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,11 +61,24 @@ class _ScheduleItemState extends State<ScheduleItem> {
       child: GestureDetector(
         onTap: () {
           setState(() {
-            selected = !selected;
+            if (!widget.request) {
+              selected = !selected;
+            } else {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ConfirmBookingScreen(
+                    appointment: widget.appointment,
+                  ),
+                ),
+              );
+            }
           });
         },
         child: Container(
-          height: !selected ? widget.mq.height * 0.4 : widget.mq.height * 0.1,
+          height: !selected && !widget.request
+              ? widget.mq.height * 0.4
+              : widget.mq.height * 0.1,
           width: widget.mq.width * 0.9,
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
@@ -122,13 +136,13 @@ class _ScheduleItemState extends State<ScheduleItem> {
                                   ),
                                 ),
                               ),
-                              !selected
+                              !selected && !widget.request
                                   ? GestureDetector(
                                       onTap: () {
                                         jumpToCallPage(context,
                                             roomID: widget.appointment.id
                                                 .toString(),
-                                            localUserID: id.toString(),
+                                            localUserID: 'THER$id',
                                             localUserName: widget.appointment
                                                 .therapist!.username);
                                       },
@@ -205,7 +219,7 @@ class _ScheduleItemState extends State<ScheduleItem> {
                       ],
                     ),
                   ),
-                  !selected
+                  !selected && !widget.request
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
