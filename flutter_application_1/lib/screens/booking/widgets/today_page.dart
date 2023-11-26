@@ -3,6 +3,7 @@ import 'package:flutter_application_1/controller/http_bookingcontroller.dart';
 import 'package:flutter_application_1/models/booking.dart';
 import 'package:flutter_application_1/screens/booking/screens/events_calendar.dart';
 import 'package:flutter_application_1/screens/booking/widgets/schedule_item.dart';
+import 'package:intl/intl.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -93,7 +94,8 @@ class _TodayPageState extends State<TodayPage> {
                             SizedBox(
                               height: mq.height * 0.07,
                             ),
-                            const Text('September, 19, 2023'),
+                            Text(DateFormat('MMMM dd, yyyy')
+                                .format(DateTime.now())),
                             SizedBox(
                               height: mq.height * 0.01,
                             ),
