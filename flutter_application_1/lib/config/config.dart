@@ -1,5 +1,5 @@
 const railwayHost = 'https://therapeasebackend-production.up.railway.app';
-const ipHost = 'http://192.168.21.68:5500';
+const ipHost = 'http://192.168.0.32:5500';
 const baseUrl = ipHost;
 const clinicLoginUrl = '/clinic/login';
 const clinicRegisterUrl = '/clinic/register';
@@ -22,3 +22,4 @@ const getTimeDataUrl = '/booking/get-timeslots/';
 const getAppointmentsUrl = '/booking/get-appointment/';
 const saveBookingUrl = '/booking/book-appointment';
 const getParentUrl = '/parent/get-user/';
+const acceptAppointmentsUrl = '/booking/accept-booking/';
