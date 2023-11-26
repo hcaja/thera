@@ -181,4 +181,33 @@ class BookingController {
         .toList();
     return res;
   }
+
+  Future<bool> acceptAppointments(int id, int thera) async {
+    var response = await http.put(
+        Uri.parse("$baseUrl$acceptAppointmentsUrl$id/$thera"),
+        headers: {"Content-Type": "application/json"});
+
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(
+          msg: "Saved",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+
+      return true;
+    } else {
+      Fluttertoast.showToast(
+          msg: response.body,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      return false;
+    }
+  }
 }
