@@ -3,6 +3,7 @@ import 'package:flutter_application_1/controller/httplogin_controller.dart';
 import 'package:flutter_application_1/controller/httplogout_controller.dart';
 import 'package:flutter_application_1/models/clinic_profiles.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
+import 'package:flutter_application_1/screens/registration/therapist_reg.dart';
 
 import '../therapist/ther_profile.dart';
 
@@ -21,12 +22,7 @@ class _LoginProfileState extends State<LoginProfile> {
 
   @override
   void initState() {
-    controller.getProfiles(context, 2).then((List<Employee> result) => {
-          setState(() {
-            profiles = result;
-          })
-        });
-
+    reload();
     super.initState();
   }
 
@@ -188,7 +184,7 @@ class _LoginProfileState extends State<LoginProfile> {
                 !(profiles != null)
                     ? const Center(child: CircularProgressIndicator())
                     : SizedBox(
-                        height: size.height * 0.5,
+                        height: size.height * 0.8,
                         child: ListView(
                           children: [
                             if (profiles != null)
@@ -245,12 +241,57 @@ class _LoginProfileState extends State<LoginProfile> {
                                 ),
                             GestureDetector(
                               onTap: () {
-                                logout.clinicLogout();
-                                Navigator.pushReplacement(
+                                Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (_) => const LoginAs(),
+                                      builder: (_) => TherapistRegister(
+                                        type: 'Add',
+                                        refresh: reload,
+                                      ),
                                     ));
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  SizedBox(
+                                    height: size.height * 0.02,
+                                  ),
+                                  SizedBox(
+                                      child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 72,
+                                        height: 72,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: const Icon(
+                                            Icons.add,
+                                            size: 35,
+                                            color: Color(0xFF006A5B),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      const Text(
+                                        'Add Account',
+                                        style: TextStyle(
+                                            color: Color(0xFF006A5B),
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 17),
+                                      )
+                                    ],
+                                  )),
+                                ],
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                logout.clinicLogout();
+                                Navigator.pop(context);
                               },
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -298,5 +339,13 @@ class _LoginProfileState extends State<LoginProfile> {
         ],
       ),
     );
+  }
+
+  void reload() {
+    controller.getProfiles(context, 2).then((List<Employee> result) => {
+          setState(() {
+            profiles = result;
+          })
+        });
   }
 }

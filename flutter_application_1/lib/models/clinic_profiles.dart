@@ -11,7 +11,7 @@ class Employee {
   String age;
   String sex;
   String profilePicture;
-  String about;
+  String? about;
 
   Employee({
     required this.id,

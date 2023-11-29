@@ -35,7 +35,7 @@ class ClinicLogin {
     }
   }
 
-  Future<List<Employee>> getProfiles(BuildContext context, int clinicID) async {
+  Future<List<Employee>> getProfiles(BuildContext context, int clinic) async {
     prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('clinicToken');
     Map<String, dynamic> payload = JwtDecoder.decode(token!);

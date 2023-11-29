@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/controller/pick_image.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter_application_1/controller/httpregister_controller.dart';
 import 'package:logger/logger.dart';
 
 import 'widgets/custom_textfield.dart';
@@ -8,8 +7,13 @@ import 'widgets/custom_textfield.dart';
 final logger = Logger(); // Instantiate the logger at the top of the file
 
 class TherapistRegister extends StatefulWidget {
-  const TherapistRegister({Key? key}) : super(key: key);
-
+  const TherapistRegister({
+    Key? key,
+    required this.type,
+    this.refresh,
+  }) : super(key: key);
+  final String type;
+  final Function? refresh;
   @override
   State<TherapistRegister> createState() => _TherapistRegisterState();
 }
@@ -23,8 +27,7 @@ class _TherapistRegisterState extends State<TherapistRegister> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
-  TherapistProID therapistId = TherapistProID();
-  XFile? _attachFile;
+  ClinicRegisterApi clinicRegisterApi = ClinicRegisterApi();
 
   @override
   Widget build(BuildContext context) {
@@ -83,37 +86,37 @@ class _TherapistRegisterState extends State<TherapistRegister> {
                   ),
                   const SizedBox(height: 16.0),
                   CustomTextField(
-                    textEditingController: fullNameController,
+                    textEditingController: userNameController,
                     label: 'Username',
                     password: false,
                   ),
                   const SizedBox(height: 16.0),
                   CustomTextField(
-                    textEditingController: fullNameController,
+                    textEditingController: emailController,
                     label: 'Email',
                     password: false,
                   ),
                   const SizedBox(height: 16.0),
                   CustomTextField(
-                    textEditingController: fullNameController,
+                    textEditingController: contactNumberController,
                     label: 'Contact Number',
                     password: false,
                   ),
                   const SizedBox(height: 16.0),
                   CustomTextField(
-                    textEditingController: fullNameController,
+                    textEditingController: addressController,
                     label: 'Address',
                     password: false,
                   ),
                   const SizedBox(height: 16.0),
                   CustomTextField(
-                    textEditingController: fullNameController,
+                    textEditingController: passwordController,
                     label: 'Password',
                     password: true,
                   ),
                   const SizedBox(height: 14.0),
                   CustomTextField(
-                    textEditingController: fullNameController,
+                    textEditingController: confirmPasswordController,
                     label: 'Confirm Password',
                     password: false,
                   ),
@@ -133,25 +136,6 @@ class _TherapistRegisterState extends State<TherapistRegister> {
                         // provides some spacing between the label and the button
                         height: 0.0,
                       ),
-                      _attachFile == null
-                          ? ElevatedButton.icon(
-                              icon: const Icon(Icons.attach_file),
-                              label: const Text('Attach File'),
-                              onPressed: () async {
-                                _attachFile =
-                                    await therapistId.pickImageFromGallery();
-                                setState(() {});
-                              },
-                            )
-                          : Chip(
-                              label: Text(_attachFile?.name ?? 'Attached'),
-                              deleteIcon: const Icon(Icons.delete),
-                              onDeleted: () {
-                                setState(() {
-                                  _attachFile = null;
-                                });
-                              },
-                            ),
 
                       // Register button
                       const SizedBox(height: 8.0),
@@ -168,7 +152,27 @@ class _TherapistRegisterState extends State<TherapistRegister> {
                               borderRadius: BorderRadius.circular(25),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            clinicRegisterApi
+                                .clinicTherapistRegister(
+                                    'role',
+                                    fullNameController.text,
+                                    emailController.text,
+                                    passwordController.text,
+                                    addressController.text,
+                                    contactNumberController.text,
+                                    '1',
+                                    'M',
+                                    '',
+                                    userNameController.text)
+                                .then((value) {
+                              print(value);
+                              if (value) {
+                                Navigator.of(context).pop();
+                                widget.refresh!();
+                              }
+                            });
+                          },
                           child: const Text(
                             'Register',
                           ),

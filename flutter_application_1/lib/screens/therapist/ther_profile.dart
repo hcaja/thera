@@ -167,7 +167,7 @@ class _TherapistProfileState extends State<TherapistProfile> {
     controller.getTherapist().then((value) {
       setState(() {
         employee = value;
-        aboutController.text = value.about;
+        aboutController.text = value.about!;
       });
     });
     controller.getServices().then((value) {
@@ -344,7 +344,7 @@ class _TherapistProfileState extends State<TherapistProfile> {
                             // About Us content
 
                             Text(
-                              employee!.about,
+                              employee!.about!,
                               style: const TextStyle(
                                 height: 1.3,
                                 fontSize: 15.0,

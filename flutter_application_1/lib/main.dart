@@ -22,7 +22,6 @@ import 'package:flutter_application_1/screens/therapist/ther_gallery.dart';
 import 'package:flutter_application_1/screens/therapist/ther_profile.dart';
 import 'package:flutter_application_1/screens/therapist/ther_review.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
@@ -48,7 +47,9 @@ class MyApp extends StatelessWidget {
         '/therlogin': (context) => const TherapistLogin(),
         '/selectregistrationas': (context) => const SelectRegister(),
         '/parentregistration': (context) => const ParentRegister(),
-        '/therapistregister': (context) => const TherapistRegister(),
+        '/therapistregister': (context) => const TherapistRegister(
+              type: '',
+            ),
         '/clinicregister': (context) => const ClinicRegister(),
         '/homeclinic': (context) => const HomeClinic(
               clinics: null,
