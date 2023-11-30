@@ -12,7 +12,7 @@ class CallPage extends StatefulWidget {
       required this.roomID});
 
   final String localUserID;
-  final String localUserName;
+  final String? localUserName;
   final String roomID;
 
   @override
@@ -87,7 +87,7 @@ class _CallPageState extends State<CallPage> {
 
   Future<ZegoRoomLoginResult> loginRoom() async {
     // The value of `userID` is generated locally and must be globally unique.
-    final user = ZegoUser(widget.localUserID, widget.localUserName);
+    final user = ZegoUser(widget.localUserID, widget.localUserName!);
 
     // The value of `roomID` is generated locally and must be globally unique.
     final roomID = widget.roomID;

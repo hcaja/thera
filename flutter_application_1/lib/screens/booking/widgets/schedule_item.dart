@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 void jumpToCallPage(BuildContext context,
     {required String roomID,
     required String localUserID,
-    required String localUserName}) {
+    required String? localUserName}) {
   Navigator.push(
     context,
     MaterialPageRoute(

@@ -1,7 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/key_center.dart';
 import 'package:flutter_application_1/screens/auth/connection.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
 import 'package:flutter_application_1/screens/parent/custom_dash.dart';
+import 'package:flutter_application_1/screens/parent/screens/parent_schedules.dart';
+import 'package:zego_express_engine/zego_express_engine.dart';
 
 import '../widgets/dashboard.dart';
 import '../widgets/material_dash.dart';
@@ -14,14 +18,33 @@ class HomeDashboard extends StatefulWidget {
   HomeDashboardState createState() => HomeDashboardState();
 }
 
+Future<void> createEngine() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await ZegoExpressEngine.createEngineWithProfile(ZegoEngineProfile(
+    appID,
+    ZegoScenario.Default,
+    appSign: kIsWeb ? null : appSign,
+  ));
+}
+
 class HomeDashboardState extends State<HomeDashboard> {
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    intializeCall();
+    super.initState();
+  }
 
   // Function to handle tab changes
   void _onTabSelected(int index) {
     setState(() {
       _currentIndex = index;
     });
+  }
+
+  void intializeCall() async {
+    await createEngine();
   }
 
   @override
@@ -141,7 +164,12 @@ class HomeDashboardState extends State<HomeDashboard> {
                 ),
               ),
               onTap: () {
-                // Handle schedule action here
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const ParentSchedules(),
+                  ),
+                );
               },
             ),
             ListTile(

@@ -4,6 +4,8 @@ import 'package:flutter_application_1/models/booking.dart';
 import 'package:flutter_application_1/models/clinic_profiles.dart';
 import 'package:flutter_application_1/models/services_offered.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../config/config.dart';
 
@@ -134,6 +136,46 @@ class ClinicController {
 
     for (var dailyTimeSlot in dailyTimeSlots) {
       Map<DateTime, List<TimeData>> timeSlotMap = dailyTimeSlot.toMap();
+
+      timeSlotMap.forEach((date, timeslot) {
+        if (combinedMap.containsKey(date)) {
+          combinedMap[date]!.addAll(timeslot);
+        } else {
+          combinedMap[date] = List.from(timeslot);
+        }
+      });
+    }
+    return combinedMap;
+  }
+
+  Future<Map<DateTime, List<ParentTimeData>>> getParentTimeData() async {
+    late SharedPreferences prefs;
+    prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('parentToken');
+
+    Map<String, dynamic> payload = JwtDecoder.decode(token!);
+    var response = await http.get(
+        Uri.parse("$baseUrl$getParentTimeDataUrl${payload['ID']}"),
+        headers: {"Content-Type": "application/json"});
+
+    final List<dynamic> responseData = json.decode(response.body);
+
+    List<ParentDailyTimeSlot> dailyTimeSlots = [];
+
+    for (var data in responseData) {
+      final DateTime date = DateTime.parse(data['DATE']);
+
+      final List<ParentTimeData> timeslot = List<ParentTimeData>.from(
+        data['TIMESLOT'].map((slot) => ParentTimeData.fromJson(slot)),
+      );
+
+      dailyTimeSlots.add(ParentDailyTimeSlot(date: date, timeslot: timeslot));
+    }
+
+    Map<DateTime, List<ParentTimeData>> combinedMap = {};
+
+    for (var dailyTimeSlot in dailyTimeSlots) {
+      Map<DateTime, List<ParentTimeData>> timeSlotMap = dailyTimeSlot.toMap();
 
       timeSlotMap.forEach((date, timeslot) {
         if (combinedMap.containsKey(date)) {
