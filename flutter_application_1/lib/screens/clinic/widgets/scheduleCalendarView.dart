@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/http_bookingcontroller.dart';
 import 'package:flutter_application_1/controller/httpclinic_controller.dart';
 import 'package:flutter_application_1/models/booking.dart';
 import 'package:flutter_application_1/models/clinic_profiles.dart';
-import 'package:flutter_application_1/screens/clinic/screens/schedule_booking.dart';
+import 'package:flutter_application_1/screens/clinic/screens/parent_schedule_booking.dart';
+import 'package:flutter_application_1/screens/video_call/screens/vidcall.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class ClientCalendar extends StatefulWidget {
-  const ClientCalendar({
+class ScheduleClientCalendar extends StatefulWidget {
+  const ScheduleClientCalendar({
     super.key,
     this.clinic,
   });
   final Clinics? clinic;
 
   @override
-  ClientCalendarState createState() => ClientCalendarState();
+  ScheduleClientCalendarState createState() => ScheduleClientCalendarState();
 }
 
 final kToday = DateTime.now();
@@ -28,31 +32,43 @@ List<DateTime> daysInRange(DateTime first, DateTime last) {
   );
 }
 
-class ClientCalendarState extends State<ClientCalendar> {
-  late final ValueNotifier<List<TimeData>> _selectedEvents;
+class ScheduleClientCalendarState extends State<ScheduleClientCalendar> {
+  late final ValueNotifier<List<ParentTimeData>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
       .toggledOff; // Can be toggled on/off by longpressing a date
-  ClinicController bookingController = ClinicController();
+  ClinicController clinicController = ClinicController();
+  BookingController bookingController = BookingController();
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
-  Map<DateTime, List<TimeData>> events = {};
+  Map<DateTime, List<ParentTimeData>> events = {};
   Offset position = const Offset(0.0, 0.0);
   bool isLoading = false;
 
   Future<String> getName(int? clinic) async {
     String res = '';
-    bookingController.getClinic(clinic!).then((value) {
+    clinicController.getClinic(clinic!).then((value) {
       res = value.name;
     });
     return res;
   }
 
+  void _getUserdata() async {
+    await SharedPreferences.getInstance().then((value) {
+      String? token = value.getString('parentToken');
+      Map<String, dynamic> payload = JwtDecoder.decode(token!);
+      bookingController
+          .getParent(payload['ID'])
+          .then((value) => parent = value);
+    });
+  }
+
   @override
   void initState() {
-    bookingController.getTimeData(widget.clinic!.id).then((value) {
+    _getUserdata();
+    clinicController.getParentTimeData().then((value) {
       setState(() {
         events = value;
         isLoading = true;
@@ -71,11 +87,11 @@ class ClientCalendarState extends State<ClientCalendar> {
     super.dispose();
   }
 
-  List<TimeData> _getEventsForDay(DateTime day) {
+  List<ParentTimeData> _getEventsForDay(DateTime day) {
     return events[DateTime(day.year, day.month, day.day)] ?? [];
   }
 
-  List<TimeData> _getEventsForRange(DateTime start, DateTime end) {
+  List<ParentTimeData> _getEventsForRange(DateTime start, DateTime end) {
     // Implementation example
     final days = daysInRange(start, end);
 
@@ -117,6 +133,7 @@ class ClientCalendarState extends State<ClientCalendar> {
     }
   }
 
+  late Parent? parent;
   @override
   Widget build(BuildContext context) {
     final Size mq = MediaQuery.of(context).size;
@@ -127,12 +144,10 @@ class ClientCalendarState extends State<ClientCalendar> {
             children: [
               SizedBox(
                 height: mq.height * 0.07,
-                child: Center(
+                child: const Center(
                     child: Text(
-                  widget.clinic != null
-                      ? widget.clinic!.name
-                      : 'Parent Booking',
-                  style: const TextStyle(
+                  'Schedules',
+                  style: TextStyle(
                     color: Color.fromARGB(255, 255, 255, 255),
                     fontSize: 20,
                     fontFamily: 'Poppins',
@@ -146,7 +161,7 @@ class ClientCalendarState extends State<ClientCalendar> {
               const Padding(
                 padding: EdgeInsets.only(left: 10),
                 child: Text(
-                  'Booking Process',
+                  'Select Schedule',
                   style: TextStyle(
                     color: Color(0xFF006A5B),
                     fontSize: 20,
@@ -155,7 +170,7 @@ class ClientCalendarState extends State<ClientCalendar> {
                   ),
                 ),
               ),
-              TableCalendar<TimeData>(
+              TableCalendar<ParentTimeData>(
                 firstDay: kFirstDay,
                 lastDay: kLastDay,
                 focusedDay: _focusedDay,
@@ -197,55 +212,94 @@ class ClientCalendarState extends State<ClientCalendar> {
                     : const Text('Schedule'),
               ),
               SizedBox(
-                height: mq.height * 0.07,
-                child: ValueListenableBuilder<List<TimeData>>(
+                height: mq.height * 0.25,
+                child: ValueListenableBuilder<List<ParentTimeData>>(
                   valueListenable: _selectedEvents,
                   builder: (context, value, _) {
                     return ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
                         itemCount: value.length,
+                        shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => ScheduleBooking(
+                                  builder: (_) => ParentScheduleBooking(
                                     timeData: value[index],
                                   ),
                                 ),
                               );
                             },
                             child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 12.0,
-                                vertical: 4.0,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 10),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF006A5B),
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  ' ${value[index].startTime!.format(context)} - ${value[index].endTime!.format(context)}',
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600),
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 4.0,
                                 ),
-                              ),
-                            ),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 15),
+                                decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromARGB(255, 240, 244, 244),
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(value[index].clinic!.name),
+                                        Text(
+                                          ' ${value[index].startTime!.format(context)} - ${value[index].endTime!.format(context)}',
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        jumpToCallPage(context,
+                                            roomID:
+                                                value[index].booking.toString(),
+                                            localUserID: 'PARENT${parent!.id}',
+                                            localUserName: parent!.fullname);
+                                      },
+                                      child: const Icon(
+                                        Icons.videocam_rounded,
+                                        color: Color(0xFF006A5B),
+                                      ),
+                                    ),
+                                  ],
+                                )),
                           );
                         });
                   },
                 ),
-              )
+              ),
             ],
           ))
         : const Center(
             child: CircularProgressIndicator(),
           );
+  }
+
+  void jumpToCallPage(BuildContext context,
+      {required String roomID,
+      required String localUserID,
+      required String? localUserName}) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CallPage(
+          localUserID: localUserID,
+          localUserName: localUserName,
+          roomID: roomID,
+        ),
+      ),
+    );
   }
 }
