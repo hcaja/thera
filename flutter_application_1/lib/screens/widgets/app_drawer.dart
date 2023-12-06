@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/httplogout_controller.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
+import 'package:flutter_application_1/screens/parent/screens/parent_schedules.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -110,7 +111,12 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
             onTap: () {
-              // Handle schedule action here
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const ParentSchedules(),
+                ),
+              );
             },
           ),
           ListTile(

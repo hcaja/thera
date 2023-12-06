@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/http_bookingcontroller.dart';
 import 'package:flutter_application_1/models/booking.dart';
 import 'package:flutter_application_1/screens/widgets/booking_detail_form.dart';
-import 'package:flutter_application_1/screens/clinic/widgets/detail_time_duration.dart';
 import 'package:flutter_application_1/screens/widgets/template_background.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';

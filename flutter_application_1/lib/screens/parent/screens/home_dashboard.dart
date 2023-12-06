@@ -1,10 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/key_center.dart';
-import 'package:flutter_application_1/screens/auth/connection.dart';
-import 'package:flutter_application_1/screens/auth/login_as.dart';
 import 'package:flutter_application_1/screens/parent/custom_dash.dart';
-import 'package:flutter_application_1/screens/parent/screens/parent_schedules.dart';
 import 'package:flutter_application_1/screens/widgets/app_drawer.dart';
 import 'package:zego_express_engine/zego_express_engine.dart';
 

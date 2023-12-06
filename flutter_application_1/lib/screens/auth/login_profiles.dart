@@ -112,7 +112,7 @@ class _LoginProfileState extends State<LoginProfile> {
                         obscureText: true,
                         textInputAction: TextInputAction.done,
                         onSubmitted: (value) {
-                          employeeLogin //TODO: Redirect to clinic if status = 2
+                          employeeLogin
                               .employeeLogin(context, profile.email,
                                   passwordController.text)
                               .then((value) {
