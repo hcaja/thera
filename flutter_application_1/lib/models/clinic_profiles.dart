@@ -66,9 +66,9 @@ class Clinics {
   String email;
   String username;
   String password;
-  String bio;
-  String picture;
-  String name;
+  String? bio;
+  String? picture;
+  String? name;
   Clinics({
     required this.id,
     required this.email,

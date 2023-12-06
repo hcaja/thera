@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/httpregister_controller.dart';
+import 'package:flutter_application_1/screens/registration/widgets/custom_dropdown.dart';
+import 'package:flutter_application_1/screens/widgets/loading_button.dart';
 import 'package:logger/logger.dart';
 
 import 'widgets/custom_textfield.dart';
@@ -27,7 +29,9 @@ class _TherapistRegisterState extends State<TherapistRegister> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+  int role = 1;
   ClinicRegisterApi clinicRegisterApi = ClinicRegisterApi();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -120,6 +124,12 @@ class _TherapistRegisterState extends State<TherapistRegister> {
                     label: 'Confirm Password',
                     password: false,
                   ),
+                  const SizedBox(height: 14.0),
+                  CustomDropDownReg(
+                    setRole: (value) {
+                      role = value;
+                    },
+                  ),
                   // For attaching files
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,43 +150,49 @@ class _TherapistRegisterState extends State<TherapistRegister> {
                       // Register button
                       const SizedBox(height: 8.0),
                       Center(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF006A5B),
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 20.0,
-                              horizontal: 115.0,
-                            ),
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                          ),
-                          onPressed: () {
-                            clinicRegisterApi
-                                .clinicTherapistRegister(
-                                    'role',
-                                    fullNameController.text,
-                                    emailController.text,
-                                    passwordController.text,
-                                    addressController.text,
-                                    contactNumberController.text,
-                                    '1',
-                                    'M',
-                                    '',
-                                    userNameController.text)
-                                .then((value) {
-                              print(value);
-                              if (value) {
-                                Navigator.of(context).pop();
-                                widget.refresh!();
-                              }
-                            });
-                          },
-                          child: const Text(
-                            'Register',
-                          ),
-                        ),
+                        child: !isLoading
+                            ? ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF006A5B),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 20.0,
+                                    horizontal: 115.0,
+                                  ),
+                                  foregroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  clinicRegisterApi
+                                      .clinicTherapistRegister(
+                                          role.toString(),
+                                          fullNameController.text,
+                                          emailController.text,
+                                          passwordController.text,
+                                          addressController.text,
+                                          contactNumberController.text,
+                                          '1',
+                                          'M',
+                                          '',
+                                          userNameController.text)
+                                      .then((value) {
+                                    if (value) {
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      Navigator.of(context).pop();
+                                      widget.refresh!();
+                                    }
+                                  });
+                                },
+                                child: const Text(
+                                  'Register',
+                                ))
+                            : const CircularLoadingButton(),
                       ),
                     ],
                   ),

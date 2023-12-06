@@ -2,10 +2,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:delayed_display/delayed_display.dart';
+import 'package:flutter_application_1/controller/httpclinic_controller.dart';
 import 'package:flutter_application_1/controller/httplogin_controller.dart';
+import 'package:flutter_application_1/controller/httptherapist_controller.dart';
 import 'package:flutter_application_1/controller/permission_io.dart';
+import 'package:flutter_application_1/models/clinic_profiles.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
 import 'package:flutter_application_1/screens/auth/login_profiles.dart';
+import 'package:flutter_application_1/screens/clinic/widgets/clinic_profile.dart';
 import 'package:flutter_application_1/screens/parent/screens/home_dashboard.dart';
 import 'package:flutter_application_1/screens/therapist/ther_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,8 +32,30 @@ class _SplashScreenState extends State<SplashScreen> {
   late Size mq;
   late SharedPreferences prefs;
   LoginType login = LoginType.notLoggedIn;
+  TherapistController therapistController = TherapistController();
+  ClinicController clinicController = ClinicController();
+  Clinics? clinics;
   bool _logoVisible = false;
   bool _textVisible = false;
+
+  Future<String> checktherapist() async {
+    String role = '';
+    await therapistController.getTherapist().then((value) async {
+      role = value.role;
+      await checkClinic(value.clinicAccount).then((value) {
+        clinics = value;
+      });
+    });
+    return role;
+  }
+
+  Future<Clinics?> checkClinic(int id) async {
+    Clinics? profile;
+    await clinicController.getClinic(id).then((value) {
+      profile = value;
+    });
+    return profile;
+  }
 
   @override
   void initState() {
@@ -74,12 +100,26 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         );
       } else if (login == LoginType.therapist) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) => const TherapistProfile(),
-          ),
-        );
+        checktherapist().then((value) {
+          if (value == '2') {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (_) => ClinicProfile(
+                  clinics: clinics,
+                  isEditable: true,
+                ),
+              ),
+            );
+          } else {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const TherapistProfile(),
+              ),
+            );
+          }
+        });
       } else if (login == LoginType.parent) {
         Navigator.pushReplacement(
           context,

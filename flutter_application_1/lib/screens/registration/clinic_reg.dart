@@ -3,6 +3,7 @@ import 'package:flutter_application_1/controller/httpregister_controller.dart';
 import 'package:flutter_application_1/controller/pick_image.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
 import 'package:flutter_application_1/screens/registration/widgets/custom_textfield.dart';
+import 'package:flutter_application_1/screens/widgets/loading_button.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ClinicRegister extends StatefulWidget {
@@ -24,6 +25,7 @@ class _ClinicRegisterState extends State<ClinicRegister> {
   ClinicGovFiles therapistId = ClinicGovFiles();
   ClinicRegisterApi controller = ClinicRegisterApi();
   XFile? _attachFile;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -151,47 +153,52 @@ class _ClinicRegisterState extends State<ClinicRegister> {
                                 });
                               },
                             ),
-
-                      // Register button
                       const SizedBox(height: 8.0),
                       Center(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF006A5B),
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 20.0,
-                              horizontal: 115.0,
-                            ),
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                          ),
-                          onPressed: () {
-                            controller
-                                .clinicRegister(
-                              clinicNameController.text,
-                              userNameController.text,
-                              emailController.text,
-                              contactNumberController.text,
-                              addressController.text,
-                              passwordController.text,
-                              confirmPasswordController.text,
-                            )
-                                .then((value) {
-                              if (value) {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => const LoginAs(),
+                        child: !isLoading
+                            ? ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF006A5B),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 20.0,
+                                    horizontal: 115.0,
                                   ),
-                                );
-                              }
-                            });
-                          },
-                          child: const Text(
-                            'Register',
-                          ),
-                        ),
+                                  foregroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  controller
+                                      .clinicRegister(
+                                    clinicNameController.text,
+                                    userNameController.text,
+                                    emailController.text,
+                                    contactNumberController.text,
+                                    addressController.text,
+                                    passwordController.text,
+                                    confirmPasswordController.text,
+                                  )
+                                      .then((value) {
+                                    if (value) {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => const LoginAs(),
+                                        ),
+                                      );
+                                    }
+                                  });
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                },
+                                child: const Text(
+                                  'Register',
+                                ))
+                            : const CircularLoadingButton(),
                       ),
                     ],
                   ),

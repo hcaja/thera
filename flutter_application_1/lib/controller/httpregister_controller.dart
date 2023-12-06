@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 class ClinicRegisterApi {
   late SharedPreferences prefs;
   Future<bool> clinicRegister(
-    String fullName,
+    String clinicName,
     String userName,
     String email,
     String contactNumber,
@@ -23,6 +23,7 @@ class ClinicRegisterApi {
       "username": userName,
       "email": email,
       "password": password,
+      "name": clinicName,
     };
     var response = await http.post(Uri.parse(baseUrl + clinicRegisterUrl),
         headers: {"Content-Type": "application/json"},
@@ -31,7 +32,7 @@ class ClinicRegisterApi {
     if (response.statusCode == 200) {
       if (jsonResponse['access'] != null) {
         Fluttertoast.showToast(
-            msg: "Registration Complete, Please wait for aproval",
+            msg: "Registration Complete, Please wait for approval",
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.CENTER,
             timeInSecForIosWeb: 1,
@@ -73,7 +74,7 @@ class ClinicRegisterApi {
       "NAME": name,
       "email": email,
       "password": password,
-      "CLINIC_ACCOUNT": payload['ID'], //TODO
+      "CLINIC_ACCOUNT": payload['ID'],
       "ADDRESS": address,
       "CONTACT_NO": contact,
       "AGE": age,

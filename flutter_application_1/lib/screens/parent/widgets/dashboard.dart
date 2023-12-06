@@ -207,7 +207,7 @@ class _DashboardState extends State<Dashboard> {
                                     height: mq.height * 0.13,
                                     width: mq.width * 0.5,
                                     child: Image.network(
-                                      clinics[index].picture,
+                                      clinics[index].picture!,
                                       height: 150,
                                       fit: BoxFit.fill,
                                       // fit: BoxFit.contain,
@@ -221,7 +221,7 @@ class _DashboardState extends State<Dashboard> {
                                     left: 10,
                                     right: 10,
                                   ),
-                                  child: Text(clinics[index].name,
+                                  child: Text(clinics[index].name!,
                                       // textAlign: TextAlign.left,
                                       style: const TextStyle(
                                           fontSize: 16.0,
@@ -247,7 +247,7 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                                 const SizedBox(height: 5.0),
                                 Text(
-                                  clinics[index].bio,
+                                  clinics[index].bio!,
                                   maxLines: (mq.height * 0.007).round(),
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(fontSize: 11.0),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/httpclinic_controller.dart';
 import 'package:flutter_application_1/controller/httplogin_controller.dart';
 import 'package:flutter_application_1/controller/httplogout_controller.dart';
 import 'package:flutter_application_1/models/clinic_profiles.dart';
-import 'package:flutter_application_1/screens/auth/login_as.dart';
+import 'package:flutter_application_1/screens/clinic/widgets/clinic_profile.dart';
 import 'package:flutter_application_1/screens/registration/therapist_reg.dart';
 
 import '../therapist/ther_profile.dart';
@@ -17,6 +18,7 @@ class LoginProfile extends StatefulWidget {
 class _LoginProfileState extends State<LoginProfile> {
   final TextEditingController passwordController = TextEditingController();
   ClinicLogin controller = ClinicLogin();
+  ClinicController clinicController = ClinicController();
   EmployeeLogin employeeLogin = EmployeeLogin();
   List<Employee>? profiles;
 
@@ -110,17 +112,32 @@ class _LoginProfileState extends State<LoginProfile> {
                         obscureText: true,
                         textInputAction: TextInputAction.done,
                         onSubmitted: (value) {
-                          employeeLogin
+                          employeeLogin //TODO: Redirect to clinic if status = 2
                               .employeeLogin(context, profile.email,
                                   passwordController.text)
                               .then((value) {
                             if (value) {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const TherapistProfile(),
-                                ),
-                              );
+                              clinicController
+                                  .getClinic(profile.clinicAccount)
+                                  .then((value) {
+                                if (profile.role == '2') {
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (context) => ClinicProfile(
+                                        clinics: value,
+                                        isEditable: true,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const TherapistProfile(),
+                                    ),
+                                  );
+                                }
+                              });
                             }
                           });
                         },

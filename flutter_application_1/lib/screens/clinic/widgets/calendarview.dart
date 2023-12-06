@@ -45,7 +45,7 @@ class ClientCalendarState extends State<ClientCalendar> {
   Future<String> getName(int? clinic) async {
     String res = '';
     bookingController.getClinic(clinic!).then((value) {
-      res = value.name;
+      res = value.name!;
     });
     return res;
   }
@@ -130,7 +130,7 @@ class ClientCalendarState extends State<ClientCalendar> {
                 child: Center(
                     child: Text(
                   widget.clinic != null
-                      ? widget.clinic!.name
+                      ? widget.clinic!.name!
                       : 'Parent Booking',
                   style: const TextStyle(
                     color: Color.fromARGB(255, 255, 255, 255),

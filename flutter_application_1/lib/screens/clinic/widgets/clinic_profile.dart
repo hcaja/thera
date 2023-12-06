@@ -4,6 +4,7 @@ import 'package:flutter_application_1/models/clinic_profiles.dart';
 import 'package:flutter_application_1/models/services_offered.dart';
 import 'package:flutter_application_1/screens/auth/connection.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
+import 'package:flutter_application_1/screens/booking/screens/booking.dart';
 import 'package:flutter_application_1/screens/clinic/screens/parent_booking.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
@@ -401,7 +402,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
                         ),
                         child: CircleAvatar(
                           radius: 70,
-                          backgroundImage: NetworkImage(clinic!.picture),
+                          backgroundImage: NetworkImage(clinic!.picture!),
                         ),
                       ),
 
@@ -410,7 +411,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
 
                       // Therapist Name
                       Text(
-                        clinic!.name,
+                        clinic!.name!,
                         style: const TextStyle(
                           color: Color(0xFF67AFA5),
                           fontSize: 20,
@@ -460,7 +461,7 @@ class _ClinicProfileState extends State<ClinicProfile> {
                       // About Us content
 
                       Text(
-                        clinic!.bio,
+                        clinic!.bio!,
                         style: const TextStyle(
                           height: 1.3,
                           fontSize: 15.0,
@@ -647,14 +648,23 @@ class _ClinicProfileState extends State<ClinicProfile> {
                   color: const Color(0xFF006A5B), // Set the background color
                   child: InkWell(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ParentBooking(
-                            clinics: clinic,
+                      if (widget.isEditable) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const BookingScreen(),
                           ),
-                        ),
-                      );
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ParentBooking(
+                              clinics: clinic,
+                            ),
+                          ),
+                        );
+                      }
                     },
                     child: SizedBox(
                       width: 60, // Adjust the size of the circular FAB

@@ -50,7 +50,7 @@ class ScheduleClientCalendarState extends State<ScheduleClientCalendar> {
   Future<String> getName(int? clinic) async {
     String res = '';
     clinicController.getClinic(clinic!).then((value) {
-      res = value.name;
+      res = value.name!;
     });
     return res;
   }
@@ -251,7 +251,7 @@ class ScheduleClientCalendarState extends State<ScheduleClientCalendar> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(value[index].clinic!.name),
+                                        Text(value[index].clinic!.name!),
                                         Text(
                                           ' ${value[index].startTime!.format(context)} - ${value[index].endTime!.format(context)}',
                                           style: const TextStyle(
