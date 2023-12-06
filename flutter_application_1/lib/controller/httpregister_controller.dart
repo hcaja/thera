@@ -111,4 +111,50 @@ class ClinicRegisterApi {
       return false;
     }
   }
+
+  Future<bool> parentRegister(
+    String fullname,
+    String username,
+    String email,
+    String contact,
+    String address,
+    String password,
+  ) async {
+    var reqBody = {
+      "FULLNAME": fullname,
+      "username": username,
+      "email": email,
+      "CONTACT_NUMBER": contact,
+      "ADDRESS": address,
+      "password": password,
+    };
+    var response = await http.post(Uri.parse(baseUrl + parentRegisterUrl),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(reqBody));
+
+    var jsonResponse = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      if (jsonResponse['access'] != null) {
+        Fluttertoast.showToast(
+            msg: "Account Created",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+      return true;
+    } else {
+      Fluttertoast.showToast(
+          msg: jsonResponse,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      return false;
+    }
+  }
 }
