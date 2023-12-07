@@ -4,7 +4,6 @@ import 'package:flutter_application_1/screens/map/map_page.dart';
 
 import '../../../controller/httpclinic_controller.dart';
 import '../../../models/clinic_profiles.dart';
-// import 'package:flutter_application_1/screens/parent/dashboard_tabbar.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -16,11 +15,33 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   ClinicController controller = ClinicController();
   List<Clinics> clinics = [];
+  List<Clinics> filteredItems = [];
+
+  void filterSearchResults(String query) {
+    List<Clinics> searchResults = [];
+
+    if (query.isNotEmpty) {
+      for (var item in clinics) {
+        if (item.name!.toLowerCase().contains(query.toLowerCase())) {
+          searchResults.add(item);
+        }
+      }
+    } else {
+      searchResults.addAll(clinics);
+    }
+
+    setState(() {
+      filteredItems.clear();
+      filteredItems.addAll(searchResults);
+    });
+  }
+
   @override
   void initState() {
     controller.getClinics().then((value) {
       setState(() {
         clinics = value;
+        filteredItems.addAll(clinics);
       });
     });
     super.initState();
@@ -139,6 +160,7 @@ class _DashboardState extends State<Dashboard> {
                       ],
                     ),
                     child: TextField(
+                      onChanged: filterSearchResults,
                       decoration: InputDecoration(
                         hintText: 'Search...',
                         border: InputBorder.none,
@@ -176,7 +198,7 @@ class _DashboardState extends State<Dashboard> {
                             context,
                             MaterialPageRoute(
                               builder: (_) => HomeClinic(
-                                clinics: clinics[index],
+                                clinics: filteredItems[index],
                                 isEditable: false,
                               ),
                             ),
@@ -207,7 +229,7 @@ class _DashboardState extends State<Dashboard> {
                                     height: mq.height * 0.13,
                                     width: mq.width * 0.5,
                                     child: Image.network(
-                                      clinics[index].picture!,
+                                      filteredItems[index].picture!,
                                       height: 150,
                                       fit: BoxFit.fill,
                                       // fit: BoxFit.contain,
@@ -221,7 +243,7 @@ class _DashboardState extends State<Dashboard> {
                                     left: 10,
                                     right: 10,
                                   ),
-                                  child: Text(clinics[index].name!,
+                                  child: Text(filteredItems[index].name!,
                                       // textAlign: TextAlign.left,
                                       style: const TextStyle(
                                           fontSize: 16.0,
@@ -247,7 +269,7 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                                 const SizedBox(height: 5.0),
                                 Text(
-                                  clinics[index].bio!,
+                                  filteredItems[index].bio!,
                                   maxLines: (mq.height * 0.007).round(),
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(fontSize: 11.0),
@@ -258,7 +280,7 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       );
                     },
-                    childCount: clinics.length,
+                    childCount: filteredItems.length,
                   ),
                 ),
               ],
