@@ -18,5 +18,6 @@ class Logout {
     prefs = await SharedPreferences.getInstance();
     await prefs.remove('employeeToken');
     await prefs.remove('clinicToken');
+    await prefs.remove('parentToken');
   }
 }

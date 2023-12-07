@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/registration/therapist_reg.dart';
 
 class SelectRegister extends StatelessWidget {
   const SelectRegister({Key? key}) : super(key: key);
@@ -82,7 +83,14 @@ class SelectRegister extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/therapistregister');
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const TherapistRegister(
+                          type: 'ind',
+                        ),
+                      ),
+                    );
                   },
                   child: const Text(
                     'Register as Therapist',

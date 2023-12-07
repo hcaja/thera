@@ -93,6 +93,32 @@ class EmployeeLogin {
       return false;
     }
   }
+
+  Future<bool> soloEmployeeLogin(username, password) async {
+    prefs = await SharedPreferences.getInstance();
+    var reqBody = {"email": username, "password": password};
+    var response = await http.post(Uri.parse(baseUrl + soloEmployeeLoginUrl),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(reqBody));
+    var jsonResponse = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      if (jsonResponse['access'] != null) {
+        var myToken = jsonResponse['access'];
+        prefs.setString('employeeToken', myToken);
+      }
+      return true;
+    } else {
+      Fluttertoast.showToast(
+          msg: jsonResponse,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      return false;
+    }
+  }
 }
 
 class ParentLoginController {

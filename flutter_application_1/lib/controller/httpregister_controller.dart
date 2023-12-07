@@ -112,6 +112,59 @@ class ClinicRegisterApi {
     }
   }
 
+  Future<bool> soloTherapistRegister(
+    String name,
+    String email,
+    String password,
+    String address,
+    String contact,
+    String age,
+    String sex,
+    String profilePic,
+    String username,
+  ) async {
+    var reqBody = {
+      "ROLE": "1",
+      "NAME": name,
+      "email": email,
+      "password": password,
+      "ADDRESS": address,
+      "CONTACT_NO": contact,
+      "AGE": age,
+      "SEX": sex,
+      "PROFILE_PICTURE": profilePic,
+      "username": username,
+    };
+    var response = await http.post(
+        Uri.parse(baseUrl + soloTherapistRegisterUrl),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(reqBody));
+    var jsonResponse = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      if (jsonResponse['access'] != null) {
+        Fluttertoast.showToast(
+            msg: "Account Created",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+      return true;
+    } else {
+      Fluttertoast.showToast(
+          msg: jsonResponse,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      return false;
+    }
+  }
+
   Future<bool> parentRegister(
     String fullname,
     String username,

@@ -40,6 +40,32 @@ class TherapistController {
     return objects[0];
   }
 
+  Future<List<Employee>> getFreelanceTherapist() async {
+    var response = await http.get(Uri.parse("$baseUrl$getFreelanceUrl"),
+        headers: {"Content-Type": "application/json"});
+
+    final List<dynamic> jsonData = json.decode(response.body);
+
+    List<Employee> objects = jsonData
+        .map((json) => Employee(
+              id: json["ID"],
+              email: json["EMAIL"],
+              password: json["PASSWORD"],
+              username: json["USERNAME"],
+              name: json["NAME"],
+              role: json["ROLE"],
+              clinicAccount: json["CLINIC_ACCOUNT"],
+              address: json["ADDRESS"],
+              contactNo: json["CONTACT_NO"],
+              age: json["AGE"],
+              sex: json["SEX"],
+              profilePicture: json["PROFILE_PICTURE"],
+              about: json["ABOUT"],
+            ))
+        .toList();
+    return objects;
+  }
+
   Future<List<Services>> getServices() async {
     var response = await http.get(Uri.parse("$baseUrl$getServicesUrl"),
         headers: {"Content-Type": "application/json"});

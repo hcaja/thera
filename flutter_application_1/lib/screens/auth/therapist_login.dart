@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/httplogin_controller.dart';
+import 'package:flutter_application_1/screens/therapist/ther_profile.dart';
 
 class TherapistLogin extends StatefulWidget {
   const TherapistLogin({Key? key}) : super(key: key);
@@ -10,6 +12,8 @@ class TherapistLogin extends StatefulWidget {
 class _TherapistLoginState extends State<TherapistLogin> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  EmployeeLogin employeeLogin = EmployeeLogin();
 
   @override
   void dispose() {
@@ -135,7 +139,20 @@ class _TherapistLoginState extends State<TherapistLogin> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      employeeLogin
+                          .soloEmployeeLogin(
+                              emailController.text, passwordController.text)
+                          .then((value) {
+                        if (value) {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const TherapistProfile(),
+                            ),
+                          );
+                        }
+                      });
+                    },
                     child: const Text(
                       'Login',
                     ),

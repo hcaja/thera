@@ -11,6 +11,7 @@ class AppDrawerTherapist extends StatelessWidget {
         MaterialPageRoute(
           builder: (_) => const LoginAs(),
         ));
+    //Navigator.pop(context);
   }
 
   @override
@@ -140,8 +141,9 @@ class AppDrawerTherapist extends StatelessWidget {
             leading: const Icon(Icons.logout), // Icon for logout
             title: const Text('Logout'), // Text for logout
             onTap: () {
-              logout.employeeLogout;
-              navigateOut(context);
+              logout.employeeLogout().then((value) {
+                navigateOut(context);
+              });
             },
           ),
         ],

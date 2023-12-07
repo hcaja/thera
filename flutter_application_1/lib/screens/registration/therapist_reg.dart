@@ -124,12 +124,14 @@ class _TherapistRegisterState extends State<TherapistRegister> {
                     label: 'Confirm Password',
                     password: false,
                   ),
+
                   const SizedBox(height: 14.0),
-                  CustomDropDownReg(
-                    setRole: (value) {
-                      role = value;
-                    },
-                  ),
+                  if (widget.type != 'ind')
+                    CustomDropDownReg(
+                      setRole: (value) {
+                        role = value;
+                      },
+                    ),
                   // For attaching files
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -167,27 +169,50 @@ class _TherapistRegisterState extends State<TherapistRegister> {
                                   setState(() {
                                     isLoading = true;
                                   });
-                                  clinicRegisterApi
-                                      .clinicTherapistRegister(
-                                          role.toString(),
-                                          fullNameController.text,
-                                          emailController.text,
-                                          passwordController.text,
-                                          addressController.text,
-                                          contactNumberController.text,
-                                          '1',
-                                          'M',
-                                          '',
-                                          userNameController.text)
-                                      .then((value) {
-                                    if (value) {
-                                      setState(() {
-                                        isLoading = true;
-                                      });
-                                      Navigator.of(context).pop();
-                                      widget.refresh!();
-                                    }
-                                  });
+                                  if (widget.type == 'ind') {
+                                    clinicRegisterApi
+                                        .soloTherapistRegister(
+                                            fullNameController.text,
+                                            emailController.text,
+                                            passwordController.text,
+                                            addressController.text,
+                                            contactNumberController.text,
+                                            '1',
+                                            'M',
+                                            '',
+                                            userNameController.text)
+                                        .then((value) {
+                                      if (value) {
+                                        setState(() {
+                                          isLoading = true;
+                                        });
+                                        Navigator.of(context).pop();
+                                        widget.refresh!();
+                                      }
+                                    });
+                                  } else {
+                                    clinicRegisterApi
+                                        .clinicTherapistRegister(
+                                            role.toString(),
+                                            fullNameController.text,
+                                            emailController.text,
+                                            passwordController.text,
+                                            addressController.text,
+                                            contactNumberController.text,
+                                            '1',
+                                            'M',
+                                            '',
+                                            userNameController.text)
+                                        .then((value) {
+                                      if (value) {
+                                        setState(() {
+                                          isLoading = true;
+                                        });
+                                        Navigator.of(context).pop();
+                                        widget.refresh!();
+                                      }
+                                    });
+                                  }
                                 },
                                 child: const Text(
                                   'Register',

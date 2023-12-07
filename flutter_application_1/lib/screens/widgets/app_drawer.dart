@@ -160,8 +160,7 @@ class AppDrawer extends StatelessWidget {
             leading: const Icon(Icons.logout), // Icon for logout
             title: const Text('Logout'), // Text for logout
             onTap: () {
-              logout.employeeLogout;
-              navigateOut(context);
+              logout.allLogout().then((value) => navigateOut(context));
             },
           ),
         ],
