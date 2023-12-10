@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/httplogout_controller.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
+import 'package:flutter_application_1/screens/materials/screens/therapist_materials.dart';
 
 class AppDrawerTherapist extends StatelessWidget {
   const AppDrawerTherapist({super.key});
@@ -81,7 +82,11 @@ class AppDrawerTherapist extends StatelessWidget {
               ),
             ),
             onTap: () {
-              // Handle materials action here
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const TherapistMaterials(),
+                  ));
             },
           ),
           ListTile(
