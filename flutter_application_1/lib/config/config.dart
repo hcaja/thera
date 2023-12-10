@@ -1,5 +1,5 @@
 const railwayHost = 'https://therapeasebackend-production.up.railway.app';
-const ipHost = 'http://192.168.0.30:5500';
+const ipHost = 'http://192.168.137.138:5500';
 const baseUrl = ipHost;
 const clinicLoginUrl = '/clinic/login';
 const clinicRegisterUrl = '/clinic/register';
