@@ -102,6 +102,23 @@ class TherapistController {
     return objects;
   }
 
+  Future<List<Services>> getSoloServices(int id) async {
+    var response = await http.get(
+        Uri.parse("$baseUrl$getSelectedServicesUrl$id"),
+        headers: {"Content-Type": "application/json"});
+
+    final List<dynamic> jsonData = json.decode(response.body);
+
+    List<Services> objects = jsonData
+        .map((json) => Services(
+              id: json["ID"],
+              desc: json["DESC"],
+            ))
+        .toList();
+
+    return objects;
+  }
+
   Future<bool> saveServices(int id, List<Services> services) async {
     Map<String, dynamic> requestBody = {
       'servList': services.map((service) => service.toJson()).toList(),

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/httptherapist_controller.dart';
 import 'package:flutter_application_1/models/clinic_profiles.dart';
 import 'package:flutter_application_1/screens/booking/screens/booking.dart';
+import 'package:flutter_application_1/screens/clinic/screens/parent_booking.dart';
 import 'package:flutter_application_1/screens/therapist/ther_tab.dart';
+import 'package:flutter_application_1/screens/therapist/ther_view_profile_tab.dart';
+import 'package:flutter_application_1/screens/widgets/app_drawer.dart';
 import 'package:flutter_application_1/screens/widgets/app_drawer_therapist.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
@@ -11,7 +14,9 @@ import '../../models/services_offered.dart';
 // import 'package:flutter_application_1/calendar.dart';
 
 class TherapistProfile extends StatefulWidget {
-  const TherapistProfile({Key? key}) : super(key: key);
+  const TherapistProfile({Key? key, this.viewEmployee}) : super(key: key);
+
+  final Employee? viewEmployee;
 
   @override
   State<TherapistProfile> createState() => _TherapistProfileState();
@@ -21,6 +26,7 @@ class _TherapistProfileState extends State<TherapistProfile> {
   TherapistController controller = TherapistController();
   TextEditingController aboutController = TextEditingController();
   bool isLoading = false;
+  bool view = true;
   Employee? employee;
   List<Services> servicesOffered = [];
   List<Services> selectedServicesOffered = [];
@@ -164,30 +170,51 @@ class _TherapistProfileState extends State<TherapistProfile> {
 
   @override
   void initState() {
-    controller.getTherapist().then((value) {
-      setState(() {
-        employee = value;
-        aboutController.text = value.about!;
+    if (widget.viewEmployee == null) {
+      controller.getTherapist().then((value) {
+        setState(() {
+          view = false;
+          employee = value;
+          aboutController.text = value.about!;
+        });
       });
-    });
-    controller.getServices().then((value) {
-      setState(() {
-        servicesOffered = value;
-        controller.getSelectedServices().then((value) {
-          setState(() {
-            for (var selected in value) {
-              for (var lookup in servicesOffered) {
-                if (lookup.id == selected.id) {
-                  selectedServicesOffered.add(lookup);
+      controller.getServices().then((value) {
+        setState(() {
+          servicesOffered = value;
+          controller.getSelectedServices().then((value) {
+            setState(() {
+              for (var selected in value) {
+                for (var lookup in servicesOffered) {
+                  if (lookup.id == selected.id) {
+                    selectedServicesOffered.add(lookup);
+                  }
                 }
               }
-            }
-            isLoading = true;
+              isLoading = true;
+            });
           });
         });
       });
-    });
-
+    } else {
+      employee = widget.viewEmployee;
+      controller.getServices().then((value) {
+        setState(() {
+          servicesOffered = value;
+          controller.getSoloServices(employee!.id).then((value) {
+            setState(() {
+              for (var selected in value) {
+                for (var lookup in servicesOffered) {
+                  if (lookup.id == selected.id) {
+                    selectedServicesOffered.add(lookup);
+                  }
+                }
+              }
+              isLoading = true;
+            });
+          });
+        });
+      });
+    }
     super.initState();
   }
 
@@ -215,7 +242,7 @@ class _TherapistProfileState extends State<TherapistProfile> {
       ),
 
       // drawer or sidebar of hamburger menu
-      drawer: const AppDrawerTherapist(),
+      drawer: view ? const AppDrawer() : const AppDrawerTherapist(),
 
       // body
       body: !isLoading
@@ -264,8 +291,10 @@ class _TherapistProfileState extends State<TherapistProfile> {
                         const SizedBox(height: 30),
 
                         // - Custom Tab bar -
-                        const Center(
-                          child: TherDashTab(),
+                        Center(
+                          child: !view
+                              ? const TherDashTab()
+                              : const ViewTherapistTab(),
                         ),
 
                         // Padding added before the CustomTabBar to avoid overlap
@@ -321,20 +350,22 @@ class _TherapistProfileState extends State<TherapistProfile> {
                                     fontWeight: FontWeight.w900,
                                   ),
                                 ),
-                                GestureDetector(
-                                  onTap: () {
-                                    _openAnimatedDialog(
-                                      context,
-                                      'Edit About',
-                                      '...',
-                                    );
-                                  },
-                                  child: const Icon(
-                                    Icons.edit,
-                                    size: 16,
-                                    color: Color(0xFF999999),
-                                  ),
-                                ),
+                                view
+                                    ? Container()
+                                    : GestureDetector(
+                                        onTap: () {
+                                          _openAnimatedDialog(
+                                            context,
+                                            'Edit About',
+                                            '...',
+                                          );
+                                        },
+                                        child: const Icon(
+                                          Icons.edit,
+                                          size: 16,
+                                          color: Color(0xFF999999),
+                                        ),
+                                      ),
                               ],
                             ),
 
@@ -375,19 +406,21 @@ class _TherapistProfileState extends State<TherapistProfile> {
                                     fontWeight: FontWeight.w900,
                                   ),
                                 ),
-                                GestureDetector(
-                                  onTap: () {
-                                    _openAnimatedDialogService(
-                                        context,
-                                        servicesOffered,
-                                        selectedServicesOffered);
-                                  },
-                                  child: const Icon(
-                                    Icons.edit,
-                                    size: 16,
-                                    color: Color(0xFF999999),
-                                  ),
-                                ),
+                                view
+                                    ? Container()
+                                    : GestureDetector(
+                                        onTap: () {
+                                          _openAnimatedDialogService(
+                                              context,
+                                              servicesOffered,
+                                              selectedServicesOffered);
+                                        },
+                                        child: const Icon(
+                                          Icons.edit,
+                                          size: 16,
+                                          color: Color(0xFF999999),
+                                        ),
+                                      ),
                               ],
                             ),
                           ],
@@ -453,14 +486,14 @@ class _TherapistProfileState extends State<TherapistProfile> {
                         const SizedBox(height: 20),
 
                         // Prices
-                        const Column(
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
+                                const Text(
                                   'PRICES',
                                   style: TextStyle(
                                     color: Color(0xFF999999),
@@ -469,11 +502,13 @@ class _TherapistProfileState extends State<TherapistProfile> {
                                     fontWeight: FontWeight.w900,
                                   ),
                                 ),
-                                Icon(
-                                  Icons.edit,
-                                  size: 16,
-                                  color: Color(0xFF999999),
-                                ),
+                                view
+                                    ? Container()
+                                    : const Icon(
+                                        Icons.edit,
+                                        size: 16,
+                                        color: Color(0xFF999999),
+                                      ),
                               ],
                             ),
                           ],
@@ -532,12 +567,31 @@ class _TherapistProfileState extends State<TherapistProfile> {
                             const Color(0xFF006A5B), // Set the background color
                         child: InkWell(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const BookingScreen(),
-                              ),
-                            );
+                            if (view) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => ParentBooking(
+                                    clinics: Clinics(
+                                      id: 0,
+                                      email: '',
+                                      username: '',
+                                      password: '',
+                                      bio: '',
+                                      picture: '',
+                                      name: '',
+                                    ),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const BookingScreen(),
+                                ),
+                              );
+                            }
                           },
                           child: SizedBox(
                             width: 60, // Adjust the size of the circular FAB

@@ -57,11 +57,18 @@ class BookingController {
     late SharedPreferences prefs;
     prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('clinicToken');
-    Map<String, dynamic> payload = JwtDecoder.decode(token!);
 
-    var response = await http.get(
-        Uri.parse("$baseUrl$getTimeDataUrl${payload['ID']}"),
-        headers: {"Content-Type": "application/json"});
+    late dynamic response;
+
+    if (token != null) {
+      Map<String, dynamic> payload = JwtDecoder.decode(token!);
+      response = await http.get(
+          Uri.parse("$baseUrl$getTimeDataUrl${payload['ID']}"),
+          headers: {"Content-Type": "application/json"});
+    } else {
+      response = await http.get(Uri.parse("$baseUrl$getSoloTimeDataUrl${0}"),
+          headers: {"Content-Type": "application/json"});
+    }
 
     final List<dynamic> responseData = json.decode(response.body);
 

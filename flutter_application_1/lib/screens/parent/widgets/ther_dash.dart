@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/httptherapist_controller.dart';
 import 'package:flutter_application_1/screens/map/map_page.dart';
+import 'package:flutter_application_1/screens/therapist/ther_profile.dart';
 
 import '../../../models/clinic_profiles.dart';
 // import 'package:flutter_application_1/screens/parent/dashboard_tabbar.dart';
@@ -171,15 +172,14 @@ class _TherapistsDashboardState extends State<TherapistsDashboard> {
                     (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (_) => HomeClinic(
-                          //       clinics: clinics[index],
-                          //       isEditable: false,
-                          //     ),
-                          //   ),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => TherapistProfile(
+                                viewEmployee: employee[index],
+                              ),
+                            ),
+                          );
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
