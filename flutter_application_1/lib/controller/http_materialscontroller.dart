@@ -11,15 +11,8 @@ class MaterialsController {
 
     final List<dynamic> jsonData = json.decode(response.body);
 
-    List<ClinicMaterial> objects = jsonData
-        .map((json) => ClinicMaterial(
-              id: json["ID"],
-              title: json["TITLE"],
-              desc: json["DESC"],
-              type: json["TYPE"],
-              file: json["FILE"],
-            ))
-        .toList();
+    List<ClinicMaterial> objects =
+        jsonData.map((json) => ClinicMaterial.fromJson(json)).toList();
 
     return objects;
   }
