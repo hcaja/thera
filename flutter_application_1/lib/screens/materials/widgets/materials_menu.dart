@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/http_materialscontroller.dart';
 import 'package:flutter_application_1/models/materials.dart';
+import 'package:flutter_application_1/screens/materials/screens/add_materials.dart';
 
 class MaterialsMenu extends StatefulWidget {
   const MaterialsMenu({Key? key}) : super(key: key);
@@ -212,7 +213,7 @@ class _MaterialsMenuState extends State<MaterialsMenu> {
                                     height: mq.height * 0.13,
                                     width: mq.width * 0.5,
                                     child: Image.network(
-                                      filteredItems[index].file,
+                                      filteredItems[index].thumbnail,
                                       height: 150,
                                       fit: BoxFit.fill,
                                       // fit: BoxFit.contain,
@@ -277,7 +278,14 @@ class _MaterialsMenuState extends State<MaterialsMenu> {
               child: Material(
                 color: const Color(0xFF006A5B), // FAB background color
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const AddMaterialScreen(),
+                      ),
+                    );
+                  },
                   child: const SizedBox(
                     width: 60, // size of the circular FAB
                     height: 60, // size of the circular FAB

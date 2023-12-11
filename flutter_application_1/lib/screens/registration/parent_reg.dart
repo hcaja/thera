@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/httpregister_controller.dart';
 import 'package:flutter_application_1/controller/pick_image.dart';
-import 'package:flutter_application_1/screens/registration/widgets/custom_textfield.dart';
+import 'package:flutter_application_1/screens/widgets/custom_textfield.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 

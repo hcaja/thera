@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/materials/widgets/materials_add.dart';
 import 'package:flutter_application_1/screens/materials/widgets/materials_menu.dart';
 import 'package:flutter_application_1/screens/materials/widgets/materials_tab.dart';
 import 'package:flutter_application_1/screens/widgets/app_drawer_therapist.dart';
 
-class TherapistMaterials extends StatefulWidget {
-  const TherapistMaterials({super.key});
+class AddMaterialScreen extends StatefulWidget {
+  const AddMaterialScreen({super.key});
 
   @override
-  TherapistMaterialsState createState() => TherapistMaterialsState();
+  AddMaterialScreenState createState() => AddMaterialScreenState();
 }
 
-class TherapistMaterialsState extends State<TherapistMaterials> {
+class AddMaterialScreenState extends State<AddMaterialScreen> {
   int _currentIndex = 0;
 
   @override
@@ -92,7 +93,7 @@ class TherapistMaterialsState extends State<TherapistMaterials> {
                 child: IndexedStack(
                   index: _currentIndex,
                   children: const [
-                    MaterialsMenu(),
+                    AddMaterials(),
                   ],
                 ),
               )

@@ -4,7 +4,7 @@ import 'package:flutter_application_1/screens/registration/widgets/custom_dropdo
 import 'package:flutter_application_1/screens/widgets/loading_button.dart';
 import 'package:logger/logger.dart';
 
-import 'widgets/custom_textfield.dart';
+import '../widgets/custom_textfield.dart';
 
 final logger = Logger(); // Instantiate the logger at the top of the file
 
