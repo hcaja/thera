@@ -60,8 +60,12 @@ class _ScheduleBookingState extends State<ScheduleBooking> {
           noteController.text,
         )
             .then((value) {
-          isSaving = false;
-          Navigator.pop(context);
+          if (value) {
+            isSaving = false;
+            Navigator.pop(context);
+          } else {
+            isSaving = false;
+          }
         });
       });
     }
@@ -177,7 +181,9 @@ class _ScheduleBookingState extends State<ScheduleBooking> {
                                                               10),
                                                     ),
                                                   ),
-                                                  onPressed: () => save(),
+                                                  onPressed: () {
+                                                    save();
+                                                  },
                                                   child: !isSaving
                                                       ? const Text(
                                                           'Confirm Schedule',
