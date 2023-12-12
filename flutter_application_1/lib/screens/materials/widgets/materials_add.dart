@@ -40,7 +40,7 @@ class _AddMaterialsState extends State<AddMaterials> {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowMultiple: true,
-      allowedExtensions: ['jpg', 'pdf', 'doc'],
+      allowedExtensions: ['jpg', 'pdf', 'doc', 'mp4'],
     );
     if (result != null) {
       setState(() {
@@ -154,6 +154,7 @@ class _AddMaterialsState extends State<AddMaterials> {
                           data: 'data',
                           note: false,
                           textEditingController: titleController,
+                          view: false,
                         ),
                         SizedBox(
                           height: mq.height * 0.02,
@@ -163,6 +164,7 @@ class _AddMaterialsState extends State<AddMaterials> {
                           data: 'data',
                           note: true,
                           textEditingController: descController,
+                          view: false,
                         ),
                         SizedBox(
                           height: mq.height * 0.02,
@@ -258,7 +260,17 @@ class _AddMaterialsState extends State<AddMaterials> {
                     ),
                   ),
                 )
-              : const Center(child: CircularProgressIndicator()),
+              : const Center(
+                  child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text('Uploading...'),
+                  ],
+                )),
           // Floating Action Button (FAB)
           Positioned(
             bottom: 35, // distance from the bottom

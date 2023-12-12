@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/clinic_profiles.dart';
-import 'package:flutter_application_1/screens/clinic/widgets/clinic_gallery.dart';
-import 'package:flutter_application_1/screens/clinic/widgets/clinic_profile.dart';
-import 'package:flutter_application_1/screens/clinic/widgets/clinic_review.dart';
-import 'package:flutter_application_1/screens/clinic/widgets/dash_tab_clinic.dart';
-import 'package:flutter_application_1/screens/widgets/app_drawer.dart';
+import 'package:flutter_application_1/models/materials.dart';
+import 'package:flutter_application_1/screens/materials/widgets/materials_add.dart';
+import 'package:flutter_application_1/screens/materials/widgets/materials_tab.dart';
+import 'package:flutter_application_1/screens/materials/widgets/materials_view.dart';
 import 'package:flutter_application_1/screens/widgets/app_drawer_therapist.dart';
 
-class HomeClinic extends StatefulWidget {
-  const HomeClinic(
-      {super.key, required this.clinics, required this.isEditable});
-  final Clinics? clinics;
-  final bool isEditable;
+class ViewMaterialsScreen extends StatefulWidget {
+  const ViewMaterialsScreen({super.key, required this.clinicMaterial});
+
+  final ClinicMaterial clinicMaterial;
+
   @override
-  HomeClinicState createState() => HomeClinicState();
+  ViewMaterialsScreenState createState() => ViewMaterialsScreenState();
 }
 
-class HomeClinicState extends State<HomeClinic> {
+class ViewMaterialsScreenState extends State<ViewMaterialsScreen> {
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   // Function to handle tab changes
   void _onTabSelected(int index) {
@@ -33,7 +36,7 @@ class HomeClinicState extends State<HomeClinic> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Dashboard',
+          'Materials',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF006A5B),
@@ -49,8 +52,7 @@ class HomeClinicState extends State<HomeClinic> {
           },
         ),
       ),
-      drawer:
-          widget.isEditable ? const AppDrawerTherapist() : const AppDrawer(),
+      drawer: const AppDrawerTherapist(),
       body: Stack(
         children: [
           // Top background
@@ -84,7 +86,7 @@ class HomeClinicState extends State<HomeClinic> {
               const SizedBox(height: 30),
 
               /// Custom Tab bar
-              DashTabClinic(
+              ClinicMaterialsTab(
                 selectedIndex: _currentIndex,
                 onTabSelected: _onTabSelected,
               ),
@@ -94,12 +96,7 @@ class HomeClinicState extends State<HomeClinic> {
                 child: IndexedStack(
                   index: _currentIndex,
                   children: [
-                    ClinicProfile(
-                      isEditable: false,
-                      clinics: widget.clinics,
-                    ),
-                    const ClinicGallery(),
-                    const ClinicReview(),
+                    ViewMaterials(material: widget.clinicMaterial),
                   ],
                 ),
               )

@@ -1,27 +1,46 @@
 import 'package:flutter/material.dart';
 
-class MaterialForm extends StatelessWidget {
+class MaterialForm extends StatefulWidget {
   const MaterialForm(
       {super.key,
       required this.title,
       required this.data,
       required this.note,
-      this.textEditingController});
+      this.textEditingController,
+      required this.view});
   final bool note;
+  final bool view;
   final String title;
   final String data;
   final TextEditingController? textEditingController;
 
   @override
+  State<MaterialForm> createState() => _MaterialFormState();
+}
+
+class _MaterialFormState extends State<MaterialForm> {
+  bool viewMode = false;
+  TextEditingController textEditingController = TextEditingController();
+  @override
+  void initState() {
+    viewMode = widget.view;
+    if (viewMode) {
+      textEditingController.text = widget.data;
+    } else {
+      textEditingController = widget.textEditingController!;
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size mq = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title),
+        Text(widget.title),
         Container(
-            height: !note ? mq.height * 0.06 : mq.height * 0.15,
+            height: !widget.note ? mq.height * 0.06 : mq.height * 0.15,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(10)),
               color: Colors.white,
@@ -42,6 +61,7 @@ class MaterialForm extends StatelessWidget {
                 ),
                 Flexible(
                   child: TextField(
+                    readOnly: viewMode,
                     controller: textEditingController,
                     maxLines: 3,
                     style: const TextStyle(

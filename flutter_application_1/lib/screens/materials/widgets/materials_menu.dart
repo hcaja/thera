@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/http_materialscontroller.dart';
 import 'package:flutter_application_1/models/materials.dart';
 import 'package:flutter_application_1/screens/materials/screens/add_materials.dart';
+import 'package:flutter_application_1/screens/materials/screens/view_materials.dart';
+import 'package:flutter_application_1/screens/materials/widgets/materials_view.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MaterialsMenu extends StatefulWidget {
   const MaterialsMenu({Key? key}) : super(key: key);
@@ -14,7 +18,6 @@ class _MaterialsMenuState extends State<MaterialsMenu> {
   MaterialsController materialsController = MaterialsController();
   List<ClinicMaterial> materials = [];
   List<ClinicMaterial> filteredItems = [];
-
   void filterSearchResults(String query) {
     List<ClinicMaterial> searchResults = [];
 
@@ -34,12 +37,24 @@ class _MaterialsMenuState extends State<MaterialsMenu> {
     });
   }
 
+  Future<int?> getUser() async {
+    int? clinicId;
+    await SharedPreferences.getInstance().then((value) {
+      String? token = value.getString('clinicToken');
+      Map<String, dynamic> payload = JwtDecoder.decode(token!);
+      clinicId = payload['ID'];
+    });
+    return clinicId;
+  }
+
   @override
   void initState() {
-    materialsController.getMaterials().then((value) {
-      setState(() {
-        materials = value;
-        filteredItems.addAll(materials);
+    getUser().then((id) {
+      materialsController.getMaterials(id!).then((value) {
+        setState(() {
+          materials = value;
+          filteredItems.addAll(materials);
+        });
       });
     });
     super.initState();
@@ -178,15 +193,13 @@ class _MaterialsMenuState extends State<MaterialsMenu> {
                     (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (_) => HomeClinic(
-                          //       clinics: filteredItems[index],
-                          //       isEditable: false,
-                          //     ),
-                          //   ),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ViewMaterialsScreen(
+                                  clinicMaterial: filteredItems[index]),
+                            ),
+                          );
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -233,23 +246,6 @@ class _MaterialsMenuState extends State<MaterialsMenu> {
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.bold,
                                           color: Color(0xFF006A5B))),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      top: mq.height * 0.001, left: 5),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: List.generate(5, (starIndex) {
-                                      return Icon(
-                                        Icons.star,
-                                        color: starIndex < 5
-                                            ? Colors.yellow
-                                            : Colors.grey,
-                                        // Adjust star color based on the rating
-                                        size: 15,
-                                      );
-                                    }),
-                                  ),
                                 ),
                                 const SizedBox(height: 5.0),
                                 Text(

@@ -31,5 +31,5 @@ const getParentTimeDataUrl = '/booking/get-parent-appointments/';
 const getAppointmentsUrl = '/booking/get-appointment/';
 const saveBookingUrl = '/booking/book-appointment';
 const getParentUrl = '/parent/get-user/';
-const getMaterialsUrl = '/clinic/get-materials';
+const getMaterialsUrl = '/clinic/get-materials/';
 const acceptAppointmentsUrl = '/booking/accept-booking/';
