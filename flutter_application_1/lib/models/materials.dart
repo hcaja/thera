@@ -6,18 +6,18 @@ ClinicMaterial clinicMaterialFromJson(String str) =>
 String clinicMaterialToJson(ClinicMaterial data) => json.encode(data.toJson());
 
 class ClinicMaterial {
-  int id;
+  int? id;
   String title;
   String desc;
-  int clinic;
+  int? clinic;
   List<MaterialFile>? files;
   String thumbnail;
 
   ClinicMaterial({
-    required this.id,
+    this.id,
     required this.title,
     required this.desc,
-    required this.clinic,
+    this.clinic,
     this.files,
     required this.thumbnail,
   });
@@ -33,22 +33,23 @@ class ClinicMaterial {
       );
 
   Map<String, dynamic> toJson() => {
-        "ID": id,
-        "TITLE": title,
-        "DESC": desc,
-        "THUMBNAIL": thumbnail,
+        "id": id,
+        "title": title,
+        "desc": desc,
+        "clinic": clinic,
+        "thumbnail": thumbnail,
       };
 }
 
 class MaterialFile {
-  int id;
-  int material;
+  int? id;
+  int? material;
   String type;
   String file;
 
   MaterialFile({
-    required this.id,
-    required this.material,
+    this.id,
+    this.material,
     required this.type,
     required this.file,
   });
@@ -61,9 +62,9 @@ class MaterialFile {
       );
 
   Map<String, dynamic> toJson() => {
-        "ID": id,
-        "MATERIAL": material,
-        "TYPE": type,
-        "FILE": file,
+        "id": id,
+        "material": material,
+        "type": type,
+        "file": file,
       };
 }
