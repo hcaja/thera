@@ -88,14 +88,14 @@ class _MaterialsTabState extends State<MaterialsTab> {
             ),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // Handle the FAB click event, e.g., open a file picker
-            _showMaterialUploadDialog(context);
-          },
-          tooltip: 'Upload Material',
-          child: const Icon(Icons.upload),
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     // Handle the FAB click event, e.g., open a file picker
+        //     _showMaterialUploadDialog(context);
+        //   },
+        //   tooltip: 'Upload Material',
+        //   child: const Icon(Icons.upload),
+        // ),
       ),
     );
   }
@@ -121,36 +121,36 @@ class _MaterialsTabState extends State<MaterialsTab> {
     );
   }
 
-  void _showMaterialUploadDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Choose Material Type'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  // Handle PDF upload
-                  Navigator.pop(context);
-                },
-                child: const Text('Upload PDF'),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  // Handle video upload
-                  Navigator.pop(context);
-                },
-                child: const Text('Upload Video'),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+  // void _showMaterialUploadDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: const Text('Choose Material Type'),
+  //         content: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             ElevatedButton(
+  //               onPressed: () {
+  //                 // Handle PDF upload
+  //                 Navigator.pop(context);
+  //               },
+  //               child: const Text('Upload PDF'),
+  //             ),
+  //             const SizedBox(height: 10),
+  //             ElevatedButton(
+  //               onPressed: () {
+  //                 // Handle video upload
+  //                 Navigator.pop(context);
+  //               },
+  //               child: const Text('Upload Video'),
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 }
 
 // Define a class for learning materials
