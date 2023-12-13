@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_application_1/chat/chat_user_card.dart';
-import 'package:flutter_application_1/screens/auth/connection.dart';
-import 'package:flutter_application_1/screens/auth/login_as.dart';
+//import 'package:flutter_application_1/screens/auth/connection.dart';
+//import 'package:flutter_application_1/screens/auth/login_as.dart';
 import 'package:flutter_application_1/screens/widgets/app_drawer_therapist.dart';
 
 class MessageScreen extends StatelessWidget {

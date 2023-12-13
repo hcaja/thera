@@ -3,7 +3,7 @@ import 'package:flutter_application_1/controller/http_materialscontroller.dart';
 import 'package:flutter_application_1/models/materials.dart';
 import 'package:flutter_application_1/screens/materials/screens/add_materials.dart';
 import 'package:flutter_application_1/screens/materials/screens/view_materials.dart';
-import 'package:flutter_application_1/screens/materials/widgets/materials_view.dart';
+//import 'package:flutter_application_1/screens/materials/widgets/materials_view.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
