@@ -9,7 +9,6 @@ final cloudinaryURI =
 
 class UploadController {
   Future<String> uploadHeader(XFile filepath) async {
-    print('uploading');
     final request = http.MultipartRequest('POST', cloudinaryURI)
       ..fields['upload_preset'] = 'jwjcgwcy'
       ..files.add(await http.MultipartFile.fromPath('file', filepath.path));

@@ -19,11 +19,11 @@ class MaterialsController {
 
   Future<ClinicMaterial?> saveMaterial(ClinicMaterial clinicMaterial) async {
     var reqBody = clinicMaterial.toJson();
-    print('start dbsaving');
+
     var response = await http.post(Uri.parse("$baseUrl$saveMaterialUrl"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(reqBody));
-    print(response.reasonPhrase);
+
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = json.decode(response.body);
       List<ClinicMaterial> objects = jsonData
@@ -44,7 +44,6 @@ class MaterialsController {
   Future<bool> saveAttachment(List<MaterialFile> files) async {
     int i = files.length;
     int c = 0;
-    print('start attachment db saving');
 
     // Use Future.wait to wait for all the futures to complete
     await Future.wait(files.map((e) async {
@@ -55,8 +54,6 @@ class MaterialsController {
         body: jsonEncode(reqBody),
       );
 
-      print(response.reasonPhrase);
-
       if (response.statusCode == 200) {
         c++;
       }
@@ -66,10 +63,9 @@ class MaterialsController {
   }
 
   Future<List<MaterialFile>> getFiles(String type) async {
-    print('fetching');
-    var response = await http.get(Uri.parse("$baseUrl$getAttatchmentsUrl/$type"),
+    var response = await http.get(
+        Uri.parse("$baseUrl$getAttatchmentsUrl/$type"),
         headers: {"Content-Type": "application/json"});
-    print(response.reasonPhrase);
     final List<dynamic> jsonData = json.decode(response.body);
 
     List<MaterialFile> objects =
