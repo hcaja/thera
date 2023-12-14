@@ -46,25 +46,28 @@ class MaterialFile {
   int? material;
   String type;
   String file;
+  String? title;
 
   MaterialFile({
     this.id,
     this.material,
+    this.title,
     required this.type,
     required this.file,
   });
 
   factory MaterialFile.fromJson(Map<String, dynamic> json) => MaterialFile(
-        id: json["ID"],
-        material: json["MATERIAL"],
-        type: json["TYPE"],
-        file: json["FILE"],
-      );
+      id: json["ID"],
+      material: json["MATERIAL"],
+      type: json["TYPE"],
+      file: json["FILE"],
+      title: json['TITLE']);
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "material": material,
         "type": type,
         "file": file,
+        "title": title
       };
 }
