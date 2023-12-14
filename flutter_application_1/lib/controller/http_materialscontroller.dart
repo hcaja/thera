@@ -64,4 +64,17 @@ class MaterialsController {
 
     return i == c;
   }
+
+  Future<List<MaterialFile>> getFiles(String type) async {
+    print('fetching');
+    var response = await http.get(Uri.parse("$baseUrl$getAttatchmentsUrl/$type"),
+        headers: {"Content-Type": "application/json"});
+    print(response.reasonPhrase);
+    final List<dynamic> jsonData = json.decode(response.body);
+
+    List<MaterialFile> objects =
+        jsonData.map((json) => MaterialFile.fromJson(json)).toList();
+
+    return objects;
+  }
 }
