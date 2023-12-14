@@ -61,7 +61,7 @@ class BookingController {
     late dynamic response;
 
     if (token != null) {
-      Map<String, dynamic> payload = JwtDecoder.decode(token!);
+      Map<String, dynamic> payload = JwtDecoder.decode(token);
       response = await http.get(
           Uri.parse("$baseUrl$getTimeDataUrl${payload['ID']}"),
           headers: {"Content-Type": "application/json"});
