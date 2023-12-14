@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/http_materialscontroller.dart';
+import 'package:flutter_application_1/screens/widgets/pdf_viewer.dart';
+import 'package:flutter_application_1/screens/widgets/video_player.dart';
 
 class MaterialsTab extends StatefulWidget {
   const MaterialsTab({Key? key}) : super(key: key);
@@ -8,17 +11,24 @@ class MaterialsTab extends StatefulWidget {
 }
 
 class _MaterialsTabState extends State<MaterialsTab> {
-  final List<LearningMaterial> pdfMaterials = [
-    LearningMaterial(type: MaterialType.pdf, name: 'PDF 1'),
-    LearningMaterial(type: MaterialType.pdf, name: 'PDF 2'),
-    // Add more PDF materials as needed
-  ];
+  List<LearningMaterial> pdfMaterials = [];
+  List<LearningMaterial> videoMaterials = [];
+  MaterialsController materialsController = MaterialsController();
 
-  final List<LearningMaterial> videoMaterials = [
-    LearningMaterial(type: MaterialType.video, name: 'Video 1'),
-    LearningMaterial(type: MaterialType.video, name: 'Video 2'),
-    // Add more video materials as needed
-  ];
+  @override
+  void initState() {
+    super.initState();
+    getPdf().then((value) {
+      setState(() {
+        pdfMaterials = value;
+      });
+    });
+    getVideo().then((value) {
+      setState(() {
+        videoMaterials = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,14 +98,6 @@ class _MaterialsTabState extends State<MaterialsTab> {
             ),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // Handle the FAB click event, e.g., open a file picker
-            _showMaterialUploadDialog(context);
-          },
-          tooltip: 'Upload Material',
-          child: const Icon(Icons.upload),
-        ),
       ),
     );
   }
@@ -107,13 +109,25 @@ class _MaterialsTabState extends State<MaterialsTab> {
         return Card(
           margin: const EdgeInsets.all(8),
           child: ListTile(
-            title: Text(materials[index].name),
-            subtitle: Text(materials[index].type == MaterialType.pdf
-                ? 'PDF File'
-                : 'Video File'),
+            title: Text(materials[index].title),
+            subtitle: Text(materials[index].name),
             onTap: () {
-              // Handle the tap on the material
-              // You can open PDF or video here
+              if (materials[index].type != MaterialType.video) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ViewPDF(pdfLink: materials[index].link),
+                  ),
+                );
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        VideoPlayerScreen(link: materials[index].link),
+                  ),
+                );
+              }
             },
           ),
         );
@@ -121,35 +135,32 @@ class _MaterialsTabState extends State<MaterialsTab> {
     );
   }
 
-  void _showMaterialUploadDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Choose Material Type'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  // Handle PDF upload
-                  Navigator.pop(context);
-                },
-                child: const Text('Upload PDF'),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  // Handle video upload
-                  Navigator.pop(context);
-                },
-                child: const Text('Upload Video'),
-              ),
-            ],
-          ),
-        );
-      },
-    );
+  Future<List<LearningMaterial>> getVideo() async {
+    List<LearningMaterial> temp = [];
+    await materialsController.getFiles('mp4').then((value) {
+      for (var files in value) {
+        temp.add(LearningMaterial(
+            type: MaterialType.video,
+            link: files.file,
+            name: files.file.split('/').last,
+            title: files.title!));
+      }
+    });
+    return temp;
+  }
+
+  Future<List<LearningMaterial>> getPdf() async {
+    List<LearningMaterial> temp = [];
+    await materialsController.getFiles('pdf').then((value) {
+      for (var files in value) {
+        temp.add(LearningMaterial(
+            type: MaterialType.pdf,
+            link: files.file,
+            name: files.file.split('/').last,
+            title: files.title!));
+      }
+    });
+    return temp;
   }
 }
 
@@ -157,8 +168,14 @@ class _MaterialsTabState extends State<MaterialsTab> {
 class LearningMaterial {
   final MaterialType type;
   final String name;
-
-  LearningMaterial({required this.type, required this.name});
+  final String title;
+  final String link;
+  LearningMaterial({
+    required this.type,
+    required this.name,
+    required this.title,
+    required this.link,
+  });
 }
 
 // Enum to represent the type of learning material
