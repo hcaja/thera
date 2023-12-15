@@ -10,20 +10,22 @@ import 'package:http/http.dart' as http;
 class ClinicRegisterApi {
   late SharedPreferences prefs;
   Future<bool> clinicRegister(
-    String clinicName,
-    String userName,
-    String email,
-    String contactNumber,
-    String address,
-    String password,
-    String passwordConfirm,
-  ) async {
+      String clinicName,
+      String userName,
+      String email,
+      String contactNumber,
+      String address,
+      String password,
+      String passwordConfirm,
+      String profilePic,
+      String fileAttatchment) async {
     prefs = await SharedPreferences.getInstance();
     var reqBody = {
       "username": userName,
       "email": email,
       "password": password,
       "name": clinicName,
+      "picture": profilePic
     };
     var response = await http.post(Uri.parse(baseUrl + clinicRegisterUrl),
         headers: {"Content-Type": "application/json"},
@@ -31,6 +33,9 @@ class ClinicRegisterApi {
     var jsonResponse = jsonDecode(response.body);
     if (response.statusCode == 200) {
       if (jsonResponse['access'] != null) {
+        Map<String, dynamic> payload =
+            JwtDecoder.decode(jsonResponse['access']);
+        uploadAttatchments(fileAttatchment, payload['ID'], 'clinic');
         Fluttertoast.showToast(
             msg: "Registration Complete, Please wait for approval",
             toastLength: Toast.LENGTH_LONG,
@@ -65,6 +70,7 @@ class ClinicRegisterApi {
     String sex,
     String profilePic,
     String username,
+    String fileAtt,
   ) async {
     prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('clinicToken');
@@ -89,6 +95,9 @@ class ClinicRegisterApi {
     var jsonResponse = jsonDecode(response.body);
     if (response.statusCode == 200) {
       if (jsonResponse['access'] != null) {
+        Map<String, dynamic> payload =
+            JwtDecoder.decode(jsonResponse['access']);
+        uploadAttatchments(fileAtt, payload['ID'], 'therapist');
         Fluttertoast.showToast(
             msg: "Account Created",
             toastLength: Toast.LENGTH_LONG,
@@ -120,8 +129,10 @@ class ClinicRegisterApi {
     String contact,
     String age,
     String sex,
-    String profilePic,
+
     String username,
+    String profilePicLink,
+    String fileAtt,
   ) async {
     var reqBody = {
       "ROLE": "1",
@@ -132,7 +143,7 @@ class ClinicRegisterApi {
       "CONTACT_NO": contact,
       "AGE": age,
       "SEX": sex,
-      "PROFILE_PICTURE": profilePic,
+      "PROFILE_PICTURE": profilePicLink,
       "username": username,
     };
     var response = await http.post(
@@ -142,6 +153,9 @@ class ClinicRegisterApi {
     var jsonResponse = jsonDecode(response.body);
     if (response.statusCode == 200) {
       if (jsonResponse['access'] != null) {
+        Map<String, dynamic> payload =
+            JwtDecoder.decode(jsonResponse['access']);
+        uploadAttatchments(fileAtt, payload['ID'], 'therapist');
         Fluttertoast.showToast(
             msg: "Account Created",
             toastLength: Toast.LENGTH_LONG,
@@ -172,6 +186,8 @@ class ClinicRegisterApi {
     String contact,
     String address,
     String password,
+    String profilePicLink,
+    String fileAtt,
   ) async {
     var reqBody = {
       "FULLNAME": fullname,
@@ -188,6 +204,9 @@ class ClinicRegisterApi {
     var jsonResponse = jsonDecode(response.body);
     if (response.statusCode == 200) {
       if (jsonResponse['access'] != null) {
+        Map<String, dynamic> payload =
+            JwtDecoder.decode(jsonResponse['access']);
+        uploadAttatchments(fileAtt, payload['ID'], 'parent');
         Fluttertoast.showToast(
             msg: "Account Created",
             toastLength: Toast.LENGTH_LONG,
@@ -209,5 +228,25 @@ class ClinicRegisterApi {
           fontSize: 16.0);
       return false;
     }
+  }
+
+  void uploadAttatchments(String fileAtt, int owner, String designation) async {
+    var reqBody = {
+      designation: owner,
+      "file": fileAtt,
+    };
+    String url = '';
+    if (designation == 'parent') {
+      url = parentFiles;
+    } else if (designation == 'therapist') {
+      url = therapistFiles;
+    } else if (designation == 'clinic') {
+      url = clinicFiles;
+    }
+    print(reqBody);
+    print(url);
+    await http.post(Uri.parse(baseUrl + url),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(reqBody));
   }
 }

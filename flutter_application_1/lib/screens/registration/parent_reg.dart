@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/cloudinary_upload.dart';
 import 'package:flutter_application_1/controller/httpregister_controller.dart';
 import 'package:flutter_application_1/controller/pick_image.dart';
 import 'package:flutter_application_1/screens/widgets/custom_textfield.dart';
+import 'package:flutter_application_1/screens/widgets/loading_button.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 
@@ -25,7 +28,15 @@ class _ParentRegisterState extends State<ParentRegister> {
       TextEditingController();
   ClinicRegisterApi controller = ClinicRegisterApi();
   ParentGovID parentId = ParentGovID();
+  UploadController uploadController = UploadController();
   XFile? _attachFile;
+  XFile? _clinicPic;
+  String? picLink;
+  String? atFilelink;
+  ClinicGovFiles therapistfiles = ClinicGovFiles();
+  bool isLoading = false;
+  bool isUploadingPic = false;
+  bool isUploadingFile = false;
 
   @override
   void dispose() {
@@ -150,14 +161,79 @@ class _ParentRegisterState extends State<ParentRegister> {
                                 icon: const Icon(Icons.attach_file),
                                 label: const Text('Attach File'),
                                 onPressed: () async {
-                                  _attachFile =
-                                      await parentId.pickImageFromGallery();
+                                  _attachFile = await therapistfiles
+                                      .pickImageFromGallery();
+                                  if (_attachFile != null) {
+                                    setState(() {
+                                      isUploadingFile = true;
+                                    });
+                                    await uploadController
+                                        .uploadHeader(_attachFile!)
+                                        .then((value) {
+                                      atFilelink = value;
+                                      setState(() {
+                                        isUploadingFile = false;
+                                      });
+                                    });
+                                  }
                                   setState(() {});
                                 },
                               )
                             : Chip(
                                 label: Text(_attachFile?.name ?? 'Attached'),
-                                deleteIcon: const Icon(Icons.delete),
+                                deleteIcon: !isUploadingFile
+                                    ? const Icon(Icons.delete)
+                                    : const CircularProgressIndicator
+                                        .adaptive(),
+                                onDeleted: () {
+                                  setState(() {
+                                    _attachFile = null;
+                                  });
+                                },
+                              ),
+                        const Text(
+                          "Upload Profile Picture",
+                          style: TextStyle(
+                            height: 2,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(
+                          // provides some spacing between the label and the button
+                          height: 0.0,
+                        ),
+                        _clinicPic == null
+                            ? ElevatedButton.icon(
+                                icon: const Icon(Icons.attach_file),
+                                label: const Text('Attach File'),
+                                onPressed: () async {
+                                  _clinicPic = await therapistfiles
+                                      .pickImageFromGallery();
+                                  if (_clinicPic != null) {
+                                    if (_clinicPic != null) {
+                                      setState(() {
+                                        isUploadingPic = true;
+                                      });
+                                      await uploadController
+                                          .uploadHeader(_clinicPic!)
+                                          .then((value) {
+                                        picLink = value;
+                                        setState(() {
+                                          isUploadingPic = false;
+                                        });
+                                      });
+                                    }
+                                  }
+                                  setState(() {});
+                                },
+                              )
+                            : Chip(
+                                label: Text(_clinicPic?.name ?? 'Attached'),
+                                deleteIcon: !isUploadingPic
+                                    ? const Icon(Icons.delete)
+                                    : const CircularProgressIndicator
+                                        .adaptive(),
                                 onDeleted: () {
                                   setState(() {
                                     _attachFile = null;
@@ -167,38 +243,72 @@ class _ParentRegisterState extends State<ParentRegister> {
 
                         // Register button
                         const SizedBox(height: 8.0),
+
+                        // Register button
+                        const SizedBox(height: 8.0),
+
+                        // Register button
+                        const SizedBox(height: 8.0),
                         Center(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF006A5B),
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 20.0,
-                                horizontal: 115.0,
-                              ),
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                            ),
-                            onPressed: () {
-                              controller
-                                  .parentRegister(
-                                      fullNameController.text,
-                                      userNameController.text,
-                                      emailController.text,
-                                      contactNumberController.text,
-                                      addressController.text,
-                                      passwordController.text)
-                                  .then((value) {
-                                if (value) {
-                                  Navigator.of(context).pop();
-                                }
-                              });
-                            },
-                            child: const Text(
-                              'Register',
-                            ),
-                          ),
+                          child: !isLoading
+                              ? ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFF006A5B),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 20.0,
+                                      horizontal: 115.0,
+                                    ),
+                                    foregroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(25),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    if (picLink != null && atFilelink != null) {
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      await controller
+                                          .parentRegister(
+                                              fullNameController.text,
+                                              userNameController.text,
+                                              emailController.text,
+                                              contactNumberController.text,
+                                              addressController.text,
+                                              passwordController.text,
+                                              picLink!,
+                                              atFilelink!)
+                                          .then((value) {
+                                        if (value) {
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                          Navigator.of(context).pop();
+                                        } else {
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                        }
+                                      });
+                                    } else {
+                                      Fluttertoast.showToast(
+                                          msg: 'Please attatch files',
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.CENTER,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                    }
+                                  },
+                                  child: const Text(
+                                    'Register',
+                                  ),
+                                )
+                              : const CircularLoadingButton(),
                         ),
                         // const SizedBox(height: 16.0),
                         const Row(

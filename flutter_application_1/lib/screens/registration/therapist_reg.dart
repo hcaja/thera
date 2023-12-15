@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/cloudinary_upload.dart';
 import 'package:flutter_application_1/controller/httpregister_controller.dart';
+import 'package:flutter_application_1/controller/pick_image.dart';
 import 'package:flutter_application_1/screens/registration/widgets/custom_dropdown.dart';
 import 'package:flutter_application_1/screens/widgets/loading_button.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 
 import '../widgets/custom_textfield.dart';
@@ -30,7 +34,17 @@ class _TherapistRegisterState extends State<TherapistRegister> {
   final TextEditingController confirmPasswordController =
       TextEditingController();
   int role = 1;
+
+  ClinicRegisterApi controller = ClinicRegisterApi();
+  UploadController uploadController = UploadController();
+  XFile? _attachFile;
+  XFile? _clinicPic;
+  String? picLink;
+  String? atFilelink;
+  ClinicGovFiles therapistfiles = ClinicGovFiles();
   ClinicRegisterApi clinicRegisterApi = ClinicRegisterApi();
+  bool isUploadingPic = false;
+  bool isUploadingFile = false;
   bool isLoading = false;
 
   @override
@@ -137,7 +151,7 @@ class _TherapistRegisterState extends State<TherapistRegister> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Upload Professional ID:",
+                        "Upload any Valid Government ID:",
                         style: TextStyle(
                           height: 2,
                           fontSize: 16.0,
@@ -148,6 +162,91 @@ class _TherapistRegisterState extends State<TherapistRegister> {
                         // provides some spacing between the label and the button
                         height: 0.0,
                       ),
+                      _attachFile == null
+                          ? ElevatedButton.icon(
+                              icon: const Icon(Icons.attach_file),
+                              label: const Text('Attach File'),
+                              onPressed: () async {
+                                _attachFile =
+                                    await therapistfiles.pickImageFromGallery();
+                                if (_attachFile != null) {
+                                  setState(() {
+                                    isUploadingFile = true;
+                                  });
+                                  await uploadController
+                                      .uploadHeader(_attachFile!)
+                                      .then((value) {
+                                    atFilelink = value;
+                                    setState(() {
+                                      isUploadingFile = false;
+                                    });
+                                  });
+                                }
+                                setState(() {});
+                              },
+                            )
+                          : Chip(
+                              label: Text(_attachFile?.name ?? 'Attached'),
+                              deleteIcon: !isUploadingFile
+                                  ? const Icon(Icons.delete)
+                                  : const CircularProgressIndicator.adaptive(),
+                              onDeleted: () {
+                                setState(() {
+                                  _attachFile = null;
+                                });
+                              },
+                            ),
+                      const Text(
+                        "Upload Profile Picture",
+                        style: TextStyle(
+                          height: 2,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(
+                        // provides some spacing between the label and the button
+                        height: 0.0,
+                      ),
+                      _clinicPic == null
+                          ? ElevatedButton.icon(
+                              icon: const Icon(Icons.attach_file),
+                              label: const Text('Attach File'),
+                              onPressed: () async {
+                                _clinicPic =
+                                    await therapistfiles.pickImageFromGallery();
+                                if (_clinicPic != null) {
+                                  if (_clinicPic != null) {
+                                    setState(() {
+                                      isUploadingPic = true;
+                                    });
+                                    await uploadController
+                                        .uploadHeader(_clinicPic!)
+                                        .then((value) {
+                                      picLink = value;
+                                      setState(() {
+                                        isUploadingPic = false;
+                                      });
+                                    });
+                                  }
+                                }
+                                setState(() {});
+                              },
+                            )
+                          : Chip(
+                              label: Text(_clinicPic?.name ?? 'Attached'),
+                              deleteIcon: !isUploadingPic
+                                  ? const Icon(Icons.delete)
+                                  : const CircularProgressIndicator.adaptive(),
+                              onDeleted: () {
+                                setState(() {
+                                  _attachFile = null;
+                                });
+                              },
+                            ),
+
+                      // Register button
+                      const SizedBox(height: 8.0),
 
                       // Register button
                       const SizedBox(height: 8.0),
@@ -166,51 +265,75 @@ class _TherapistRegisterState extends State<TherapistRegister> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-                                  if (widget.type == 'ind') {
-                                    clinicRegisterApi
-                                        .soloTherapistRegister(
-                                            fullNameController.text,
-                                            emailController.text,
-                                            passwordController.text,
-                                            addressController.text,
-                                            contactNumberController.text,
-                                            '1',
-                                            'M',
-                                            '',
-                                            userNameController.text)
-                                        .then((value) {
-                                      if (value) {
-                                        setState(() {
-                                          isLoading = true;
-                                        });
-                                        Navigator.of(context).pop();
-                                        widget.refresh!();
-                                      }
+                                  if (atFilelink != null && picLink != null) {
+                                    setState(() {
+                                      isLoading = true;
                                     });
+                                    if (widget.type == 'ind') {
+                                      clinicRegisterApi
+                                          .soloTherapistRegister(
+                                              fullNameController.text,
+                                              emailController.text,
+                                              passwordController.text,
+                                              addressController.text,
+                                              contactNumberController.text,
+                                              '1',
+                                              'M',
+                                              userNameController.text,
+                                              picLink!,
+                                              atFilelink!)
+                                          .then((value) {
+                                        if (value) {
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                          Navigator.of(context).pop();
+                                          widget.refresh!();
+                                        } else {
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                        }
+                                      });
+                                    } else {
+                                      clinicRegisterApi
+                                          .clinicTherapistRegister(
+                                              role.toString(),
+                                              fullNameController.text,
+                                              emailController.text,
+                                              passwordController.text,
+                                              addressController.text,
+                                              contactNumberController.text,
+                                              '1',
+                                              'M',
+                                              picLink!,
+                                              userNameController.text,
+                                              atFilelink!)
+                                          .then((value) {
+                                        if (value) {
+                                          setState(() {
+                                            isLoading = true;
+                                          });
+                                          Navigator.of(context).pop();
+                                          widget.refresh!();
+                                        } else {
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                        }
+                                      });
+                                    }
                                   } else {
-                                    clinicRegisterApi
-                                        .clinicTherapistRegister(
-                                            role.toString(),
-                                            fullNameController.text,
-                                            emailController.text,
-                                            passwordController.text,
-                                            addressController.text,
-                                            contactNumberController.text,
-                                            '1',
-                                            'M',
-                                            '',
-                                            userNameController.text)
-                                        .then((value) {
-                                      if (value) {
-                                        setState(() {
-                                          isLoading = true;
-                                        });
-                                        Navigator.of(context).pop();
-                                        widget.refresh!();
-                                      }
+                                    Fluttertoast.showToast(
+                                        msg: 'Please attatch files',
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.CENTER,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                    setState(() {
+                                      isLoading = false;
                                     });
                                   }
                                 },

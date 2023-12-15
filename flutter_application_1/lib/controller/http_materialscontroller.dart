@@ -5,8 +5,11 @@ import 'package:flutter_application_1/models/materials.dart';
 import 'package:http/http.dart' as http;
 
 class MaterialsController {
-  Future<List<ClinicMaterial>> getMaterials(int id) async {
-    var response = await http.get(Uri.parse("$baseUrl$getMaterialsUrl$id"),
+  Future<List<ClinicMaterial>> getMaterials(int? id) async {
+    var response = await http.get(
+        id != null
+            ? Uri.parse("$baseUrl$getMaterialsUrl$id")
+            : Uri.parse("$baseUrl$getAllMaterialsUrl"),
         headers: {"Content-Type": "application/json"});
 
     final List<dynamic> jsonData = json.decode(response.body);
