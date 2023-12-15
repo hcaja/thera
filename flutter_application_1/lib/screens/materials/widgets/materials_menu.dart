@@ -59,12 +59,10 @@ class _MaterialsMenuState extends State<MaterialsMenu> {
         });
       });
     } else {
-      getUser().then((id) {
-        materialsController.getMaterials(null).then((value) {
-          setState(() { 
-            materials = value;
-            filteredItems.addAll(materials);
-          });
+      materialsController.getMaterials(null).then((value) {
+        setState(() {
+          materials = value;
+          filteredItems.addAll(materials);
         });
       });
     }
