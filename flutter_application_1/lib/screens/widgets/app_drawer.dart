@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/httplogout_controller.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
+import 'package:flutter_application_1/screens/materials/screens/therapist_materials.dart';
 import 'package:flutter_application_1/screens/parent/screens/home_dashboard.dart';
 import 'package:flutter_application_1/screens/parent/screens/parent_schedules.dart';
 
@@ -101,7 +102,13 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
             onTap: () {
-              // Handle materials action here
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const TherapistMaterials(
+                      isParent: true,
+                    ),
+                  ));
             },
           ),
           ListTile(
