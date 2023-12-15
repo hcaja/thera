@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/materials/widgets/materials_menu.dart';
 import 'package:flutter_application_1/screens/materials/widgets/materials_tab.dart';
+import 'package:flutter_application_1/screens/widgets/app_drawer.dart';
 import 'package:flutter_application_1/screens/widgets/app_drawer_therapist.dart';
 
 class TherapistMaterials extends StatefulWidget {
-  const TherapistMaterials({super.key});
+  const TherapistMaterials({super.key, required this.isParent});
+  final bool isParent;
 
   @override
   TherapistMaterialsState createState() => TherapistMaterialsState();
@@ -48,7 +50,7 @@ class TherapistMaterialsState extends State<TherapistMaterials> {
           },
         ),
       ),
-      drawer: const AppDrawerTherapist(),
+      drawer: widget.isParent ? const AppDrawer() : const AppDrawerTherapist(),
       body: Stack(
         children: [
           // Top background
@@ -91,8 +93,8 @@ class TherapistMaterialsState extends State<TherapistMaterials> {
               Expanded(
                 child: IndexedStack(
                   index: _currentIndex,
-                  children: const [
-                    MaterialsMenu(),
+                  children: [
+                    MaterialsMenu(isParent: widget.isParent),
                   ],
                 ),
               )

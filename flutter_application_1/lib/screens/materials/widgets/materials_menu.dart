@@ -8,8 +8,8 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MaterialsMenu extends StatefulWidget {
-  const MaterialsMenu({Key? key}) : super(key: key);
-
+  const MaterialsMenu({Key? key, required this.isParent}) : super(key: key);
+  final bool isParent;
   @override
   State<MaterialsMenu> createState() => _MaterialsMenuState();
 }
@@ -49,14 +49,25 @@ class _MaterialsMenuState extends State<MaterialsMenu> {
 
   @override
   void initState() {
-    getUser().then((id) {
-      materialsController.getMaterials(id!).then((value) {
-        setState(() {
-          materials = value;
-          filteredItems.addAll(materials);
+    if (!widget.isParent) {
+      getUser().then((id) {
+        materialsController.getMaterials(id!).then((value) {
+          setState(() {
+            materials = value;
+            filteredItems.addAll(materials);
+          });
         });
       });
-    });
+    } else {
+      getUser().then((id) {
+        materialsController.getMaterials(null).then((value) {
+          setState(() { 
+            materials = value;
+            filteredItems.addAll(materials);
+          });
+        });
+      });
+    }
     super.initState();
   }
 
@@ -267,34 +278,36 @@ class _MaterialsMenuState extends State<MaterialsMenu> {
             ),
           ),
           // Floating Action Button (FAB)
-          Positioned(
-            bottom: 35, // distance from the bottom
-            right: 30, // distance from the right
-            child: ClipOval(
-              child: Material(
-                color: const Color(0xFF006A5B), // FAB background color
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const AddMaterialScreen(),
+          widget.isParent
+              ? Positioned(
+                  bottom: 35, // distance from the bottom
+                  right: 30, // distance from the right
+                  child: ClipOval(
+                    child: Material(
+                      color: const Color(0xFF006A5B), // FAB background color
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const AddMaterialScreen(),
+                            ),
+                          );
+                        },
+                        child: const SizedBox(
+                          width: 60, // size of the circular FAB
+                          height: 60, // size of the circular FAB
+                          child: Center(
+                              child: Icon(
+                            Icons.add,
+                            color: Colors.white,
+                          )),
+                        ),
                       ),
-                    );
-                  },
-                  child: const SizedBox(
-                    width: 60, // size of the circular FAB
-                    height: 60, // size of the circular FAB
-                    child: Center(
-                        child: Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    )),
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ),
+                )
+              : Container(),
         ],
       ),
     );
