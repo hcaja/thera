@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
               isEditable: false,
             ),
         '/clinicgallery': (context) => const ClinicGallery(),
-        '/clinicreview': (context) => const ClinicReview(),
+        '/clinicreview': (context) => const ClinicReview(clinicId: null,),
         '/therprofile': (context) => const TherapistProfile(),
         '/thergallery': (context) => const TherapistGallery(),
         '/therreview': (context) => const TherapistReview(),

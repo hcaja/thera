@@ -70,6 +70,7 @@ class TherapistReview extends StatelessWidget {
                     reviewText: 'Great experience at The Tiny House!',
                     rating: 5,
                     reviewDate: DateTime.now().toString(),
+                    url: '',
                   ),
 
                   // Reply Text Field for Review 1
@@ -82,22 +83,6 @@ class TherapistReview extends StatelessWidget {
                       ),
                       maxLines: 5,
                     ),
-                  ),
-
-                  // Reply Button for Review 1
-                  ElevatedButton(
-                    onPressed: () {
-                      // Handle reply submission for Review 1
-                    },
-                    child: const Text('Reply'),
-                  ),
-
-                  // Review 2
-                  ReviewWidget(
-                    userName: 'User 2',
-                    reviewText: 'Highly recommended!',
-                    rating: 4,
-                    reviewDate: DateTime.now().toString(),
                   ),
 
                   // Reply Text Field for Review 2
@@ -134,13 +119,14 @@ class ReviewWidget extends StatelessWidget {
   final String reviewText;
   final int rating;
   final String reviewDate;
-
+  final String url;
   const ReviewWidget({
     Key? key,
     required this.userName,
     required this.reviewText,
     required this.rating,
     required this.reviewDate,
+    required this.url,
   }) : super(key: key);
 
   @override
@@ -149,10 +135,9 @@ class ReviewWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListTile(
-          leading: const CircleAvatar(
-            // You can use the reviewer's profile image here
-            // Example: AssetImage('asset/images/user_avatar.png'),
-            radius: 30, // Adjust the size
+          leading: CircleAvatar(
+            radius: 30,
+            child: Image.network(url), // Adjust the size
           ),
           title: Text(userName),
           subtitle: Text('Date: $reviewDate'), // Include the review date
@@ -168,12 +153,6 @@ class ReviewWidget extends StatelessWidget {
                   Text(
                     'Rating: $rating/5',
                     style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Handle reply button click
-                    },
-                    child: const Text('Reply'),
                   ),
                 ],
               ),

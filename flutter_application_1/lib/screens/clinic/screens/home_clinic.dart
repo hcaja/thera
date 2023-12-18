@@ -99,7 +99,9 @@ class HomeClinicState extends State<HomeClinic> {
                       clinics: widget.clinics,
                     ),
                     const ClinicGallery(),
-                    const ClinicReview(),
+                    ClinicReview(
+                      clinicId: widget.clinics!.id,
+                    ),
                   ],
                 ),
               )

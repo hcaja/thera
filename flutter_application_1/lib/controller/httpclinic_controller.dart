@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_application_1/models/booking.dart';
 import 'package:flutter_application_1/models/clinic_profiles.dart';
+import 'package:flutter_application_1/models/reviews.dart';
 import 'package:flutter_application_1/models/services_offered.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -186,5 +187,41 @@ class ClinicController {
       });
     }
     return combinedMap;
+  }
+
+  Future<List<Reviews>> getReviews(int id) async {
+    var response = await http.get(Uri.parse("$baseUrl$clinicReviewsURL$id"),
+        headers: {"Content-Type": "application/json"});
+    print(response.statusCode);
+    final List<dynamic> responseData = json.decode(response.body);
+    print(response.body);
+    List<Reviews> res =
+        responseData.map((jsonObject) => Reviews.fromJson(jsonObject)).toList();
+    return res;
+  }
+
+  Future<bool> saveReviews(int clinic, int rating, String review) async {
+    print('esponse.statusCode');
+    late SharedPreferences prefs;
+    prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('parentToken');
+
+    Map<String, dynamic> payload = JwtDecoder.decode(token!);
+    var reqBody = {
+      "PARENT": payload['ID'],
+      "CLINIC": clinic,
+      "REVIEW": review,
+      "RATING": rating,
+    };
+    //print(reqBody);
+    var response = await http.post(Uri.parse("$baseUrl$clinicAddReviewsURL"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(reqBody));
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

@@ -232,7 +232,6 @@ class _DashboardState extends State<Dashboard> {
                                       filteredItems[index].picture!,
                                       height: 150,
                                       fit: BoxFit.fill,
-                                      // fit: BoxFit.contain,
                                     ),
                                   ),
                                 ),
