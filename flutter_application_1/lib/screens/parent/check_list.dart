@@ -44,7 +44,7 @@ class _CustomCheckboxListTileState extends State<CustomCheckboxListTile> {
                 });
               },
               title: const Text(
-                'Headline',
+                'Checklist 1',
                 style: TextStyle(
                     fontFamily: 'Poppin', fontWeight: FontWeight.w600),
               ),
@@ -82,7 +82,7 @@ class _CustomCheckboxListTileState extends State<CustomCheckboxListTile> {
                 });
               },
               title: const Text(
-                'Headline',
+                'Checklist 2',
                 style: TextStyle(
                     fontFamily: 'Poppin', fontWeight: FontWeight.w600),
               ),
@@ -120,7 +120,7 @@ class _CustomCheckboxListTileState extends State<CustomCheckboxListTile> {
                 });
               },
               title: const Text(
-                'Kamatyonon nako',
+                'Checklist 3',
                 style: TextStyle(
                     fontFamily: 'Poppin', fontWeight: FontWeight.w600),
               ),
