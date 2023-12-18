@@ -85,7 +85,9 @@ class AppDrawerTherapist extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => const TherapistMaterials(isParent: false,),
+                    builder: (_) => const TherapistMaterials(
+                      isParent: true,
+                    ),
                   ));
             },
           ),
