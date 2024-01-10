@@ -56,14 +56,18 @@ class MyApp extends StatelessWidget {
               isEditable: false,
             ),
         '/clinicgallery': (context) => const ClinicGallery(),
-        '/clinicreview': (context) => const ClinicReview(clinicId: null,),
+        '/clinicreview': (context) => const ClinicReview(
+              clinicId: null,
+            ),
         '/therprofile': (context) => const TherapistProfile(),
         '/thergallery': (context) => const TherapistGallery(),
         '/therreview': (context) => const TherapistReview(),
         '/homedashboard': (context) => const HomeDashboard(),
         '/therapiststab': (context) => const TherapistsDashboard(),
         '/patientlist': (context) => const PatientList(),
-        '/messagescreen': (context) => const MessageScreen(),
+        '/messagescreen': (context) => const MessageScreen(
+              isParent: true,
+            ),
         '/chatscreen': (context) => const ChatScreen(),
         '/mappage': (context) => const MapPage(),
         '/parentprofile': (context) =>

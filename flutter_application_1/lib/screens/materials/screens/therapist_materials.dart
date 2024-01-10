@@ -50,7 +50,7 @@ class TherapistMaterialsState extends State<TherapistMaterials> {
           },
         ),
       ),
-      drawer: widget.isParent ? const AppDrawer() : const AppDrawerTherapist(),
+      drawer: !widget.isParent ? const AppDrawer() : const AppDrawerTherapist(),
       body: Stack(
         children: [
           // Top background

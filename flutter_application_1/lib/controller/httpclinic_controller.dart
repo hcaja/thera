@@ -30,6 +30,26 @@ class ClinicController {
     return objects;
   }
 
+  Future<List<Clinics>> getClinicsByService(int id) async {
+    var response = await http.get(
+        Uri.parse("$baseUrl$getClinicsByServiceUrl$id"),
+        headers: {"Content-Type": "application/json"});
+
+    final List<dynamic> jsonData = json.decode(response.body);
+    List<Clinics> objects = jsonData
+        .map((json) => Clinics(
+              id: json["ID"],
+              email: json["EMAIL"],
+              username: json["USERNAME"],
+              password: json["PASSWORD"],
+              bio: json["BIO"],
+              picture: json["PICTURE"],
+              name: json["NAME"],
+            ))
+        .toList();
+    return objects;
+  }
+
   Future<Clinics> getClinic(int id) async {
     var response = await http.get(Uri.parse("$baseUrl$getClinicUrl$id"),
         headers: {"Content-Type": "application/json"});

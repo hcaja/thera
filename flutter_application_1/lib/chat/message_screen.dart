@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/widgets/app_drawer.dart';
 // import 'package:flutter_application_1/chat/chat_user_card.dart';
 //import 'package:flutter_application_1/screens/auth/connection.dart';
 //import 'package:flutter_application_1/screens/auth/login_as.dart';
 import 'package:flutter_application_1/screens/widgets/app_drawer_therapist.dart';
 
 class MessageScreen extends StatelessWidget {
-  const MessageScreen({super.key});
-
+  const MessageScreen({super.key, required this.isParent});
+  final bool isParent;
   @override
   Widget build(BuildContext context) {
     List<String> imgs = [
@@ -41,7 +42,7 @@ class MessageScreen extends StatelessWidget {
         ),
       ),
       // drawer or sidebar of hamburger menu
-      drawer: const AppDrawerTherapist(),
+      drawer: isParent ? const AppDrawer() : const AppDrawerTherapist(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

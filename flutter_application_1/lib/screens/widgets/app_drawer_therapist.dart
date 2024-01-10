@@ -148,7 +148,7 @@ class AppDrawerTherapist extends StatelessWidget {
             leading: const Icon(Icons.logout), // Icon for logout
             title: const Text('Logout'), // Text for logout
             onTap: () {
-              logout.employeeLogout().then((value) {
+              logout.allLogout().then((value) {
                 navigateOut(context);
               });
             },

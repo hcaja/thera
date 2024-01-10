@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/parent/check_list.dart';
+import 'package:flutter_application_1/screens/widgets/app_drawer.dart';
 // import 'package:flutter_application_1/screens/parent/profile_parent_tabbar.dart';
 // import 'package:flutter_application_1/screens/widgets/app_drawer.dart';
 
@@ -11,25 +12,25 @@ class ParentProfile extends StatelessWidget {
     final Size mq = MediaQuery.of(context).size;
 
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text(
-      //     'Profile',
-      //     style: TextStyle(color: Colors.white),
-      //   ),
-      //   backgroundColor: const Color(0xFF006A5B),
-      //   leading: Builder(
-      //     builder: (BuildContext context) {
-      //       return IconButton(
-      //         icon: const Icon(Icons.menu),
-      //         color: Colors.white,
-      //         onPressed: () {
-      //           Scaffold.of(context).openDrawer();
-      //         },
-      //       );
-      //     },
-      //   ),
-      // ),
-      // drawer: const AppDrawer(),
+      appBar: AppBar(
+        title: const Text(
+          'Profile',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color(0xFF006A5B),
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              color: Colors.white,
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
+      ),
+      drawer: const AppDrawer(),
       body: Builder(
         builder: (context) => Stack(children: [
           Positioned(

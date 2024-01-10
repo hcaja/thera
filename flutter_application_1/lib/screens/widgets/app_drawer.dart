@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/chat/message_screen.dart';
 import 'package:flutter_application_1/controller/httplogout_controller.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
 import 'package:flutter_application_1/screens/materials/screens/therapist_materials.dart';
+import 'package:flutter_application_1/screens/parent/parent_profile.dart';
 import 'package:flutter_application_1/screens/parent/screens/home_dashboard.dart';
 import 'package:flutter_application_1/screens/parent/screens/parent_schedules.dart';
 
@@ -86,7 +88,12 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
             onTap: () {
-              Navigator.of(context).pushNamed('/parentprofile');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const ParentProfile(),
+                ),
+              );
             },
           ),
           ListTile(
@@ -162,12 +169,16 @@ class AppDrawer extends StatelessWidget {
             ),
             onTap: () {
               // Handle chat action here
-              Navigator.of(context).pushNamed('/messagescreen');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const MessageScreen(
+                    isParent: true,
+                  ),
+                ),
+              );
             },
           ),
-          // Add more items as needed
-
-          // Add a divider for visual separation for logout
           const Divider(),
           ListTile(
             leading: const Icon(Icons.logout), // Icon for logout
