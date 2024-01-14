@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/httplogout_controller.dart';
 import 'package:flutter_application_1/screens/auth/login_as.dart';
 import 'package:flutter_application_1/screens/materials/screens/therapist_materials.dart';
+import 'package:flutter_application_1/screens/parent/screens/parents_list.dart';
 
 class AppDrawerTherapist extends StatelessWidget {
   const AppDrawerTherapist({super.key});
@@ -112,6 +113,44 @@ class AppDrawerTherapist extends StatelessWidget {
             iconColor: const Color(0xFF006A5B),
             title: const Text(
               'Journal',
+              style: TextStyle(
+                color: Color(0xFF006A5B),
+                fontFamily: 'Poppins',
+                fontSize: 15,
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+            onTap: () {
+              // Handle journal action here
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.emoji_people),
+            iconColor: const Color(0xFF006A5B),
+            title: const Text(
+              'Patient List',
+              style: TextStyle(
+                color: Color(0xFF006A5B),
+                fontFamily: 'Poppins',
+                fontSize: 15,
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const ParentsList(
+                      isParent: true,
+                    ),
+                  ));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.people),
+            iconColor: const Color(0xFF006A5B),
+            title: const Text(
+              'Clinic Staff',
               style: TextStyle(
                 color: Color(0xFF006A5B),
                 fontFamily: 'Poppins',

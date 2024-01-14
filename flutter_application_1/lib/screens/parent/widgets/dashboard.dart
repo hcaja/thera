@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/controller/key_center.dart';
 import 'package:flutter_application_1/models/services_offered.dart';
 import 'package:flutter_application_1/screens/clinic/screens/home_clinic.dart';
 import 'package:flutter_application_1/screens/map/map_page.dart';
-import 'package:flutter_application_1/screens/parent/widgets/service_pill.dart';
 import 'package:flutter_application_1/screens/parent/widgets/service_pill_generator.dart';
-
 import '../../../controller/httpclinic_controller.dart';
 import '../../../models/clinic_profiles.dart';
 
@@ -97,7 +94,6 @@ class _DashboardState extends State<Dashboard> {
               ),
             ),
           ),
-
           // bottom background
           Positioned(
             bottom: 0,

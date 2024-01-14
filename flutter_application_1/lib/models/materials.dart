@@ -71,3 +71,47 @@ class MaterialFile {
         "title": title
       };
 }
+
+Checklist checklistFromJson(String str) => Checklist.fromJson(json.decode(str));
+
+String checklistToJson(Checklist data) => json.encode(data.toJson());
+
+class Checklist {
+  int id;
+  int parent;
+  String? journal;
+  String? picture;
+  String? checklist;
+  bool checked;
+  int clinic;
+
+  Checklist({
+    required this.id,
+    required this.parent,
+    required this.journal,
+    required this.picture,
+    required this.checklist,
+    required this.checked,
+    required this.clinic,
+  });
+
+  factory Checklist.fromJson(Map<String, dynamic> json) => Checklist(
+        id: json["ID"],
+        parent: json["PARENT"],
+        journal: json["JOURNAL"],
+        picture: json["PICTURE"],
+        checklist: json["CHECKLIST"],
+        checked: json["CHECKED"],
+        clinic: json["CLINIC"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "ID": id,
+        "PARENT": parent,
+        "JOURNAL": journal,
+        "PICTURE": picture,
+        "CHECKLIST": checklist,
+        "CHECKED": checked,
+        "CLINIC": clinic,
+      };
+}

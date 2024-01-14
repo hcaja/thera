@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_application_1/models/booking.dart';
 import 'package:flutter_application_1/models/clinic_profiles.dart';
+import 'package:flutter_application_1/models/materials.dart';
 import 'package:flutter_application_1/models/reviews.dart';
 import 'package:flutter_application_1/models/services_offered.dart';
 import 'package:http/http.dart' as http;
@@ -102,11 +103,36 @@ class ClinicController {
     return objects;
   }
 
+  Future<List<Parent>> getParentsByClinic(
+    int id,
+  ) async {
+    var response = await http.get(Uri.parse("$baseUrl$getParentByClinicUrl$id"),
+        headers: {"Content-Type": "application/json"});
+
+    final List<dynamic> jsonData = json.decode(response.body);
+    List<Parent> objects =
+        jsonData.map((json) => Parent.fromJson(json)).toList();
+
+    return objects;
+  }
+
+  Future<List<Checklist>> getChecklist(int id, int clinic) async {
+    var response = await http.get(
+        Uri.parse("$baseUrl$getChecklistbyParentUrl$id/$clinic"),
+        headers: {"Content-Type": "application/json"});
+    print(response.body);
+    final List<dynamic> jsonData = json.decode(response.body);
+    List<Checklist> objects =
+        jsonData.map((json) => Checklist.fromJson(json)).toList();
+
+    return objects;
+  }
+
   Future<bool> saveServices(int id, List<Services> services) async {
     Map<String, dynamic> requestBody = {
       'servList': services.map((service) => service.toJson()).toList(),
     };
-    //print(reqBody);
+
     var response = await http.patch(
         Uri.parse("$baseUrl$saveClinicServicesUrl$id"),
         headers: {"Content-Type": "application/json"},
@@ -123,7 +149,7 @@ class ClinicController {
     var reqBody = {
       "about": about,
     };
-    //print(reqBody);
+
     var response = await http.patch(Uri.parse("$baseUrl$saveAboutUrl$id"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(reqBody));
@@ -167,6 +193,27 @@ class ClinicController {
       });
     }
     return combinedMap;
+  }
+
+  Future<bool> saveChecklist(int parent, String checklist, int clinic) async {
+    var reqBody = {
+      "parent": parent,
+      "journal": '',
+      "picture": '',
+      "checklist": checklist,
+      "checked": '',
+      "clinic": clinic
+    };
+
+    var response = await http.post(Uri.parse("$baseUrl$saveChecklistUrl"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(reqBody));
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Future<Map<DateTime, List<ParentTimeData>>> getParentTimeData() async {
@@ -221,7 +268,6 @@ class ClinicController {
   }
 
   Future<bool> saveReviews(int clinic, int rating, String review) async {
-    print('esponse.statusCode');
     late SharedPreferences prefs;
     prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('parentToken');
@@ -237,7 +283,6 @@ class ClinicController {
     var response = await http.post(Uri.parse("$baseUrl$clinicAddReviewsURL"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(reqBody));
-    print(response.statusCode);
     if (response.statusCode == 200) {
       return true;
     } else {
