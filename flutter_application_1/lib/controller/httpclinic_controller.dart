@@ -120,12 +120,38 @@ class ClinicController {
     var response = await http.get(
         Uri.parse("$baseUrl$getChecklistbyParentUrl$id/$clinic"),
         headers: {"Content-Type": "application/json"});
-    print(response.body);
     final List<dynamic> jsonData = json.decode(response.body);
     List<Checklist> objects =
         jsonData.map((json) => Checklist.fromJson(json)).toList();
-
     return objects;
+  }
+
+  Future<List<Checklist>> getChecklistByParent(int id) async {
+    var response = await http.get(
+        Uri.parse("$baseUrl$getChecklistbyParentUrl$id"),
+        headers: {"Content-Type": "application/json"});
+    final List<dynamic> jsonData = json.decode(response.body);
+    List<Checklist> objects =
+        jsonData.map((json) => Checklist.fromJson(json)).toList();
+    return objects;
+  }
+
+  Future<bool> saveJournal(String journal, bool checked, int id) async {
+    var reqBody = {
+      "journal": journal,
+      "checked": checked,
+      "id": id,
+    };
+
+    var response = await http.put(Uri.parse("$baseUrl$saveJournalUrl"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(reqBody));
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Future<bool> saveServices(int id, List<Services> services) async {
@@ -208,7 +234,7 @@ class ClinicController {
     var response = await http.post(Uri.parse("$baseUrl$saveChecklistUrl"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(reqBody));
-    print(response.statusCode);
+
     if (response.statusCode == 200) {
       return true;
     } else {

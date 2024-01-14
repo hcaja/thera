@@ -21,6 +21,7 @@ const getParentByClinicUrl = '/parent/parent-clinic/';
 const getChecklistbyParentUrl = '/parent/get-journal/';
 const saveServicesUrl = '/employees/save-services/';
 const saveClinicServicesUrl = '/clinic/save-services/';
+const saveJournalUrl = '/parent/edit-journal';
 const saveAboutUrl = '/employees/save-about/';
 const saveChecklistUrl = '/parent/add-journal';
 const saveMaterialUrl = '/clinic/add-materials';

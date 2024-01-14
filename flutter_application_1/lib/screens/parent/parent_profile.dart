@@ -1,11 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/http_bookingcontroller.dart';
+import 'package:flutter_application_1/controller/httpclinic_controller.dart';
+import 'package:flutter_application_1/models/booking.dart';
+import 'package:flutter_application_1/models/materials.dart';
 import 'package:flutter_application_1/screens/parent/check_list.dart';
 import 'package:flutter_application_1/screens/widgets/app_drawer.dart';
-// import 'package:flutter_application_1/screens/parent/profile_parent_tabbar.dart';
-// import 'package:flutter_application_1/screens/widgets/app_drawer.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ParentProfile extends StatelessWidget {
+class ParentProfile extends StatefulWidget {
   const ParentProfile({Key? key}) : super(key: key);
+
+  @override
+  State<ParentProfile> createState() => _ParentProfileState();
+}
+
+class _ParentProfileState extends State<ParentProfile> {
+  BookingController bookingController = BookingController();
+  ClinicController clinicController = ClinicController();
+  List<Checklist> checklist = [];
+  late Parent parent;
+
+  Future<int?> getUser() async {
+    int? clinicId;
+    await SharedPreferences.getInstance().then((value) {
+      String? token = value.getString('parentToken');
+      Map<String, dynamic> payload = JwtDecoder.decode(token!);
+      clinicId = payload['ID'];
+    });
+    return clinicId;
+  }
+
+  @override
+  void initState() {
+    reload();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,18 +116,18 @@ class ParentProfile extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                       child: const CircleAvatar(
-                        radius: 50,
-                        backgroundImage: AssetImage('asset/images/lara.jpg'),
-                      ),
+                          radius: 50,
+                          backgroundImage: NetworkImage(
+                              'https://i.pinimg.com/originals/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg')),
                     ),
 
                     // Spacing between profile picture and parent name
                     const SizedBox(height: 5),
 
                     // Parent Name
-                    const Text(
-                      'Princess Lara Mae Danica Fiona Marie Delute',
-                      style: TextStyle(
+                    Text(
+                      parent.fullname!,
+                      style: const TextStyle(
                         color: Color(0xFF67AFA5),
                         fontSize: 15,
                         fontFamily: 'Poppins',
@@ -105,23 +135,23 @@ class ParentProfile extends StatelessWidget {
                       ),
                     ),
 
-                    const Column(
+                    Column(
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.phone,
                               color: Color(
                                   0xFF006A5C), // Change the color of the phone icon
                               size: 14, // Change the size of the phone icon
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 5,
                             ),
                             Text(
-                              "09457862611",
-                              style: TextStyle(
+                              parent.contactNumber!,
+                              style: const TextStyle(
                                 color: Color(
                                     0xFF645B5B), // Change the color of the phone number text
                                 fontSize:
@@ -133,18 +163,18 @@ class ParentProfile extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.email,
                               color: Color(
                                   0xFF006A5C), // Change the color of the email icon
                               size: 14, // Change the size of the email icon
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 5,
                             ),
                             Text(
-                              "princesslara@sample.email",
-                              style: TextStyle(
+                              parent.email!,
+                              style: const TextStyle(
                                 color: Color(
                                     0xFF645B5B), // Change the color of the email text
                                 fontSize:
@@ -160,67 +190,6 @@ class ParentProfile extends StatelessWidget {
                     const SizedBox(height: 5),
                     Column(
                       children: [
-                        const SizedBox(height: 5),
-                        const Text(
-                          "BIO",
-                          style: TextStyle(
-                            color: Color(0xFF999999),
-                            fontSize: 13,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-
-                        // Bio Text Field
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(left: 40.0, right: 40.0),
-                          child: TextFormField(
-                            decoration: const InputDecoration(
-                              hintText: "Enter your bio here...", // Hint text
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.green),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Color(0xFF006A5C)),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        const SizedBox(height: 10),
-                        // Buttons for Update and Edit
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                // Handle the "Update" button action
-                              },
-                              child: const Text(
-                                "Edit",
-                                style: TextStyle(
-                                  color: Color(0xFF006A5C),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                                width: 10), // Add spacing between the buttons
-                            ElevatedButton(
-                              onPressed: () {
-                                // Handle the "Edit" button action
-                              },
-                              child: const Text(
-                                "Update",
-                                style: TextStyle(
-                                  color: Color(0xFF006A5C),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
                         // spacing between buttons and checklist
                         const SizedBox(height: 20),
                         const Padding(
@@ -239,7 +208,9 @@ class ParentProfile extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        const CustomCheckboxListTile(),
+                        CustomCheckboxListTile(
+                          parent: parent,
+                        ),
                       ],
                     )
                   ],
@@ -250,5 +221,15 @@ class ParentProfile extends StatelessWidget {
         ]),
       ),
     );
+  }
+
+  void reload() {
+    getUser().then((parentID) {
+      bookingController.getParent(parentID!).then((value) {
+        setState(() {
+          parent = value;
+        });
+      });
+    });
   }
 }
