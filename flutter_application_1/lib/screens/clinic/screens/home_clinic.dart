@@ -4,6 +4,7 @@ import 'package:flutter_application_1/screens/clinic/widgets/clinic_gallery.dart
 import 'package:flutter_application_1/screens/clinic/widgets/clinic_profile.dart';
 import 'package:flutter_application_1/screens/clinic/widgets/clinic_review.dart';
 import 'package:flutter_application_1/screens/clinic/widgets/dash_tab_clinic.dart';
+import 'package:flutter_application_1/screens/clinic/widgets/thera_list.dart';
 import 'package:flutter_application_1/screens/widgets/app_drawer.dart';
 import 'package:flutter_application_1/screens/widgets/app_drawer_therapist.dart';
 
@@ -97,6 +98,9 @@ class HomeClinicState extends State<HomeClinic> {
                     ClinicProfile(
                       isEditable: false,
                       clinics: widget.clinics,
+                    ),
+                    TherapistListView(
+                      clinicId: widget.clinics!.id,
                     ),
                     const ClinicGallery(),
                     ClinicReview(

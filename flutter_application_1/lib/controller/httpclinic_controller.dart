@@ -146,7 +146,6 @@ class ClinicController {
     var response = await http.put(Uri.parse("$baseUrl$saveJournalUrl"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(reqBody));
-    print(response.statusCode);
     if (response.statusCode == 200) {
       return true;
     } else {
@@ -285,9 +284,7 @@ class ClinicController {
   Future<List<Reviews>> getReviews(int id) async {
     var response = await http.get(Uri.parse("$baseUrl$clinicReviewsURL$id"),
         headers: {"Content-Type": "application/json"});
-    print(response.statusCode);
     final List<dynamic> responseData = json.decode(response.body);
-    print(response.body);
     List<Reviews> res =
         responseData.map((jsonObject) => Reviews.fromJson(jsonObject)).toList();
     return res;
@@ -314,5 +311,31 @@ class ClinicController {
     } else {
       return false;
     }
+  }
+
+  Future<List<Employee>> getProfiles(int clinicID) async {
+    var response = await http.get(
+        Uri.parse("$baseUrl$getProfilesUrl/$clinicID"),
+        headers: {"Content-Type": "application/json"});
+
+    final List<dynamic> jsonData = json.decode(response.body);
+    List<Employee> objects = jsonData
+        .map((json) => Employee(
+            id: json["ID"],
+            email: json["EMAIL"],
+            password: json["PASSWORD"],
+            username: json["USERNAME"],
+            name: json["NAME"],
+            role: json["ROLE"],
+            clinicAccount: json["CLINIC_ACCOUNT"],
+            address: json["ADDRESS"],
+            contactNo: json["CONTACT_NO"],
+            age: json["AGE"],
+            sex: json["SEX"],
+            profilePicture: json["PROFILE_PICTURE"],
+            about: json["ABOUT"]))
+        .toList();
+
+    return objects;
   }
 }
