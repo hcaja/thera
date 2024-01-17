@@ -129,7 +129,6 @@ class ClinicRegisterApi {
     String contact,
     String age,
     String sex,
-
     String username,
     String profilePicLink,
     String fileAtt,
@@ -243,8 +242,6 @@ class ClinicRegisterApi {
     } else if (designation == 'clinic') {
       url = clinicFiles;
     }
-    print(reqBody);
-    print(url);
     await http.post(Uri.parse(baseUrl + url),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(reqBody));
