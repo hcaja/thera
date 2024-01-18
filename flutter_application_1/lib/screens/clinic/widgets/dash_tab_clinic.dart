@@ -24,8 +24,9 @@ class DashTabClinic extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           buildTab('Profile', 0),
-          buildTab('Gallery', 1),
-          buildTab('Reviews', 2),
+          buildTab('Therapists', 1),
+          buildTab('Gallery', 2),
+          buildTab('Reviews', 3),
         ],
       ),
     );
